@@ -240,6 +240,7 @@ public class GetInputVR : MonoBehaviour
         {
             holding.GetComponent<Chime>().IncreasePitch();
         }
+		*/
         if (holding.GetComponent<Shears>() != null)
         {
             holding.GetComponent<Shears>().snip();
@@ -248,7 +249,7 @@ public class GetInputVR : MonoBehaviour
         {
             holding.GetComponent<Insecticide>().startSpray();
         }
-        */
+        
     }
 
     public void DetermineLayer(int newW)

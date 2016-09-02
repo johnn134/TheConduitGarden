@@ -34,12 +34,13 @@ public class BonsaiManager : MonoBehaviour {
 		//Create the base branch
 		baseBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), transform) as GameObject;
 		baseBranch.transform.localPosition = Vector3.zero;
+		baseBranch.transform.localScale = new Vector3(.25f, .25f, .25f);
 		baseBranch.GetComponent<Branch>().setcanSnip(false);
 		baseBranch.GetComponent<Branch>().setDepth(0);
 
 		//baseBranch.GetComponent<Branch>().setWPosition(3);
 		baseBranch.GetComponent<HyperColliderManager>().setW(3);
-		baseBranch.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+		baseBranch.GetComponent<HyperColliderManager>().WMove();
 
 		baseBranch.GetComponent<Branch>().setManager(this.gameObject);
 		InvokeRepeating("processGrowthCycle", growthCycleTime, growthCycleTime);

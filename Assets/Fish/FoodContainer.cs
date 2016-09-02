@@ -3,7 +3,6 @@ using System.Collections;
 
 public class FoodContainer : MonoBehaviour {
 
-    public GameObject fishFood;
     FishManager fishManager;
     public GameObject opening;
     public int pourRate = 10;

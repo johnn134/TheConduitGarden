@@ -35,7 +35,7 @@ public class KamiManager : MonoBehaviour {
         //check to make sure the w point the fish is being added on isnt full
         if (numKami < maxKami)
         {
-            nObj = (GameObject)Instantiate((GameObject)AssetDatabase.LoadAssetAtPath("Assets/Kami/Kami.prefab", typeof(GameObject)), nPosition, nRotation);
+			nObj = (GameObject)Instantiate(Resources.Load("Kami/Kami"), nPosition, nRotation);
             nObj.GetComponent<HyperObject>().setW(nW);
             nObj.GetComponent<HyperObject>().WMove(GameObject.Find("CameraRig").GetComponent<HyperCreature>().w);//change to Slide(0) once 4d shader is implemented
             allKami.Add(nObj);

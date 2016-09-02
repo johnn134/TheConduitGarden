@@ -43,8 +43,8 @@ public class FishManager : MonoBehaviour {
             if (numFood[nW] < maxFood)
             {
 				nObj = (GameObject)Instantiate(Resources.Load("Food/Food"), nPosition, nRotation);
-                nObj.GetComponent<HyperObject>().w = nW;
-                nObj.GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);//change to Slide(0) once 4d shader is implemented
+				nObj.GetComponent<HyperObject>().setW(nW);
+                nObj.GetComponent<HyperObject>().WMove();//change to Slide(0) once 4d shader is implemented
                 allFood.Add(nObj);
                 numFood[nW] += 1;
                 //alertFood(nW, true);
@@ -59,7 +59,7 @@ public class FishManager : MonoBehaviour {
             {
 				nObj = (GameObject)Instantiate(Resources.Load("Fish/Fish"), nPosition, nRotation);
                 nObj.GetComponent<HyperColliderManager>().setW(nW);
-                nObj.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);//change to Slide(0) once 4d shader is implemented
+                nObj.GetComponent<HyperColliderManager>().WMove();//change to Slide(0) once 4d shader is implemented
                 allFish.Add(nObj);
                 numFish[nW] += 1;
                 alertNewTargets(nW, (int)nObj.GetComponent<Fish>().size);

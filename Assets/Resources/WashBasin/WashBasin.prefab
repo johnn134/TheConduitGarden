@@ -21,6 +21,7 @@ GameObject:
   - 4: {fileID: 4000013383785830}
   - 33: {fileID: 33000012066626852}
   - 23: {fileID: 23000010600828172}
+  - 114: {fileID: 114000011444550242}
   m_Layer: 0
   m_Name: WashBasin
   m_TagString: Untagged
@@ -38,7 +39,6 @@ GameObject:
   - 4: {fileID: 4000011146285458}
   - 33: {fileID: 33000011710576814}
   - 23: {fileID: 23000012612040896}
-  - 114: {fileID: 114000010631645378}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -218,23 +218,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3, y: 0.2, z: 0.8}
   m_Center: {x: 0, y: 1.11, z: 0}
---- !u!114 &114000010631645378
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012667935584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d2a6c386c10fb442af28b4ae0134d28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  w: 0
-  dullCoef: 1
-  w_depth: 7
-  IVDManager: {fileID: 0}
-  isParent: 0
-  vanishWhenTransparent: 0
 --- !u!114 &114000010673674074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -254,11 +237,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013875485638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b2ea3c5e3eebf7498f83916e20700fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 14d60fe6ae1884e4fa2cc57308f64765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   w: 0
+  w_depth: 6
   movable: 0
-  w_depth: 7
-  IVDManager: {fileID: 0}
   isParent: 1
+  IVDManager: {fileID: 0}
+--- !u!114 &114000011444550242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012073108822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 6
+  dullCoef: 1
+  isParent: 0
+  vanishWhenTransparent: 0

@@ -42,7 +42,7 @@ public class FishManager : MonoBehaviour {
             //check to make sure the w point the food is being added on isnt full
             if (numFood[nW] < maxFood)
             {
-                nObj = (GameObject)Instantiate((GameObject)AssetDatabase.LoadAssetAtPath("Assets/Fish/Food.prefab", typeof(GameObject)), nPosition, nRotation);
+				nObj = (GameObject)Instantiate(Resources.Load("Food/Food"), nPosition, nRotation);
                 nObj.GetComponent<HyperObject>().w = nW;
                 nObj.GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);//change to Slide(0) once 4d shader is implemented
                 allFood.Add(nObj);
@@ -57,7 +57,7 @@ public class FishManager : MonoBehaviour {
             //check to make sure the w point the fish is being added on isnt full
             if (numFish[nW] < maxFish)
             {
-                nObj = (GameObject)Instantiate((GameObject)AssetDatabase.LoadAssetAtPath("Assets/Fish/Fish.prefab", typeof(GameObject)), nPosition, nRotation);
+				nObj = (GameObject)Instantiate(Resources.Load("Fish/Fish"), nPosition, nRotation);
                 nObj.GetComponent<HyperColliderManager>().setW(nW);
                 nObj.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);//change to Slide(0) once 4d shader is implemented
                 allFish.Add(nObj);

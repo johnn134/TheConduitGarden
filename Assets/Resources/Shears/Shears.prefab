@@ -21,7 +21,7 @@ GameObject:
   - 4: {fileID: 4000010871377794}
   - 33: {fileID: 33000010425497924}
   - 23: {fileID: 23000010948266064}
-  - 95: {fileID: 95000011835005270}
+  - 114: {fileID: 114000012098731616}
   m_Layer: 0
   m_Name: Shears_Type1
   m_TagString: Untagged
@@ -128,7 +128,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012708039908}
   m_LocalRotation: {x: -0, y: 0.0015049558, z: -0, w: 0.99999887}
-  m_LocalPosition: {x: 0.4, y: 0.05, z: 3}
+  m_LocalPosition: {x: -3.2815099, y: 0.5490892, z: 7.084981}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0.16700001, z: 0}
   m_Children:
@@ -226,23 +226,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &95000011835005270
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011131812820}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 0f78ede2cf28dc64b8d47808693d4d97, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114000011595621950
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -262,14 +245,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000014077443390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b2ea3c5e3eebf7498f83916e20700fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 14d60fe6ae1884e4fa2cc57308f64765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   w: 0
-  movable: 0
   w_depth: 0
-  IVDManager: {fileID: 0}
+  movable: 0
   isParent: 0
+  IVDManager: {fileID: 0}
+--- !u!114 &114000012098731616
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011131812820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 0
+  dullCoef: 1
+  isParent: 0
+  vanishWhenTransparent: 0
 --- !u!114 &114000013931773278
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -278,11 +277,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012708039908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b2ea3c5e3eebf7498f83916e20700fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 14d60fe6ae1884e4fa2cc57308f64765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   w: 0
-  movable: 1
   w_depth: 0
-  IVDManager: {fileID: 0}
+  movable: 1
   isParent: 1
+  IVDManager: {fileID: 0}

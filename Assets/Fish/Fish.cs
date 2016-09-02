@@ -42,7 +42,7 @@ public class Fish : MonoBehaviour {
         //wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
         wanderLoc = transform.position;
         InvokeRepeating("FeedCycle", Random.Range(feedCycle - offset, feedCycle + offset), feedCycle);
-        ChangeSize((Size)Random.Range(2, 3));
+        ChangeSize((Size)Random.Range(0, 3));
 
         myHyper = GetComponent<HyperColliderManager>();
     }

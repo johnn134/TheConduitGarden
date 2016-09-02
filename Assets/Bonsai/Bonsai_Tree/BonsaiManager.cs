@@ -59,8 +59,8 @@ public class BonsaiManager : MonoBehaviour {
 		}
 		*/
 
-		Debug.Log("Branches: N-" + numBranches + ", D-" + numDeadBranches + ", I-" + numInfestedBranches
-					+ "; Leaves: N-" + numLeaves + ", D-" + numDeadLeaves);
+		//Debug.Log("Branches: N-" + numBranches + ", D-" + numDeadBranches + ", I-" + numInfestedBranches
+		//			+ "; Leaves: N-" + numLeaves + ", D-" + numDeadLeaves);
 	}
 
 	void processGrowthCycle() {

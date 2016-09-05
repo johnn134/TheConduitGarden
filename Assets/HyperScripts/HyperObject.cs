@@ -22,6 +22,10 @@ public class HyperObject : MonoBehaviour {
 
     SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
 
+	Renderer _cachedRenderer;						//The renderer for this object
+
+	HyperCreature player;							//Reference to the player
+
     const int TRANSPARENT_QUEUE_ORDER = 3000;
 
     void Start()
@@ -31,7 +35,11 @@ public class HyperObject : MonoBehaviour {
 
         controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
 
-        Invoke("GetReady", 5);
+		_cachedRenderer = GetComponent<Renderer>();
+
+		player = Object.FindObjectOfType<HyperCreature>();
+
+        //Invoke("GetReady", 5);
 
         //if this is the parent perform all the initialization for this object
         if (isParent)
@@ -61,48 +69,10 @@ public class HyperObject : MonoBehaviour {
         }
     }*/
 
-	//the player has moved to a new w point, remove once 4D shader is implemented
-	public void WMove(int newW){
-        newW = Object.FindObjectOfType<HyperCreature>().w;
-        if(isVisibleSolid(newW)){//this object is on the player's w point or is wide enough to be seen and touched
-			StartCoroutine(ColorTrans(newW, 1.0f));
-		}
-		else{
-            float targA = .2f;
-            if (vanishWhenTransparent)
-                targA = 0.0f;
-
-			//fade out if not on player's w point
-            if(w_depth > 0)
-            {
-                if(w > newW)
-                    StartCoroutine(ColorTrans(w, targA));
-                else
-                    StartCoroutine(ColorTrans(w + w_depth, targA));
-            }
-            else
-            {
-                if (w < newW)
-                    StartCoroutine(ColorTrans(w, targA));
-                else
-                    StartCoroutine(ColorTrans(w + w_depth, targA));
-            }
-		}
-        if (GetComponent<HyperColliderManager>())
-            GetComponent<HyperColliderManager>().WMove(newW);
-        else
-        {
-            recurseChildrenWMove(transform, newW);
-        }
-
-        //GetComponent<MeshRenderer>().material.SetFloat("_WPos", (float)w);
-        //GetComponent<MeshRenderer>().material.renderQueue = TRANSPARENT_QUEUE_ORDER + getNewOrder(newW);
-    }
-
     //the player has moved to a new w point, remove once 4D shader is implemented
     public void WMove()
     {
-        int newW = Object.FindObjectOfType<HyperCreature>().w;
+		int newW = player.w;
         if (isVisibleSolid(newW))
         {//this object is on the player's w point or is wide enough to be seen and touched
             StartCoroutine(ColorTrans(newW, 1.0f));
@@ -144,7 +114,7 @@ public class HyperObject : MonoBehaviour {
         foreach (Transform child in t)
         {
             if (child.GetComponent<HyperObject>())
-                child.GetComponent<HyperObject>().WMove(newW);
+                child.GetComponent<HyperObject>().WMove();
             else if (child.GetComponent<HyperColliderManager>())
                 child.GetComponent<HyperColliderManager>().WMove(newW);
             else if (child.childCount > 0)

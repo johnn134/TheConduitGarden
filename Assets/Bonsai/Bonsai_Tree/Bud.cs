@@ -58,7 +58,7 @@ public class Bud : MonoBehaviour {
 			GameObject newBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), Vector3.zero, Quaternion.identity, transform.parent) as GameObject;
 			newBranch.transform.localPosition = transform.localPosition;
 			newBranch.transform.localRotation = transform.localRotation;
-			newBranch.transform.Rotate(-90, 0, 0);
+			//newBranch.transform.Rotate(-90, 0, 0);
 			newBranch.transform.GetComponent<Branch>().setDepth(depth);
 
 			//newBranch.transform.GetComponent<Branch>().setWPosition(w);

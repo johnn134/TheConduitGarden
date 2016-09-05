@@ -7,8 +7,11 @@ public class BonsaiManager : MonoBehaviour {
 	public int maxBranches = 45;
 
 	public float growthCycleTime = 60.0f;
+	public float treeSize = 0.25f;
 
-    GameObject baseBranch;
+	GameObject baseBranch;
+
+	public CONTRACTLEVEL levelType = CONTRACTLEVEL.NONE;
 
 	int numLeaves;
 	int numBranches;
@@ -16,7 +19,13 @@ public class BonsaiManager : MonoBehaviour {
 	int numDeadBranches;
 	int numInfestedBranches;
 
+	int[] hitboxCollisions;
+
 	static int ID = 0;
+
+	public enum CONTRACTLEVEL {
+		NONE, TOKYO
+	};
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +36,11 @@ public class BonsaiManager : MonoBehaviour {
 		numDeadBranches = 0;
 		numInfestedBranches = 0;
 
+		hitboxCollisions = new int[6];
+
+		for(int i = 0; i < 6; i++)
+			hitboxCollisions[i] = 0;
+
 		//Name the tree
 		this.gameObject.name = "BonsaiTree_" + ID;
 		ID++;
@@ -34,7 +48,7 @@ public class BonsaiManager : MonoBehaviour {
 		//Create the base branch
 		baseBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), transform) as GameObject;
 		baseBranch.transform.localPosition = Vector3.zero;
-		baseBranch.transform.localScale = new Vector3(.25f, .25f, .25f);
+		baseBranch.transform.localScale = new Vector3(treeSize, treeSize, treeSize);
 		baseBranch.GetComponent<Branch>().setcanSnip(false);
 		baseBranch.GetComponent<Branch>().setDepth(0);
 
@@ -43,6 +57,9 @@ public class BonsaiManager : MonoBehaviour {
 		baseBranch.GetComponent<HyperColliderManager>().WMove();
 
 		baseBranch.GetComponent<Branch>().setManager(this.gameObject);
+
+		baseBranch.GetComponent<Branch>().setupTreeForLevel(levelType);
+
 		InvokeRepeating("processGrowthCycle", growthCycleTime, growthCycleTime);
 	}
 	
@@ -134,5 +151,63 @@ public class BonsaiManager : MonoBehaviour {
 
 	public int getNumDeadBranches() {
 		return numDeadBranches;
+	}
+
+	public int[] getHitboxCollisions() {
+		return hitboxCollisions;
+	}
+
+	public void registerHitboxCollision(string dir) {
+		if(dir != "None")
+			Debug.Log("Tree component collided with " + dir);
+		switch(dir) {
+			case "Top":
+				hitboxCollisions[0] += 1;
+				break;
+			case "Bottom":
+				hitboxCollisions[1] += 1;
+				break;
+			case "North":
+				hitboxCollisions[2] += 1;
+				break;
+			case "South":
+				hitboxCollisions[3] += 1;
+				break;
+			case "East":
+				hitboxCollisions[4] += 1;
+				break;
+			case "West":
+				hitboxCollisions[5] += 1;
+				break;
+			default:
+				break;
+		}
+	}
+
+	public void registerHitboxExit(string dir) {
+		if(dir != "None")
+			Debug.Log("Tree component left hitbox " + dir);
+		switch(dir) {
+			case "Top":
+				hitboxCollisions[0] -= 1;
+				break;
+			case "Bottom":
+				hitboxCollisions[1] -= 1;
+				break;
+			case "North":
+				hitboxCollisions[2] -= 1;
+				break;
+			case "South":
+				hitboxCollisions[3] -= 1;
+				break;
+			case "East":
+				hitboxCollisions[4] -= 1;
+				break;
+			case "West":
+				hitboxCollisions[5] -= 1;
+				break;
+			default:
+				break;
+		}
 	}
 }

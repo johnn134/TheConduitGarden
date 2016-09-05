@@ -10,6 +10,8 @@ public class BonsaiShrine : MonoBehaviour {
 
 	public GameObject[] trees;
 
+	public CONTRACTLEVEL levelRequirement = CONTRACTLEVEL.NONE;
+
 	int activationStage;
 
 	int[] issues;
@@ -21,13 +23,17 @@ public class BonsaiShrine : MonoBehaviour {
 	const int MIN_LEAVES = 4;
 	const int MIN_BRANCHES = 5;
 
-	const float CHECK_DELAY = 2.5f;
+	const float CHECK_DELAY = 1.0f;
 	const float INACTIVE_COLOR_VALUE = 0.1f;
 	const float ACTIVE_COLOR_VALUE = 1.0f;
 
+	public enum CONTRACTLEVEL {
+		NONE, TOKYO
+	};
+
 	// Use this for initialization
 	void Start () {
-		checkTime = 5.0f;
+		checkTime = 2.0f;
 
 		issues = new int[trees.Length];
 		for(int i = 0; i < issues.Length; i++) {
@@ -96,7 +102,7 @@ public class BonsaiShrine : MonoBehaviour {
 				}
 
 				//contract requirement check
-				contractSatisfied = false;	/*** Change this to work with the required contract ***/
+				contractSatisfied = checkContractProgress();	/*** Change this to work with the required contract ***/
 			}
 		}
 
@@ -128,5 +134,40 @@ public class BonsaiShrine : MonoBehaviour {
 		LevelTwoLights.GetComponent<Renderer>().material.color = lightLevel >= 2 ? active : inactive;
 		LevelThreeLights.GetComponent<Renderer>().material.color = lightLevel >= 3 ? active : inactive;
 		LevelFourLights.GetComponent<Renderer>().material.color = lightLevel >= 4 ? active : inactive;
+	}
+
+	bool checkContractProgress() {
+		switch(levelRequirement) {
+			case CONTRACTLEVEL.NONE:
+				return true;
+				break;
+			case CONTRACTLEVEL.TOKYO:
+				return checkTokyoContractProgress();
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
+
+	bool checkTokyoContractProgress() {
+		bool satisfied = true;
+
+		for(int i = 0; i < trees.Length; i++) {
+			for(int j = 0; j < 6; j++) {
+				if(j != 1) {
+					if(trees[i].GetComponent<BonsaiManager>().getHitboxCollisions()[j] <= 0) {
+						satisfied = false;
+					}
+				}
+				else {
+					if(trees[i].GetComponent<BonsaiManager>().getHitboxCollisions()[j] > 0) {
+						satisfied = false;
+					}
+				}
+			}
+		}
+
+		return satisfied;
 	}
 }

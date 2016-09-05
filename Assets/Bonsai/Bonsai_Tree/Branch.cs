@@ -22,6 +22,7 @@ public class Branch : MonoBehaviour {
 
 	float budRange;     	//Maximum distance from the center of the branch tip to grow a bud
 	float leafRange;    	//Stores the radius of the rounded branch tip
+
 	bool runGrowth;     	//Tells whether the branch should be growing
 	bool isTip;         	//True if this branch has no child branches
 	bool isDead;    		//Is this branch diseased
@@ -29,6 +30,8 @@ public class Branch : MonoBehaviour {
 	bool leavesAreDead;		//Are all leaves on this branch dead
 
 	bool canSnip = true;       	//Tells whether this branch can be snipped off
+
+	string hitboxCollision = "None";
 
 	const int BRANCH_MIN = 1;              	//Minimum number of branch buds that will initially grow
 	const int BRANCH_MAX = 3;              	//Maximum number of branch buds that can ever grow from this branch
@@ -51,8 +54,7 @@ public class Branch : MonoBehaviour {
 
 	static int ID = 0;	//Unique branch identifier
 
-	// Use this for initialization
-	void Start() {
+	void Awake() {
 		//Initialize variables
 		age = 0;
 		numLeaves = 0;
@@ -79,6 +81,11 @@ public class Branch : MonoBehaviour {
 		ID++;
 	}
 
+	// Use this for initialization
+	void Start() {
+		
+	}
+
 	void OnDestroy() {
 		if(transform.parent != null) {
 			if(transform.parent.GetComponent<Branch>() != null) {
@@ -93,6 +100,8 @@ public class Branch : MonoBehaviour {
 			
 			if(isDead)
 				manager.GetComponent<BonsaiManager>().removeDeadBranch();
+
+			manager.GetComponent<BonsaiManager>().registerHitboxExit(hitboxCollision);
 		}
 	}
 
@@ -165,6 +174,38 @@ public class Branch : MonoBehaviour {
 				if(canSnip) {
 					Destroy(this.gameObject);
 				}
+			}
+			switch(other.name) {
+				case "TopHitbox":
+					hitboxCollision = "Top";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("Top");
+					break;
+				case "BottomHitbox":
+					hitboxCollision = "Bottom";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("Bottom");
+					break;
+				case "NorthHitbox":
+					hitboxCollision = "North";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("North");
+					break;
+				case "SouthHitbox":
+					hitboxCollision = "South";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("South");
+					break;
+				case "EastHitbox":
+					hitboxCollision = "East";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("East");
+					break;
+				case "WestHitbox":
+					hitboxCollision = "West";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("West");
+					break;
 			}
 		}
 	}
@@ -372,33 +413,22 @@ public class Branch : MonoBehaviour {
 
 			//Attempt to create all of the branch buds
 			for(int i = 0; i < numBuds; i++) {
-				Vector3 originPos = transform.GetChild(1).localPosition;
-				Vector3 spawnPos = originPos;
-				Quaternion spawnRot = Quaternion.identity;
+				Vector3 newRot = Vector3.zero;
 
 				bool foundPos = false;
-				float xOffset, zRange, zOffset;
 				int attempts = 0;
 
 				//Attempt to find a position to place the branch bud on the tip of
 				//this branch within the allowed attempts limit
 				while(!foundPos && attempts < MAX_PLACEMENT_ATTEMPTS) {
-					spawnPos = originPos;   //Reset the spawn pos to origin
 
-					//Find a Vector3 position on the surface of the rounded tip of the branch
-					xOffset = Random.Range(-budRange, budRange);
-					zRange = Mathf.Sqrt(budRange * budRange - xOffset * xOffset);
-					zOffset = Random.Range(-zRange, zRange);
-					spawnPos.x += xOffset;
-					spawnPos.z += zOffset;
-					spawnPos.y += Mathf.Sqrt(budRange * budRange - zOffset * zOffset - xOffset * xOffset);
+					newRot = new Vector3(Random.Range(-90.0f, 90.0f), 0.0f, Random.Range(-90.0f, 90.0f));
 
-					//Create a rotation that points towards the center of the sphere tip from the spawn pos
-					spawnRot = Quaternion.LookRotation(transform.GetChild(1).localPosition - spawnPos);
+					Quaternion temp = Quaternion.identity;
 
 					foundPos = true;
 					for(int j = 0; j < i + numBranches; j++) {
-						if(Quaternion.Angle(branchRotations[j], spawnRot) <= BUD_OFFSET) {
+						if(Quaternion.Angle(branchRotations[j], Quaternion.Euler(newRot)) <= BUD_OFFSET) {
 							foundPos = false;
 							attempts++;
 						}
@@ -411,10 +441,10 @@ public class Branch : MonoBehaviour {
 				}
 
 				//Update pos and rot
-				branchRotations[i + numBranches] = spawnRot;
+				branchRotations[i + numBranches] = Quaternion.Euler(newRot);
 
 				//Add the bud at the found position and rotation
-				addBud(spawnPos, spawnRot, false);
+				addBud(newRot, false);
 			}
 		}
 	}
@@ -424,7 +454,7 @@ public class Branch : MonoBehaviour {
 	 */
 	void addBud(Vector3 pos, Quaternion rot, bool isLeaf) {
 		//Instantiate bud
-		GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;	
+		GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
 
 		//Initialize new bud transform
 		newBud.transform.localPosition = pos;
@@ -443,6 +473,31 @@ public class Branch : MonoBehaviour {
 			manager.GetComponent<BonsaiManager>().addLeaf();
 		else
 			manager.GetComponent<BonsaiManager>().addBranch();
+	}
+
+	/*
+	 * Adds a new bud of the given type with the given rotation on the tip of the branch
+	 */
+	void addBud(Vector3 rot, bool isLeaf) {
+		if(!isLeaf) {
+			//Instantiate bud
+			GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
+
+			newBud.transform.localPosition = transform.GetChild(1).localPosition;
+			newBud.transform.localRotation = Quaternion.Euler(rot);
+			//newBud.transform.localPosition = newBud.transform.localPosition +  * 0.025f;
+
+			//Initialize new branch variables
+			newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
+			newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
+
+			//Set the branch's w position
+			newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+			newBud.transform.GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+
+			newBud.transform.GetComponent<Bud>().setManager(manager);
+			manager.GetComponent<BonsaiManager>().addBranch();
+		}
 	}
 
 	/*
@@ -704,6 +759,45 @@ public class Branch : MonoBehaviour {
 		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
 		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
 		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+	}
+
+	public void setupTreeForLevel(BonsaiManager.CONTRACTLEVEL type) {
+		switch(type) {
+			case BonsaiManager.CONTRACTLEVEL.NONE:
+				break;
+			case BonsaiManager.CONTRACTLEVEL.TOKYO:
+				setupTokyoTree();
+				break;
+			default:
+				break;
+		}
+	}
+
+	void setupTokyoTree() {
+		age += 2;
+
+		addBranch(Vector3.zero);
+
+		addBranch(new Vector3(60.0f, 0.0f, 0.0f));
+		addBranch(new Vector3(-60.0f, 0.0f, 0.0f));
+		addBranch(new Vector3(0.0f, 0.0f, 60.0f));
+		addBranch(new Vector3(0.0f, 0.0f, -60.0f));
+	}
+
+	public void addBranch(Vector3 newRot) {
+		GameObject newBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
+		newBranch.transform.localPosition = transform.GetChild(1).localPosition;
+		newBranch.transform.Rotate(newRot);
+
+		//newBranch.transform.localPosition = newBranch.transform.localPosition + newBranch.transform.up * 0.025f;	//This is for offsetting it from the tipPoint
+
+		newBranch.GetComponent<HyperColliderManager>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+		newBranch.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+
+		newBranch.transform.GetComponent<Branch>().setDepth(depth + 1);
+		newBranch.transform.GetComponent<Branch>().setManager(manager);
+		manager.GetComponent<BonsaiManager>().addBranch();
+		this.registerBranchAdded();
 	}
 
 	/*

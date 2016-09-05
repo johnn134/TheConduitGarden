@@ -15,6 +15,8 @@ public class Leaf : MonoBehaviour {
 	float DARKEN_VALUE = 0.1f;
 	float DARKEN_ALPHA = 0.75f;
 
+	string hitboxCollision = "None";
+
 	bool canSnip;       //Whether this leaf can be snipped or not
 	bool isDead;       //Whether the leaf is alive or not
 
@@ -45,6 +47,8 @@ public class Leaf : MonoBehaviour {
 			if(isDead) {
 				manager.GetComponent<BonsaiManager>().removeDeadLeaf();
 			}
+
+			manager.GetComponent<BonsaiManager>().registerHitboxExit(hitboxCollision);
 		}
 	}
 
@@ -66,6 +70,38 @@ public class Leaf : MonoBehaviour {
 				if(canSnip) {
 					Destroy(this.gameObject);
 				}
+			}
+			switch(other.name) {
+				case "TopHitbox":
+					hitboxCollision = "Top";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("Top");
+					break;
+				case "BottomHitbox":
+					hitboxCollision = "Bottom";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("Bottom");
+					break;
+				case "NorthHitbox":
+					hitboxCollision = "North";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("North");
+					break;
+				case "SouthHitbox":
+					hitboxCollision = "South";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("South");
+					break;
+				case "EastHitbox":
+					hitboxCollision = "East";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("East");
+					break;
+				case "WestHitbox":
+					hitboxCollision = "West";
+					if(manager != null)
+						manager.GetComponent<BonsaiManager>().registerHitboxCollision("West");
+					break;
 			}
 		}
 	}

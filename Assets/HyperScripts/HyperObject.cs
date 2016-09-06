@@ -24,7 +24,7 @@ public class HyperObject : MonoBehaviour {
 
 	Renderer _cachedRenderer;						//The renderer for this object
 
-	HyperCreature player;							//Reference to the player
+	HyperCreature hypPlayer;						//Reference to the player
 
     const int TRANSPARENT_QUEUE_ORDER = 3000;
 
@@ -37,16 +37,16 @@ public class HyperObject : MonoBehaviour {
 
 		_cachedRenderer = GetComponent<Renderer>();
 
-		player = Object.FindObjectOfType<HyperCreature>();
+		hypPlayer = Object.FindObjectOfType<HyperCreature>();
 
-        //Invoke("GetReady", 5);
+        Invoke("GetReady", 5);
 
         //if this is the parent perform all the initialization for this object
         if (isParent)
         {
             setW(w);
-            WMove();
         }
+		WMove();
     }
 
     void GetReady()
@@ -55,7 +55,7 @@ public class HyperObject : MonoBehaviour {
     }
 
     //have the objects detect the vive controller inputs to move themselves
-    /*void LateUpdate()
+    void LateUpdate()
     {
         if (controllersReady && isParent)
         {
@@ -67,17 +67,26 @@ public class HyperObject : MonoBehaviour {
                 }
             }
         }
-    }*/
+    }
+
+	//REMOVE AFTER TESTING
+	public void WMove(int bs){
+		WMove();
+	}
 
     //the player has moved to a new w point, remove once 4D shader is implemented
     public void WMove()
     {
-		int newW = player.w;
+		if(!hypPlayer)
+			hypPlayer = Object.FindObjectOfType<HyperCreature>();
+		if(!_cachedRenderer)
+			_cachedRenderer = GetComponent<Renderer>();
+		int newW = hypPlayer.w;
         if (isVisibleSolid(newW))
         {//this object is on the player's w point or is wide enough to be seen and touched
             StartCoroutine(ColorTrans(newW, 1.0f));
         }
-        else {
+		else if(_cachedRenderer.material.color.a != .2f){
             float targA = .2f;
             if (vanishWhenTransparent)
                 targA = 0.0f;
@@ -100,10 +109,10 @@ public class HyperObject : MonoBehaviour {
         }
         if (GetComponent<HyperColliderManager>())
             GetComponent<HyperColliderManager>().WMove(newW);
-        else
+        /*else
         {
             recurseChildrenWMove(transform, newW);
-        }
+        }*/
 
         //GetComponent<MeshRenderer>().material.SetFloat("_WPos", (float)w);
         //GetComponent<MeshRenderer>().material.renderQueue = TRANSPARENT_QUEUE_ORDER + getNewOrder(newW);
@@ -236,7 +245,7 @@ public class HyperObject : MonoBehaviour {
     IEnumerator ColorTrans(int newW, float targetA){
         Color targetColor;
         Color curColor;
-		curColor = gameObject.GetComponent<Renderer>().material.color;
+		curColor = _cachedRenderer.material.color;
 		
 		//deturmine the target color based on w point
         
@@ -261,14 +270,14 @@ public class HyperObject : MonoBehaviour {
 		targetColor.g /= dullCoef;
 		targetColor.b /= dullCoef;
 		
-		for(float i = 0.0f; i < 1.0f; i += .05f){
+		for(float i = 0.0f; i < 1.0f; i += .1f){
 
-			gameObject.GetComponent<Renderer>().material.color = Color.Lerp(curColor, targetColor, i);
-			if(transform.childCount > 0){
+			_cachedRenderer.material.color = Color.Lerp(curColor, targetColor, i);
+			/*if(transform.childCount > 0){
 				foreach(Transform child in transform){
 					child.gameObject.GetComponent<Renderer>().material.color = Color.Lerp(curColor, targetColor, i);
 				}
-			}
+			}*/
 
 			yield return null;
 		}

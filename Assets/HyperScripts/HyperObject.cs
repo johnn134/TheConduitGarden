@@ -16,8 +16,6 @@ public class HyperObject : MonoBehaviour {
 
     public bool vanishWhenTransparent = false;      //enable if alpha should be 0 at all times if not visible from the player's w point
 
-    bool controllersReady = false;                  //give time before trying to get input from the controllers
-
     FourthDManager IVDManager;                      //the 4D manager
 
     SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
@@ -29,10 +27,6 @@ public class HyperObject : MonoBehaviour {
     const int TRANSPARENT_QUEUE_ORDER = 3000;
 
 	void Awake(){
-		//if this is the parent perform all the initialization for this object
-		if (isParent)
-			setW(w);
-		
 		//locate the 4Dmanager
 		IVDManager = Object.FindObjectOfType<FourthDManager>();
 
@@ -45,29 +39,22 @@ public class HyperObject : MonoBehaviour {
 
     void Start()
     {
-        Invoke("GetReady", 5);
-
-		WMove();
-    }
-
-    void GetReady()
-    {
-        controllersReady = true;
+        //if this is the parent perform all the initialization for this object
+        if (isParent)
+            setW(w);
     }
 
     //have the objects detect the vive controller inputs to move themselves
     void LateUpdate()
     {
-        if (controllersReady && isParent)
+        for (int i = 0; i < controllerManager.indices.Length; i++)
         {
-            for (int i = 0; i < controllerManager.indices.Length; i++)
+            if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
             {
-				if(controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
-				{
-					if (SteamVR_Controller.Input ((int)controllerManager.indices [i]).GetPressDown (EVRButtonId.k_EButton_SteamVR_Trigger)) {
-						WMove ();
-					}
-				}
+                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
+                {
+                    WMove();
+                }
             }
         }
     }
@@ -109,6 +96,8 @@ public class HyperObject : MonoBehaviour {
     public void setW(int newW)
     {
         w = newW;
+        WMove();
+
         if (GetComponent<HyperColliderManager>())
             GetComponent<HyperColliderManager>().setW(newW);
         else

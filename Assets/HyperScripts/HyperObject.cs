@@ -62,26 +62,19 @@ public class HyperObject : MonoBehaviour {
         {
             for (int i = 0; i < controllerManager.indices.Length; i++)
             {
-                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
-                {
-                    WMove();
-                }
+				if(controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
+				{
+					if (SteamVR_Controller.Input ((int)controllerManager.indices [i]).GetPressDown (EVRButtonId.k_EButton_SteamVR_Trigger)) {
+						WMove ();
+					}
+				}
             }
         }
     }
 
-	//REMOVE AFTER TESTING
-	public void WMove(int bs){
-		WMove();
-	}
-
     //the player has moved to a new w point, remove once 4D shader is implemented
     public void WMove()
     {
-		/*if(!hypPlayer)
-			hypPlayer = Object.FindObjectOfType<HyperCreature>();
-		if(!_cachedRenderer)
-			_cachedRenderer = GetComponent<Renderer>();*/
 		int newW = hypPlayer.w;
         if (isVisibleSolid(newW))
         {//this object is on the player's w point or is wide enough to be seen and touched
@@ -108,28 +101,9 @@ public class HyperObject : MonoBehaviour {
                     StartCoroutine(ColorTrans(w + w_depth, targA));
             }
         }
-        if (GetComponent<HyperColliderManager>())
-            GetComponent<HyperColliderManager>().WMove(newW);
-        /*else
-        {
-            recurseChildrenWMove(transform, newW);
-        }*/
 
         //GetComponent<MeshRenderer>().material.SetFloat("_WPos", (float)w);
         //GetComponent<MeshRenderer>().material.renderQueue = TRANSPARENT_QUEUE_ORDER + getNewOrder(newW);
-    }
-
-    void recurseChildrenWMove(Transform t, int newW)
-    {
-        foreach (Transform child in t)
-        {
-            if (child.GetComponent<HyperObject>())
-                child.GetComponent<HyperObject>().WMove();
-            else if (child.GetComponent<HyperColliderManager>())
-                child.GetComponent<HyperColliderManager>().WMove(newW);
-            else if (child.childCount > 0)
-                recurseChildrenWMove(child, newW);
-        }
     }
 
     public void setW(int newW)
@@ -274,11 +248,6 @@ public class HyperObject : MonoBehaviour {
 		for(float i = 0.0f; i < 1.0f; i += .1f){
 
 			_cachedRenderer.material.color = Color.Lerp(curColor, targetColor, i);
-			/*if(transform.childCount > 0){
-				foreach(Transform child in transform){
-					child.gameObject.GetComponent<Renderer>().material.color = Color.Lerp(curColor, targetColor, i);
-				}
-			}*/
 
 			yield return null;
 		}

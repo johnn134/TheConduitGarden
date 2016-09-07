@@ -45,46 +45,6 @@ public class HyperColliderManager : MonoBehaviour {
         controllersReady = true;
     }
 
-    //have the objects detect the vive controller inputs to move themselves
-    void LateUpdate()
-    {
-        if (controllersReady && isParent)
-        {
-            for (int i = 0; i < controllerManager.indices.Length; i++)
-            {
-                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
-                {
-                    WMove();
-                }
-            }
-        }
-    }
-
-    public void WMove(int newW)
-    {
-        //newW = Object.FindObjectOfType<HyperCreature>().w;
-        //recurseChildrenWMove(transform, newW);
-    }
-
-    public void WMove()
-    {
-        //int newW = Object.FindObjectOfType<HyperCreature>().w;
-        //recurseChildrenWMove(transform, newW);
-    }
-
-    void recurseChildrenWMove(Transform t, int newW)
-    {
-        foreach (Transform child in t)
-        {
-            if (child.GetComponent<HyperObject>())
-                child.GetComponent<HyperObject>().WMove(newW);
-            else if (child.GetComponent<HyperColliderManager>())
-                child.GetComponent<HyperColliderManager>().WMove(newW);
-            else if (child.childCount > 0)
-                recurseChildrenWMove(child, newW);
-        }
-    }
-
     public void setW(int newW)
     {
         recurseChildrenSetW(transform, newW);

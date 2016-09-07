@@ -14,37 +14,59 @@ public class Fish : MonoBehaviour {
 		Dead
 	}
 
-	public Size size = Size.Large;
-	public State state = State.Happy;
-	public int feedCycle = 30;
-	Vector3 wanderLoc;
-    public float maxSize = .66f;
-    public float minSize = .33f;
-    public Vector3 wanderArea1;
-    public Vector3 wanderArea2;
-    public GameObject target = null;
-    int foodsEaten = 0;
-    int foodsToGrow = 1;
-    GameObject fishManager;
-    public bool noTargets = false;
-    public bool food = false;
-    int curW = -1;
-    HyperColliderManager myHyper;
-    public bool inWater = false;
-    public int offset = 0;
-    Transform _cachedTransform;
+	public Size size = Size.Large;                  //the size of the fish
+	public State state = State.Happy;               //the hunger state of the fish
+
+	public int feedCycle = 30;                      //the length in seconds of time between hunger states
+    public int offset = 0;                          //how big the time offset is for the first feed cycle
+
+    int foodsEaten = 0;                             //how many times has the fish eaten
+    int foodsToGrow = 1;                            //how many times the fish needs to eat in order to grow bigger
+    int curW = -1;                                  //the current w position the fish thinks it is on
+
+    public float maxSize = .66f;                    //the size of the fish at the largest size
+    public float minSize = .33f;                    //the size of the fish at the smallest size
+
+    public Vector3 wanderArea1;                     //point 1 of the area the fish can swin in
+    public Vector3 wanderArea2;                     //point 2 of the area the fish can swin in
+
+    Vector3 wanderLoc;                              //the point that the fish is trying to swim to
     
+    public GameObject target = null;                       //the game object that the fish is trying to swim to
+
+    FishManager fishManager;                        //reference to the fish manager
+
+    public bool noTargets = false;                         //are there no valid targets
+    public bool food = false;                              //is there valid food in the pool
+    public bool inWater = false;                           //is the fish in water
+
+    HyperColliderManager myHyper;                   //reference to the hyper script
+
+    Transform _cachedTransform;                     //the transform of the fish
+
+    Rigidbody _cachedRigidBody;                     //the rigid body on the fish
+    
+    void Awake()
+    {
+        //cache components to improve performance
+        myHyper = GetComponent<HyperColliderManager>();
+        _cachedTransform = transform;
+        _cachedRigidBody = GetComponent<Rigidbody>();
+    }
+
     void Start()
     {
         //locate the fish manager
-        fishManager = GameObject.Find("FishManager");
+        fishManager = Object.FindObjectOfType<FishManager>();
 
-        //wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
-        wanderLoc = transform.position;
+        //set the wander location up to get a random point once the behavior starts
+        wanderLoc = _cachedTransform.position;
+
+        //start the feed cycles with the first one effected by the offset
         InvokeRepeating("FeedCycle", Random.Range(feedCycle - offset, feedCycle + offset), feedCycle);
-        ChangeSize((Size)Random.Range(0, 3));
 
-        myHyper = GetComponent<HyperColliderManager>();
+        //pick a random size
+        ChangeSize((Size)Random.Range(0, 3));
     }
 
     void Update()
@@ -70,8 +92,9 @@ public class Fish : MonoBehaviour {
             //check if w has changed
             if (myHyper.w != curW)
             {
+                //dont alert for the first time since the fish starts out not knowing its w
                 if (curW != -1)
-                    fishManager.GetComponent<FishManager>().alertMove(gameObject, curW, myHyper.w);
+                    fishManager.alertMove(gameObject, curW, myHyper.w);
                 curW = myHyper.w;
             }
         }
@@ -82,12 +105,14 @@ public class Fish : MonoBehaviour {
         //did the fish reach the target
         if (other.gameObject.Equals(target))
         {
-            if (fishManager.GetComponent<FishManager>().RequestEat(this.gameObject, target))
+            if (fishManager.RequestEat(gameObject, target))
             {
+                //set the other fish to be dead so it doesnt try to do anything else
                 if (target.name.StartsWith("Fish"))
                     target.GetComponent<Fish>().state = State.Dead;
+
                 DoEat();
-                fishManager.GetComponent<FishManager>().RequestToRemove(target, true);
+                fishManager.RequestToRemove(target, true);
             }
         }
     }
@@ -97,17 +122,21 @@ public class Fish : MonoBehaviour {
     {
         if (isIn)
         {
-            GetComponent<Rigidbody>().drag = 20;
-            GetComponent<Rigidbody>().angularDrag = 5;
-            GetComponent<Rigidbody>().useGravity = false;
+            //set variables to simulate being in water
+            _cachedRigidBody.drag = 20;
+            _cachedRigidBody.angularDrag = 5;
+            _cachedRigidBody.useGravity = false;
+
             inWater = true;
             wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
         }
         else
         {
-            GetComponent<Rigidbody>().drag = 0;
-            GetComponent<Rigidbody>().angularDrag = .05f;
-            GetComponent<Rigidbody>().useGravity = true;
+            //reset variables to normal gravity
+            _cachedRigidBody.drag = 0;
+            _cachedRigidBody.angularDrag = .05f;
+            _cachedRigidBody.useGravity = true;
+
             inWater = false;
         }
     }
@@ -116,23 +145,24 @@ public class Fish : MonoBehaviour {
     void BehaveHappy()
     {
         //move forwards while restricting speed
-        transform.Translate(Vector3.forward * Time.deltaTime / 2);
+        _cachedTransform.Translate(Vector3.forward * Time.deltaTime / 2);
 
         //smoothly turn towards the wander location
-        if (transform.rotation != Quaternion.LookRotation(wanderLoc - transform.position))
+        if (_cachedTransform.rotation != Quaternion.LookRotation(wanderLoc - _cachedTransform.position))
         {
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.LookRotation(wanderLoc - transform.position),
+            _cachedTransform.rotation = Quaternion.Slerp(
+                _cachedTransform.rotation,
+                Quaternion.LookRotation(wanderLoc - _cachedTransform.position),
                 Time.deltaTime
                 );
         }
 
         //change locaiton randomly or if reached the target locaiton
-        if (transform.position.Equals(wanderLoc) || Random.Range(0, 300) == 1)
+        if (_cachedTransform.position.Equals(wanderLoc) || Random.Range(0, 300) == 1)
         {
             wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
 
+            //force the fish to choose a point that is not in the middle of the wander area
             while(wanderLoc.x < (wanderArea2.x - wanderArea1.x) / 4 - wanderArea2.x && wanderLoc.x > (wanderArea2.x - wanderArea1.x) / 4 + wanderArea1.x &&
                 wanderLoc.z < (wanderArea2.z - wanderArea1.z) / 4 - wanderArea2.z && wanderLoc.z > (wanderArea2.z - wanderArea1.z) / 4 + wanderArea1.z)
             {
@@ -145,20 +175,20 @@ public class Fish : MonoBehaviour {
     void BehaveHungry()
     {
         //move forwards while restricting speed
-        transform.Translate(Vector3.forward * Time.deltaTime / 10);
+        _cachedTransform.Translate(Vector3.forward * Time.deltaTime / 10);
 
         //smoothly turn towards the wander location
-        if (transform.rotation != Quaternion.LookRotation(wanderLoc - transform.position))
+        if (_cachedTransform.rotation != Quaternion.LookRotation(wanderLoc - _cachedTransform.position))
         {
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.LookRotation(wanderLoc - transform.position),
+            _cachedTransform.rotation = Quaternion.Slerp(
+                _cachedTransform.rotation,
+                Quaternion.LookRotation(wanderLoc - _cachedTransform.position),
                 Time.deltaTime
                 );
         }
 
         //change locaiton randomly or if reached the target locaiton
-        if (transform.position.Equals(wanderLoc) || Random.Range(0, 300) == 1)
+        if (_cachedTransform.position.Equals(wanderLoc) || Random.Range(0, 300) == 1)
         {
             wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
         }
@@ -171,30 +201,30 @@ public class Fish : MonoBehaviour {
         if (target)
         {
             //is the target still valid, can be invalid if on another w or has grown larger than this fish
-            if (target.GetComponent<HyperColliderManager>().w == GetComponent<HyperColliderManager>().w && target.GetComponent<Fish>().size <= size)
+            if (target.GetComponent<HyperColliderManager>().w == myHyper.w && target.GetComponent<Fish>().size <= size)
             {
                 //move forwards while restricting speed
-                transform.Translate(Vector3.forward * Time.deltaTime);
+                _cachedTransform.Translate(Vector3.forward * Time.deltaTime);
 
                 //smoothly turn towards the target location
-                if (transform.rotation != Quaternion.LookRotation(target.transform.position - transform.position))
+                if (_cachedTransform.rotation != Quaternion.LookRotation(target.transform.position - _cachedTransform.position))
                 {
-                    transform.rotation = Quaternion.Slerp(
-                        transform.rotation,
-                        Quaternion.LookRotation(target.transform.position - transform.position),
+                    _cachedTransform.rotation = Quaternion.Slerp(
+                        _cachedTransform.rotation,
+                        Quaternion.LookRotation(target.transform.position - _cachedTransform.position),
                         Time.deltaTime * 10
                         );
                 }
             }
             else {//look for a new target
-                target = fishManager.GetComponent<FishManager>().RequestTarget(this.gameObject, false);
+                target = fishManager.RequestTarget(gameObject, false);
             }
         }
         else {//fish does not have a target
-              //are there valid targets?
+            //are there valid targets?
             if (!noTargets)
             {
-                target = fishManager.GetComponent<FishManager>().RequestTarget(this.gameObject, false);
+                target = fishManager.RequestTarget(gameObject, false);
             }
             else
             {
@@ -210,46 +240,47 @@ public class Fish : MonoBehaviour {
         if (target)
         {
             //is the target still valid, can be invalid if on another w or has grown larger than this fish
-            if (target.GetComponent<HyperColliderManager>().w == GetComponent<HyperColliderManager>().w)
+            if (target.GetComponent<HyperColliderManager>().w == myHyper.w)
             {
-                if (Vector3.Distance(transform.position, target.transform.position) < .5f)
+                //slowly approach the target until close enough
+                if (Vector3.Distance(_cachedTransform.position, target.transform.position) < .5f)
                 {
-                    transform.Translate(Vector3.forward * Time.deltaTime / 2);
+                    _cachedTransform.Translate(Vector3.forward * Time.deltaTime / 2);
 
                     //smoothly turn towards the target location
-                    if (transform.rotation != Quaternion.LookRotation(target.transform.position - transform.position))
+                    if (_cachedTransform.rotation != Quaternion.LookRotation(target.transform.position - _cachedTransform.position))
                     {
-                        transform.rotation = Quaternion.Slerp(
-                            transform.rotation,
-                            Quaternion.LookRotation(target.transform.position - transform.position),
+                        _cachedTransform.rotation = Quaternion.Slerp(
+                            _cachedTransform.rotation,
+                            Quaternion.LookRotation(target.transform.position - _cachedTransform.position),
                             Time.deltaTime * 10
                             );
                     }
                 }
                 else
                 {
-                    transform.Translate(Vector3.forward * Time.deltaTime / 6);
+                    _cachedTransform.Translate(Vector3.forward * Time.deltaTime / 6);
 
                     //smoothly turn towards the target location
-                    if (transform.rotation != Quaternion.LookRotation(target.transform.position - transform.position))
+                    if (_cachedTransform.rotation != Quaternion.LookRotation(target.transform.position - _cachedTransform.position))
                     {
-                        transform.rotation = Quaternion.Slerp(
-                            transform.rotation,
-                            Quaternion.LookRotation(target.transform.position - transform.position),
+                        _cachedTransform.rotation = Quaternion.Slerp(
+                            _cachedTransform.rotation,
+                            Quaternion.LookRotation(target.transform.position - _cachedTransform.position),
                             Time.deltaTime
                             );
                     }
                 }
             }
             else {//look for a new target, can change from fish to food
-                target = fishManager.GetComponent<FishManager>().RequestTarget(this.gameObject, true);
+                target = fishManager.RequestTarget(gameObject, true);
             }
         }
         else {//fish does not have a target
-              //are there valid targets?
+            //are there valid targets?
             if (food)
             {
-                target = fishManager.GetComponent<FishManager>().RequestTarget(this.gameObject, true);
+                target = fishManager.RequestTarget(gameObject, true);
             }
         }
     }
@@ -270,7 +301,7 @@ public class Fish : MonoBehaviour {
 
         }
         else if (state == State.Dead)
-            fishManager.GetComponent<FishManager>().RequestToRemove(gameObject, true);
+            fishManager.RequestToRemove(gameObject, true);
     }
 
     //this fish has eaten so become happy, restart the feed cycle and reset color
@@ -307,15 +338,15 @@ public class Fish : MonoBehaviour {
             size = newSize;
             if (size == Size.Small)
             {
-                transform.localScale = new Vector3(minSize, minSize, minSize);
+                _cachedTransform.localScale = new Vector3(minSize, minSize, minSize);
             }
             else if (size == Size.Medium)
             {
-                transform.localScale = new Vector3(maxSize - (maxSize - minSize)/2, maxSize - (maxSize - minSize) / 2, maxSize - (maxSize - minSize) / 2);
+                _cachedTransform.localScale = new Vector3(maxSize - (maxSize - minSize)/2, maxSize - (maxSize - minSize) / 2, maxSize - (maxSize - minSize) / 2);
             }
             else if (size == Size.Large)
             {
-                transform.localScale = new Vector3(maxSize, maxSize, maxSize);
+                _cachedTransform.localScale = new Vector3(maxSize, maxSize, maxSize);
             }
             else
             {
@@ -323,13 +354,4 @@ public class Fish : MonoBehaviour {
             }
         }
     }
-
-	public void updateWVisual() {
-		transform.GetChild(0).GetComponent<HyperObject>().WMove();
-		transform.GetChild(1).GetComponent<HyperObject>().WMove();
-		transform.GetChild(2).GetComponent<HyperObject>().WMove();
-		transform.GetChild(3).GetComponent<HyperObject>().WMove();
-		transform.GetChild(4).GetComponent<HyperObject>().WMove();
-		transform.GetChild(5).GetComponent<HyperObject>().WMove();
-	}
 }

@@ -59,7 +59,6 @@ public class FishManager : MonoBehaviour {
             {
 				nObj = (GameObject)Instantiate(Resources.Load("Fish/Fish"), nPosition, nRotation);
                 nObj.GetComponent<HyperColliderManager>().setW(nW);
-				nObj.GetComponent<Fish>().updateWVisual();
                 allFish.Add(nObj);
                 numFish[nW] += 1;
                 alertNewTargets(nW, (int)nObj.GetComponent<Fish>().size);

@@ -118,6 +118,9 @@ public class BonsaiShrine : MonoBehaviour {
 		setActivationStage(stage);
 	}
 
+	/*
+	 * Sets the stage of activation for this shrine between 0 - 4 (inclusive)
+	 */
 	void setActivationStage(int newStage) {
 		activateLights(newStage);
 	}
@@ -136,6 +139,9 @@ public class BonsaiShrine : MonoBehaviour {
 		LevelFourLights.GetComponent<Renderer>().material.color = lightLevel >= 4 ? active : inactive;
 	}
 
+	/*
+	 * Wrapper for checking the progress of the bonsai trees in the contract level
+	 */
 	bool checkContractProgress() {
 		switch(levelRequirement) {
 			case CONTRACTLEVEL.NONE:
@@ -150,20 +156,18 @@ public class BonsaiShrine : MonoBehaviour {
 		}
 	}
 
+	/*
+	 * Determines if the trees in the Tokyo contract level meet the requirements of the contract
+	 * Requirements:
+	 * - branches or leaves do NOT extend past the Top, Bottom, Lower or Upper bounds
+	 */
 	bool checkTokyoContractProgress() {
 		bool satisfied = true;
 
 		for(int i = 0; i < trees.Length; i++) {
-			for(int j = 0; j < 6; j++) {
-				if(j != 1) {
-					if(trees[i].GetComponent<BonsaiManager>().getHitboxCollisions()[j] <= 0) {
-						satisfied = false;
-					}
-				}
-				else {
-					if(trees[i].GetComponent<BonsaiManager>().getHitboxCollisions()[j] > 0) {
-						satisfied = false;
-					}
+			for(int j = 0; j < 10; j++) {
+				if(trees[i].GetComponent<BonsaiManager>().getHitboxCollisions()[j] > 0) {
+					satisfied = false;
 				}
 			}
 		}

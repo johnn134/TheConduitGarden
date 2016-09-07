@@ -31,7 +31,7 @@ public class Branch : MonoBehaviour {
 
 	bool canSnip = true;       	//Tells whether this branch can be snipped off
 
-	string hitboxCollision = "None";
+	int[] zoneExtensions;
 
 	const int BRANCH_MIN = 1;              	//Minimum number of branch buds that will initially grow
 	const int BRANCH_MAX = 3;              	//Maximum number of branch buds that can ever grow from this branch
@@ -51,8 +51,11 @@ public class Branch : MonoBehaviour {
 	const float LEAF_OFFSET = 45.0f;		//Minimum angle between new leaf buds
 	const float DARKEN_VALUE = 0.1f;		//Value multiplied to the material color on death
 	const float DARKEN_ALPHA = 0.75f;		//Value of material color alpha on death
+	const float TOKYO_BRANCH_ANGLE = 75.0f;
 
 	static int ID = 0;	//Unique branch identifier
+
+	#region Unity Callbacks
 
 	void Awake() {
 		//Initialize variables
@@ -61,6 +64,8 @@ public class Branch : MonoBehaviour {
 		numBranches = 0;
 		growthStep = 0;
 		numBugs = 0;
+
+		zoneExtensions = new int[10];
 
 		runGrowth = false;
 		isTip = true;
@@ -101,13 +106,11 @@ public class Branch : MonoBehaviour {
 			if(isDead)
 				manager.GetComponent<BonsaiManager>().removeDeadBranch();
 
-			manager.GetComponent<BonsaiManager>().registerHitboxExit(hitboxCollision);
+			manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension(zoneExtensions);
+
+			//if(zoneExtension != "None")
+			//	Debug.Log(gameObject.name + " left the bounding zone for " + zoneExtension);
 		}
-	}
-
-	// Update is called once per frame
-	void Update() {
-
 	}
 
 	void FixedUpdate() {
@@ -167,7 +170,7 @@ public class Branch : MonoBehaviour {
 			if(other.transform.parent.GetComponent<Insecticide>() != null) {	//Insecticide Spray Collision
 				if(isInfested) {
 					Debug.Log("Spray has removed the infestation");
-					removeInfestation();
+					killInfestation();
 				}
 			}
 			else if(other.gameObject.name.Equals("ShearZone")) {
@@ -175,40 +178,12 @@ public class Branch : MonoBehaviour {
 					Destroy(this.gameObject);
 				}
 			}
-			switch(other.name) {
-				case "TopHitbox":
-					hitboxCollision = "Top";
-					if(manager != null)
-						manager.GetComponent<BonsaiManager>().registerHitboxCollision("Top");
-					break;
-				case "BottomHitbox":
-					hitboxCollision = "Bottom";
-					if(manager != null)
-						manager.GetComponent<BonsaiManager>().registerHitboxCollision("Bottom");
-					break;
-				case "NorthHitbox":
-					hitboxCollision = "North";
-					if(manager != null)
-						manager.GetComponent<BonsaiManager>().registerHitboxCollision("North");
-					break;
-				case "SouthHitbox":
-					hitboxCollision = "South";
-					if(manager != null)
-						manager.GetComponent<BonsaiManager>().registerHitboxCollision("South");
-					break;
-				case "EastHitbox":
-					hitboxCollision = "East";
-					if(manager != null)
-						manager.GetComponent<BonsaiManager>().registerHitboxCollision("East");
-					break;
-				case "WestHitbox":
-					hitboxCollision = "West";
-					if(manager != null)
-						manager.GetComponent<BonsaiManager>().registerHitboxCollision("West");
-					break;
-			}
 		}
 	}
+
+	#endregion
+
+	#region Growth
 
 	/*
 	 * Initiates the growth cycle for this branch and children parts
@@ -449,137 +424,9 @@ public class Branch : MonoBehaviour {
 		}
 	}
 
-	/*
-	 * Adds a new bud of the given type at the given position and rotation
-	 */
-	void addBud(Vector3 pos, Quaternion rot, bool isLeaf) {
-		//Instantiate bud
-		GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
+	#endregion
 
-		//Initialize new bud transform
-		newBud.transform.localPosition = pos;
-		newBud.transform.localRotation = rot;
-
-		//Initialize new bud variables
-		newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
-		newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
-
-		//newBud.transform.GetComponent<Bud>().setWPosition(Mathf.Clamp(w + Random.Range(-1, 2), 0, 6));   //the w value is clamped between 0 and 6 inclusive
-		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-		newBud.transform.GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
-
-		newBud.transform.GetComponent<Bud>().setManager(manager);
-		if(isLeaf)
-			manager.GetComponent<BonsaiManager>().addLeaf();
-		else
-			manager.GetComponent<BonsaiManager>().addBranch();
-	}
-
-	/*
-	 * Adds a new bud of the given type with the given rotation on the tip of the branch
-	 */
-	void addBud(Vector3 rot, bool isLeaf) {
-		if(!isLeaf) {
-			//Instantiate bud
-			GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
-
-			newBud.transform.localPosition = transform.GetChild(1).localPosition;
-			newBud.transform.localRotation = Quaternion.Euler(rot);
-			//newBud.transform.localPosition = newBud.transform.localPosition +  * 0.025f;
-
-			//Initialize new branch variables
-			newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
-			newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
-
-			//Set the branch's w position
-			newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-			newBud.transform.GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
-
-			newBud.transform.GetComponent<Bud>().setManager(manager);
-			manager.GetComponent<BonsaiManager>().addBranch();
-		}
-	}
-
-	/*
-	 * Returns an array of branch Gameobjects that are children of this branch
-	 */
-	GameObject[] getBranchChildren() {
-		GameObject[] branchChildren = new GameObject[numBranches];
-		int counter = 0;
-		foreach (Transform child in transform) {
-			if(child.GetComponent<Branch>() != null) {
-				branchChildren [counter] = child.gameObject;
-				counter++;
-			}
-		}
-		return branchChildren;
-	}
-
-	/*
-	 * Finds the Rotations of all existing branches
-	 */
-	Quaternion[] getBranchRotations() {
-		Quaternion[] q = new Quaternion[numBranches];
-		int c = 0;
-
-		for(int i = 3; i < transform.childCount; i++) {
-			if(transform.GetChild(i).name.Substring(0, 6) == "Branch") {
-				q[c] = transform.GetChild(i).localRotation;
-				c++;
-			}
-		}
-
-		return q;
-	}
-
-	/*
-	 * Returns an array of leaf Gameobjects that are children of this branch
-	 */
-	GameObject[] getLeafChildren() {
-		GameObject[] leafChildren = new GameObject[numLeaves];
-		int counter = 0;
-		foreach (Transform child in transform) {
-			if(child.GetComponent<Leaf>() != null) {
-				leafChildren [counter] = child.gameObject;
-				counter++;
-			}
-		}
-		return leafChildren;
-	}
-
-	/*
-	 * Finds the Positions of all existing leaves
-	 */
-	Vector3[] getLeafPositions() {
-		Vector3[] q = new Vector3[numLeaves];
-		int c = 0;
-
-		for(int i = 3; i < transform.childCount; i++) {
-			if(transform.GetChild(i).name.Substring(0, 4) == "Leaf") {
-				q[c] = transform.GetChild(i).localPosition;
-				c++;
-			}
-		}
-
-		return q;
-	}
-
-	/*
-	 * Finds the Rotations of all exiting Leaves
-	 */
-	Quaternion[] getLeafRotations() {
-		Quaternion[] q = new Quaternion[numLeaves];
-		int c = 0;
-
-		for(int i = 3; i < transform.childCount; i++) {
-			if(transform.GetChild(i).name.Substring(0, 4) == "Leaf") {
-				q[c] = transform.GetChild(i).localRotation;
-				c++;
-			}
-		}
-
-		return q;
-	}
+	#region Infestation
 
 	/*
 	 * Determines the correct action to take for the current stage of infestation
@@ -678,21 +525,31 @@ public class Branch : MonoBehaviour {
 	}
 
 	/*
-	 * Create and attach bug to branch
+	 * Removes the infestation from this branch and kills existing bugs
 	 */
-	void addBug(Vector3 newPos) {
-		GameObject newBug = Instantiate(Resources.Load("Bonsai/BugPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
-		newBug.transform.localPosition = newPos;
-		newBug.transform.localRotation = Quaternion.identity;
+	void killInfestation() {
+		//Reset variables
+		isInfested = false;
+		infestationTime = -1;
 
-		//newBug.GetComponent<BonsaiBug>().setWPosition(w);
-		newBug.GetComponent<HyperColliderManager>().setW(GetComponent<HyperColliderManager>().w);
-		newBug.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+		if(manager != null)
+			manager.GetComponent<BonsaiManager>().removeInfestedBranch();
 
-		newBug.GetComponent<BonsaiBug>().setOrigin(newPos.x, transform.GetChild(1).localPosition.y / 2, newPos.z);
-		newBug.GetComponent<BonsaiBug>().setMovementRange(transform.GetChild(1).localPosition.y / 2);
+		//Kill each bug
+		GameObject[] bugs = new GameObject[numBugs];
+		int counter = 0;
 
-		numBugs++;
+		for(int i = 0; i < transform.childCount; i++) {
+			if(transform.GetChild(i).GetComponent<BonsaiBug>() != null) {
+				bugs[counter] = transform.GetChild(i).gameObject;
+				counter++;
+			}
+		}
+
+		for(int i = 0; i < numBugs; i++) {
+			bugs[i].transform.parent = null;
+			bugs[i].GetComponent<BonsaiBug>().startDeath();
+		}
 	}
 
 	/*
@@ -718,8 +575,7 @@ public class Branch : MonoBehaviour {
 		}
 
 		for(int i = 0; i < numBugs; i++) {
-			bugs[i].transform.parent = null;
-			bugs[i].GetComponent<BonsaiBug>().startDeath();
+			Destroy(bugs[i]);
 		}
 	}
 
@@ -761,6 +617,118 @@ public class Branch : MonoBehaviour {
 		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
 	}
 
+	#endregion
+
+	#region Contracts
+
+	/*
+	 * Wrapper for checking if the branch has reached one of the zones
+	 * required of the contract
+	 */
+	public void checkIfBranchSatisfiesContract() {
+		if(manager.GetComponent<BonsaiManager>() != null) {
+			switch(manager.GetComponent<BonsaiManager>().levelType) {
+				case BonsaiManager.CONTRACTLEVEL.NONE:
+
+					break;
+				case BonsaiManager.CONTRACTLEVEL.TOKYO:
+					checkTokyoHitboxCollision();
+					break;
+				default:
+
+					break;
+			}
+		}
+	}
+
+	/*
+	 * checks if the branch extends beyond one of the Tokyo contract zones
+	 */
+	void checkTokyoHitboxCollision() {
+		Transform zones = manager.transform.GetChild(0);
+
+		//Top
+		if(transform.GetChild(1).position.y >= zones.GetChild(0).position.y || 
+			transform.GetChild(2).position.y >= zones.GetChild(0).position.y ) {
+			zoneExtensions[0] = 1;
+		}
+
+		//Bottom
+		if(transform.GetChild(1).position.y <= zones.GetChild(1).position.y || 
+			transform.GetChild(2).position.y <= zones.GetChild(1).position.y ) {
+			zoneExtensions[1] = 1;
+		}
+
+		/***	Lower	***/
+
+		if(transform.GetChild(1).position.y <= zones.GetChild(2).position.y &&
+		   transform.GetChild(2).position.y <= zones.GetChild(2).position.y) {
+
+			//North Lower
+			if(transform.GetChild(1).position.z >= zones.GetChild(2).position.z ||
+			   transform.GetChild(2).position.z >= zones.GetChild(2).position.z) {
+				zoneExtensions[2] = 1;
+			}
+
+			//South Lower
+			if(transform.GetChild(1).position.z <= zones.GetChild(3).position.z ||
+			   transform.GetChild(2).position.z <= zones.GetChild(3).position.z) {
+				zoneExtensions[3] = 1;
+			}
+
+			//East Lower
+			if(transform.GetChild(1).position.x >= zones.GetChild(4).position.x ||
+			   transform.GetChild(2).position.x >= zones.GetChild(4).position.x) {
+				zoneExtensions[4] = 1;
+			}
+
+			//West Lower
+			if(transform.GetChild(1).position.x <= zones.GetChild(5).position.x ||
+			   transform.GetChild(2).position.x <= zones.GetChild(5).position.x) {
+				zoneExtensions[5] = 1;
+			}
+		}
+
+		/***	Upper	***/
+
+		else if(transform.GetChild(1).position.y <= zones.GetChild(0).position.y &&
+		        transform.GetChild(2).position.y <= zones.GetChild(0).position.y) {
+
+			//North Upper
+			if(transform.GetChild(1).position.z >= zones.GetChild(6).position.z ||
+			  transform.GetChild(2).position.z >= zones.GetChild(6).position.z) {
+				zoneExtensions[6] = 1;
+			}
+
+			//South Upper
+			if(transform.GetChild(1).position.z <= zones.GetChild(7).position.z ||
+			  transform.GetChild(2).position.z <= zones.GetChild(7).position.z) {
+				zoneExtensions[7] = 1;
+			}
+
+			//East Upper
+			if(transform.GetChild(1).position.x >= zones.GetChild(8).position.x ||
+			  transform.GetChild(2).position.x >= zones.GetChild(8).position.x) {
+				zoneExtensions[8] = 1;
+			}
+
+			//West Upper
+			if(transform.GetChild(1).position.x <= zones.GetChild(9).position.x ||
+			  transform.GetChild(2).position.x <= zones.GetChild(9).position.x) {
+				zoneExtensions[9] = 1;
+			}
+		}
+
+		if(manager.GetComponent<BonsaiManager>() != null)
+			manager.GetComponent<BonsaiManager>().registerZoneExtension(zoneExtensions);
+
+		//if(zoneExtension != "None")
+		//	Debug.Log(gameObject.name + " moved past the bounding zone for " + zoneExtension);
+	}
+
+	/*
+	 * Initializes the base bonsai tree for the given contract
+	 */
 	public void setupTreeForLevel(BonsaiManager.CONTRACTLEVEL type) {
 		switch(type) {
 			case BonsaiManager.CONTRACTLEVEL.NONE:
@@ -773,21 +741,106 @@ public class Branch : MonoBehaviour {
 		}
 	}
 
+	/*
+	 * Creates the base bonsai tree for the Tokyo contract
+	 */
 	void setupTokyoTree() {
 		age += 2;
 
-		addBranch(Vector3.zero);
+		GameObject b1 = addBranch(Vector3.zero);
 
-		addBranch(new Vector3(60.0f, 0.0f, 0.0f));
-		addBranch(new Vector3(-60.0f, 0.0f, 0.0f));
-		addBranch(new Vector3(0.0f, 0.0f, 60.0f));
-		addBranch(new Vector3(0.0f, 0.0f, -60.0f));
+		addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f)).GetComponent<Branch>().addBranch(Vector3.up);
+		addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f)).GetComponent<Branch>().addBranch(Vector3.up);
+		addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE)).GetComponent<Branch>().addBranch(Vector3.up);
+		addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE)).GetComponent<Branch>().addBranch(Vector3.up);
+
+		GameObject b2 = b1.GetComponent<Branch>().addBranch(Vector3.zero);
+
+		b1.GetComponent<Branch>().addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
+		b1.GetComponent<Branch>().addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
+		b1.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE));
+		b1.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE));
+
+		GameObject b3 = b2.GetComponent<Branch>().addBranch(Vector3.zero);
+
+		//b2.GetComponent<Branch>().addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
+		//b2.GetComponent<Branch>().addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
+		//b2.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE));
+		//b2.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE));
+
+		GameObject b4 = b3.GetComponent<Branch>().addBranch(Vector3.zero);
+
+		GameObject b5 = b4.GetComponent<Branch>().addBranch(Vector3.zero);
 	}
 
-	public void addBranch(Vector3 newRot) {
+	#endregion
+
+	#region Adding Objects
+
+	/*
+	 * Adds a new bud of the given type at the given position and rotation
+	 */
+	GameObject addBud(Vector3 pos, Quaternion rot, bool isLeaf) {
+		//Instantiate bud
+		GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
+
+		//Initialize new bud transform
+		newBud.transform.localPosition = pos;
+		newBud.transform.localRotation = rot;
+
+		//Initialize new bud variables
+		newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
+		newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
+
+		//newBud.transform.GetComponent<Bud>().setWPosition(Mathf.Clamp(w + Random.Range(-1, 2), 0, 6));   //the w value is clamped between 0 and 6 inclusive
+		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+		newBud.transform.GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+
+		newBud.transform.GetComponent<Bud>().setManager(manager);
+		if(isLeaf)
+			manager.GetComponent<BonsaiManager>().addLeaf();
+		else
+			manager.GetComponent<BonsaiManager>().addBranch();
+
+		return newBud;
+	}
+
+	/*
+	 * Adds a new bud of the given type with the given rotation on the tip of the branch
+	 */
+	GameObject addBud(Vector3 rot, bool isLeaf) {
+		if(!isLeaf) {
+			//Instantiate bud
+			GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
+
+			newBud.transform.localPosition = transform.GetChild(1).localPosition;
+			newBud.transform.localRotation = Quaternion.Euler(rot);
+			//newBud.transform.localPosition = newBud.transform.localPosition +  * 0.025f;
+
+			//Initialize new branch variables
+			newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
+			newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
+
+			//Set the branch's w position
+			newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+			newBud.transform.GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+
+			newBud.transform.GetComponent<Bud>().setManager(manager);
+			manager.GetComponent<BonsaiManager>().addBranch();
+
+			return newBud;
+		}
+
+		return null;
+	}
+
+	/*
+	 * Adds a new branch to the tip of this branch with the given rotation
+	 */
+	public GameObject addBranch(Vector3 rot) {
 		GameObject newBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
 		newBranch.transform.localPosition = transform.GetChild(1).localPosition;
-		newBranch.transform.Rotate(newRot);
+		newBranch.transform.localRotation = Quaternion.Euler(rot);
 
 		//newBranch.transform.localPosition = newBranch.transform.localPosition + newBranch.transform.up * 0.025f;	//This is for offsetting it from the tipPoint
 
@@ -798,7 +851,33 @@ public class Branch : MonoBehaviour {
 		newBranch.transform.GetComponent<Branch>().setManager(manager);
 		manager.GetComponent<BonsaiManager>().addBranch();
 		this.registerBranchAdded();
+
+		return newBranch;
 	}
+
+	/*
+	 * Create and attach bug to branch
+	 */
+	GameObject addBug(Vector3 newPos) {
+		GameObject newBug = Instantiate(Resources.Load("Bonsai/BugPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
+		newBug.transform.localPosition = newPos;
+		newBug.transform.localRotation = Quaternion.identity;
+
+		//newBug.GetComponent<BonsaiBug>().setWPosition(w);
+		newBug.GetComponent<HyperColliderManager>().setW(GetComponent<HyperColliderManager>().w);
+		newBug.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+
+		newBug.GetComponent<BonsaiBug>().setOrigin(newPos.x, transform.GetChild(1).localPosition.y / 2, newPos.z);
+		newBug.GetComponent<BonsaiBug>().setMovementRange(transform.GetChild(1).localPosition.y / 2);
+
+		numBugs++;
+
+		return newBug;
+	}
+
+	#endregion
+
+	#region Utility Functions
 
 	/*
 	 * Increment the number of leaves on this branch
@@ -851,12 +930,127 @@ public class Branch : MonoBehaviour {
 	}
 
 	/*
+	 * Sets the bonsai manager this branch answers to
+	 */
+	public void setManager(GameObject newManager) {
+		manager = newManager;
+	}
+
+	/*
 	 * Sets the w position of this branch and adjusts the color accordingly
 	 */
 	public void setWPosition(int newW) {
 		w = newW;
 
 		assignColorToWPosition();
+	}
+
+	/*
+	 * Returns isTip
+	 */
+	public bool getIsTip() {
+		return isTip;
+	}
+
+	/*
+	 * Returns whether the base point of this branch has a greater y value 
+	 * than the base point of its children branches
+	 */
+	public bool getIsHigherThanChildren() {
+		if(numBranches == 0) {
+			return true;
+		}
+		else {
+			for(int i = transform.childCount - 1; i > 2; i--) {
+				if(transform.GetChild(i).name.Substring(0, 6) == "Branch") {
+					if(transform.GetChild(i).GetChild(1).position.y > transform.GetChild(1).position.y) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/*
+	 * Returns an array of branch Gameobjects that are children of this branch
+	 */
+	GameObject[] getBranchChildren() {
+		GameObject[] branchChildren = new GameObject[numBranches];
+		int counter = 0;
+		foreach (Transform child in transform) {
+			if(child.GetComponent<Branch>() != null) {
+				branchChildren [counter] = child.gameObject;
+				counter++;
+			}
+		}
+		return branchChildren;
+	}
+
+	/*
+	 * Finds the Rotations of all existing branches
+	 */
+	Quaternion[] getBranchRotations() {
+		Quaternion[] q = new Quaternion[numBranches];
+		int c = 0;
+
+		for(int i = 3; i < transform.childCount; i++) {
+			if(transform.GetChild(i).name.Substring(0, 6) == "Branch") {
+				q[c] = transform.GetChild(i).localRotation;
+				c++;
+			}
+		}
+
+		return q;
+	}
+
+	/*
+	 * Returns an array of leaf Gameobjects that are children of this branch
+	 */
+	GameObject[] getLeafChildren() {
+		GameObject[] leafChildren = new GameObject[numLeaves];
+		int counter = 0;
+		foreach (Transform child in transform) {
+			if(child.GetComponent<Leaf>() != null) {
+				leafChildren [counter] = child.gameObject;
+				counter++;
+			}
+		}
+		return leafChildren;
+	}
+
+	/*
+	 * Finds the Positions of all existing leaves
+	 */
+	Vector3[] getLeafPositions() {
+		Vector3[] q = new Vector3[numLeaves];
+		int c = 0;
+
+		for(int i = 3; i < transform.childCount; i++) {
+			if(transform.GetChild(i).name.Substring(0, 4) == "Leaf") {
+				q[c] = transform.GetChild(i).localPosition;
+				c++;
+			}
+		}
+
+		return q;
+	}
+
+	/*
+	 * Finds the Rotations of all exiting Leaves
+	 */
+	Quaternion[] getLeafRotations() {
+		Quaternion[] q = new Quaternion[numLeaves];
+		int c = 0;
+
+		for(int i = 3; i < transform.childCount; i++) {
+			if(transform.GetChild(i).name.Substring(0, 4) == "Leaf") {
+				q[c] = transform.GetChild(i).localRotation;
+				c++;
+			}
+		}
+
+		return q;
 	}
 
 	/*
@@ -906,37 +1100,5 @@ public class Branch : MonoBehaviour {
 		transform.GetChild(0).GetChild(2).GetComponent<MeshRenderer>().material.color = c;
 	}
 
-	/*
-	 * Sets the bonsai manager this branch answers to
-	 */
-	public void setManager(GameObject newManager) {
-		manager = newManager;
-	}
-
-	/*
-	 * Returns isTip
-	 */
-	public bool getIsTip() {
-		return isTip;
-	}
-
-	/*
-	 * Returns whether the base point of this branch has a greater y value 
-	 * than the base point of its children branches
-	 */
-	public bool getIsHigherThanChildren() {
-		if(numBranches == 0) {
-			return true;
-		}
-		else {
-			for(int i = transform.childCount - 1; i > 2; i--) {
-				if(transform.GetChild(i).name.Substring(0, 6) == "Branch") {
-					if(transform.GetChild(i).GetChild(1).position.y > transform.GetChild(1).position.y) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
+	#endregion
 }

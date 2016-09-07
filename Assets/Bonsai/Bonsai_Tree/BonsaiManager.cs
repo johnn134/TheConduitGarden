@@ -19,7 +19,7 @@ public class BonsaiManager : MonoBehaviour {
 	int numDeadBranches;
 	int numInfestedBranches;
 
-	int[] hitboxCollisions;
+	int[] zoneExtensions;
 
 	static int ID = 0;
 
@@ -36,10 +36,10 @@ public class BonsaiManager : MonoBehaviour {
 		numDeadBranches = 0;
 		numInfestedBranches = 0;
 
-		hitboxCollisions = new int[6];
+		zoneExtensions = new int[10];
 
 		for(int i = 0; i < 6; i++)
-			hitboxCollisions[i] = 0;
+			zoneExtensions[i] = 0;
 
 		//Name the tree
 		this.gameObject.name = "BonsaiTree_" + ID;
@@ -69,20 +69,33 @@ public class BonsaiManager : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space)) {
 			processGrowthCycle();
 		}
-
-		/*
-		//Grow tree on a timer
-		if(Time.time % growthCycleTime == 0) {
-			processGrowthCycle();
-		}
-		*/
-
-		//Debug.Log("Branches: N-" + numBranches + ", D-" + numDeadBranches + ", I-" + numInfestedBranches
-		//			+ "; Leaves: N-" + numLeaves + ", D-" + numDeadLeaves);
 	}
 
+	/*
+	 * Initiate the growth cycle for the entire tree
+	 */
 	void processGrowthCycle() {
 		baseBranch.GetComponent<Branch>().processGrowthCycle();
+	}
+
+	/*
+	 * Increments the counter for the number of tree components
+	 * extending past the bounding zone
+	 */
+	public void registerZoneExtension(int[] extensions) {
+		for(int i = 0; i < 10; i++) {
+			zoneExtensions[i] += extensions[i];
+		}
+	}
+
+	/*
+	 * Decrements the counter for the number of tree components
+	 * extending past the bounding zone
+	 */
+	public void registerRemovalOfZoneExtension(int[] removals) {
+		for(int i = 0; i < 10; i++) {
+			zoneExtensions[i] -= removals[i];
+		}
 	}
 
 	public void addLeaf() {
@@ -154,60 +167,6 @@ public class BonsaiManager : MonoBehaviour {
 	}
 
 	public int[] getHitboxCollisions() {
-		return hitboxCollisions;
-	}
-
-	public void registerHitboxCollision(string dir) {
-		if(dir != "None")
-			Debug.Log("Tree component collided with " + dir);
-		switch(dir) {
-			case "Top":
-				hitboxCollisions[0] += 1;
-				break;
-			case "Bottom":
-				hitboxCollisions[1] += 1;
-				break;
-			case "North":
-				hitboxCollisions[2] += 1;
-				break;
-			case "South":
-				hitboxCollisions[3] += 1;
-				break;
-			case "East":
-				hitboxCollisions[4] += 1;
-				break;
-			case "West":
-				hitboxCollisions[5] += 1;
-				break;
-			default:
-				break;
-		}
-	}
-
-	public void registerHitboxExit(string dir) {
-		if(dir != "None")
-			Debug.Log("Tree component left hitbox " + dir);
-		switch(dir) {
-			case "Top":
-				hitboxCollisions[0] -= 1;
-				break;
-			case "Bottom":
-				hitboxCollisions[1] -= 1;
-				break;
-			case "North":
-				hitboxCollisions[2] -= 1;
-				break;
-			case "South":
-				hitboxCollisions[3] -= 1;
-				break;
-			case "East":
-				hitboxCollisions[4] -= 1;
-				break;
-			case "West":
-				hitboxCollisions[5] -= 1;
-				break;
-			default:
-				break;
-		}
+		return zoneExtensions;
 	}
 }

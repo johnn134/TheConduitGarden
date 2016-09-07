@@ -11,14 +11,7 @@ public class ReservoirPool : MonoBehaviour {
         fishManager = Object.FindObjectOfType<FishManager>();
 
         Invoke("SpawnFish", spawnTime);
-        //SpawnFish();
     }
-
-    /*void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.name.StartsWith("Fish"))
-            Invoke("SpawnFish", 15);
-    }*/
 
     void OnTriggerStay(Collider other)
     {
@@ -32,5 +25,6 @@ public class ReservoirPool : MonoBehaviour {
     void SpawnFish()
     {
         fishManager.MakeFish(transform.position, transform.rotation, GetComponent<HyperColliderManager>().w, false);
+        Invoke("SpawnFish", spawnTime);
     }
 }

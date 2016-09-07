@@ -23,10 +23,15 @@ public class FishManager : MonoBehaviour {
     //number of food on each w point
     int[] numFood = new int[] { 0, 0, 0, 0, 0, 0, 0 };
 
+    //the fish shrine in the world
+    FishShrine fishShrine;
+
     void Start()
     {
         allFish = new List<GameObject>();
         allFood = new List<GameObject>();
+
+        fishShrine = Object.FindObjectOfType<FishShrine>();
     }
 
     //a object has requested to make a fish (or food if isFood is true) at position with rotation, return true if successful
@@ -51,7 +56,7 @@ public class FishManager : MonoBehaviour {
         }
         else
         {
-            //check to make sure the w point the fish is being added on isnt full
+            //check to make sure there are not too many fish in the world
             if (numFish < maxFish)
             {
 				nObj = (GameObject)Instantiate(Resources.Load("Fish/Fish"), nPosition, nRotation);
@@ -65,7 +70,7 @@ public class FishManager : MonoBehaviour {
                     nObj.GetComponent<Fish>().food = true;
 
                 if((int)nObj.GetComponent<Fish>().size == 2)
-                    GameObject.Find("ShrineFish").GetComponent<FishShrine>().processFish(allFish);
+                    fishShrine.processFish(allFish);
 
                 return true;
             }
@@ -90,7 +95,7 @@ public class FishManager : MonoBehaviour {
                 Destroy(rObj);
 
                 if (alertShrine)
-                    GameObject.Find("ShrineFish").GetComponent<FishShrine>().processFish(allFish);
+                    fishShrine.processFish(allFish);
 
                 return true;
             }
@@ -105,7 +110,7 @@ public class FishManager : MonoBehaviour {
                 Destroy(rObj);
 
                 if (alertShrine)
-                    GameObject.Find("ShrineFish").GetComponent<FishShrine>().processFish(allFish);
+                    fishShrine.processFish(allFish);
 
                 return true;
             }
@@ -255,7 +260,6 @@ public class FishManager : MonoBehaviour {
     //returns true if the first fish game object is older than the second using their indecies in the allFish list
     bool isOlder(GameObject fish1, GameObject fish2)
     {
-        //Debug.Log("Fish1: " + fish1.name + ": age " + allFish.IndexOf(fish1) + "Fish2: " + fish2.name + ": age " + allFish.IndexOf(fish2));
         return (allFish.IndexOf(fish1) < allFish.IndexOf(fish2));
     }
 
@@ -282,6 +286,6 @@ public class FishManager : MonoBehaviour {
             if (fish.GetComponent<HyperColliderManager>().w == newW && (int)fish.GetComponent<Fish>().size >= (int)rfish.GetComponent<Fish>().size)
                 fish.GetComponent<Fish>().noTargets = false;
 
-        GameObject.Find("ShrineFish").GetComponent<FishShrine>().processFish(allFish);
+        fishShrine.processFish(allFish);
     }
 }

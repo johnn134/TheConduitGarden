@@ -27,10 +27,6 @@ public class FoodContainer : MonoBehaviour {
                 {
                     curRate = 0;
                     fishManager.MakeFish(opening.transform.position, opening.transform.rotation, GetComponent<HyperColliderManager>().w, true);
-                    /*GameObject newFood;
-                    newFood = (GameObject)Instantiate(fishFood, opening.transform.position, opening.transform.rotation);
-                    newFood.GetComponent<HyperObject>().w = GetComponent<HyperObject>().w;
-                    newFood.GetComponent<HyperObject>().WMove(GetComponent<HyperObject>().w);*/
                 }
                 else
                     curRate++;

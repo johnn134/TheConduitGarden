@@ -3,25 +3,23 @@ using System.Collections;
 
 public class FishFood : MonoBehaviour {
 
-    GameObject fishManager;
+    FishManager fishManager;
     bool inWater = false;
     public int lifeTime = 10;
 
+    HyperObject myHyper;
+
+    Rigidbody _cachedRigidbody;
+
 	void Start () {
         //locate the fish manager
-        fishManager = GameObject.Find("FishManager");
+        fishManager = Object.FindObjectOfType<FishManager>();
+
+        myHyper = GetComponent<HyperObject>();
+
+        _cachedRigidbody = GetComponent<Rigidbody>();
 
         Invoke("LifeEnd", lifeTime);
-
-        //send a request to the manager to be added to the world, if request is denied then destroy this food
-        /*if (fishManager.GetComponent<FishManager>().RequestToAdd(this.gameObject))
-        {
-            // inWorld = true;
-            //Destroy(this.gameObject, lifeTime);
-            Invoke("LifeEnd", lifeTime);
-        }
-        else
-            Destroy(this.gameObject);*/
     }
 
     //function called by water to let the fish know if it is in the water or not
@@ -29,19 +27,19 @@ public class FishFood : MonoBehaviour {
     {
         if (isIn)
         {
-            GetComponent<Rigidbody>().drag = 70;
-            fishManager.GetComponent<FishManager>().alertFood(GetComponent<HyperObject>().w, true);
+            _cachedRigidbody.drag = 70;
+            fishManager.alertFood(myHyper.w, true);
             inWater = true;
         }
         else
         {
-            GetComponent<Rigidbody>().drag = 0;
+            _cachedRigidbody.drag = 0;
             inWater = false;
         }
     }
 
     void LifeEnd()
     {
-        fishManager.GetComponent<FishManager>().RequestToRemove(this.gameObject, false);
+        fishManager.RequestToRemove(gameObject, false);
     }
 }

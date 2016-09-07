@@ -9,9 +9,9 @@ public class BonsaiManager : MonoBehaviour {
 	public float growthCycleTime = 60.0f;
 	public float treeSize = 0.25f;
 
-	GameObject baseBranch;
-
 	public CONTRACTLEVEL levelType = CONTRACTLEVEL.NONE;
+
+	GameObject baseBranch;
 
 	int numLeaves;
 	int numBranches;
@@ -54,7 +54,7 @@ public class BonsaiManager : MonoBehaviour {
 
 		//baseBranch.GetComponent<Branch>().setWPosition(3);
 		baseBranch.GetComponent<HyperColliderManager>().setW(3);
-		baseBranch.GetComponent<HyperColliderManager>().WMove();
+		baseBranch.GetComponent<Branch>().updateWVisual();
 
 		baseBranch.GetComponent<Branch>().setManager(this.gameObject);
 

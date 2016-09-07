@@ -55,7 +55,7 @@ public class FishShrine : MonoBehaviour {
                 if (child.GetComponent<HyperObject>())
                 {
                     child.GetComponent<HyperObject>().dullCoef = (maxPoints / points) / 2;
-                    child.GetComponent<HyperObject>().WMove(GameObject.Find("CameraRig").GetComponent<HyperCreature>().w);
+                    child.GetComponent<HyperObject>().WMove();
                 }
             }
         }
@@ -66,7 +66,7 @@ public class FishShrine : MonoBehaviour {
                 if (child.GetComponent<HyperObject>())
                 {
                     child.GetComponent<HyperObject>().dullCoef = maxPoints;
-                    child.GetComponent<HyperObject>().WMove(GameObject.Find("CameraRig").GetComponent<HyperCreature>().w);
+                    child.GetComponent<HyperObject>().WMove();
                 }
             }
         }

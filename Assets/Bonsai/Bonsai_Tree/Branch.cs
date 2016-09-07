@@ -20,6 +20,8 @@ public class Branch : MonoBehaviour {
 	int depth = 0;              //The depth of this branch in the tree
 	int w = 0;              	//Position on the fourth dimension
 
+	int[] zoneExtensions;
+
 	float budRange;     	//Maximum distance from the center of the branch tip to grow a bud
 	float leafRange;    	//Stores the radius of the rounded branch tip
 
@@ -30,8 +32,6 @@ public class Branch : MonoBehaviour {
 	bool leavesAreDead;		//Are all leaves on this branch dead
 
 	bool canSnip = true;       	//Tells whether this branch can be snipped off
-
-	int[] zoneExtensions;
 
 	const int BRANCH_MIN = 1;              	//Minimum number of branch buds that will initially grow
 	const int BRANCH_MAX = 3;              	//Maximum number of branch buds that can ever grow from this branch
@@ -612,9 +612,9 @@ public class Branch : MonoBehaviour {
 		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().dullCoef = 4;
 		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().dullCoef = 4;
 		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().dullCoef = 4;
-		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
-		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
-		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().WMove();
+		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().WMove();
+		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().WMove();
 	}
 
 	#endregion
@@ -794,7 +794,7 @@ public class Branch : MonoBehaviour {
 
 		//newBud.transform.GetComponent<Bud>().setWPosition(Mathf.Clamp(w + Random.Range(-1, 2), 0, 6));   //the w value is clamped between 0 and 6 inclusive
 		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-		newBud.transform.GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+		newBud.GetComponent<Bud>().updateWVisual();
 
 		newBud.transform.GetComponent<Bud>().setManager(manager);
 		if(isLeaf)
@@ -823,7 +823,7 @@ public class Branch : MonoBehaviour {
 
 			//Set the branch's w position
 			newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-			newBud.transform.GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+			newBud.GetComponent<Bud>().updateWVisual();
 
 			newBud.transform.GetComponent<Bud>().setManager(manager);
 			manager.GetComponent<BonsaiManager>().addBranch();
@@ -845,7 +845,7 @@ public class Branch : MonoBehaviour {
 		//newBranch.transform.localPosition = newBranch.transform.localPosition + newBranch.transform.up * 0.025f;	//This is for offsetting it from the tipPoint
 
 		newBranch.GetComponent<HyperColliderManager>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-		newBranch.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+		newBranch.GetComponent<Branch>().updateWVisual();
 
 		newBranch.transform.GetComponent<Branch>().setDepth(depth + 1);
 		newBranch.transform.GetComponent<Branch>().setManager(manager);
@@ -863,9 +863,8 @@ public class Branch : MonoBehaviour {
 		newBug.transform.localPosition = newPos;
 		newBug.transform.localRotation = Quaternion.identity;
 
-		//newBug.GetComponent<BonsaiBug>().setWPosition(w);
 		newBug.GetComponent<HyperColliderManager>().setW(GetComponent<HyperColliderManager>().w);
-		newBug.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+		newBug.GetComponent<BonsaiBug>().updateWVisual();
 
 		newBug.GetComponent<BonsaiBug>().setOrigin(newPos.x, transform.GetChild(1).localPosition.y / 2, newPos.z);
 		newBug.GetComponent<BonsaiBug>().setMovementRange(transform.GetChild(1).localPosition.y / 2);
@@ -1098,6 +1097,12 @@ public class Branch : MonoBehaviour {
 		transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().material.color = c;
 		transform.GetChild(0).GetChild(1).GetComponent<MeshRenderer>().material.color = c;
 		transform.GetChild(0).GetChild(2).GetComponent<MeshRenderer>().material.color = c;
+	}
+
+	public void updateWVisual() {
+		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().WMove();
+		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().WMove();
+		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().WMove();
 	}
 
 	#endregion

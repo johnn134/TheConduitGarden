@@ -97,7 +97,7 @@ public class Fish : MonoBehaviour {
             {
                 //dont alert for the first time since the fish starts out not knowing its w
                 if (curW != -1)
-                    fishManager.alertMove(gameObject, curW, myHyper.w);
+                    fishManager.alertMove(gameObject, myHyper.w);
                 curW = myHyper.w;
             }
         }

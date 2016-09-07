@@ -7,8 +7,11 @@ public class BonsaiManager : MonoBehaviour {
 	public int maxBranches = 45;
 
 	public float growthCycleTime = 60.0f;
+	public float treeSize = 0.25f;
 
-    GameObject baseBranch;
+	GameObject baseBranch;
+
+	public CONTRACTLEVEL levelType = CONTRACTLEVEL.NONE;
 
 	int numLeaves;
 	int numBranches;
@@ -16,7 +19,13 @@ public class BonsaiManager : MonoBehaviour {
 	int numDeadBranches;
 	int numInfestedBranches;
 
+	int[] zoneExtensions;
+
 	static int ID = 0;
+
+	public enum CONTRACTLEVEL {
+		NONE, TOKYO
+	};
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +36,11 @@ public class BonsaiManager : MonoBehaviour {
 		numDeadBranches = 0;
 		numInfestedBranches = 0;
 
+		zoneExtensions = new int[10];
+
+		for(int i = 0; i < 6; i++)
+			zoneExtensions[i] = 0;
+
 		//Name the tree
 		this.gameObject.name = "BonsaiTree_" + ID;
 		ID++;
@@ -34,7 +48,7 @@ public class BonsaiManager : MonoBehaviour {
 		//Create the base branch
 		baseBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), transform) as GameObject;
 		baseBranch.transform.localPosition = Vector3.zero;
-		baseBranch.transform.localScale = new Vector3(.25f, .25f, .25f);
+		baseBranch.transform.localScale = new Vector3(treeSize, treeSize, treeSize);
 		baseBranch.GetComponent<Branch>().setcanSnip(false);
 		baseBranch.GetComponent<Branch>().setDepth(0);
 
@@ -43,6 +57,9 @@ public class BonsaiManager : MonoBehaviour {
 		baseBranch.GetComponent<HyperColliderManager>().WMove();
 
 		baseBranch.GetComponent<Branch>().setManager(this.gameObject);
+
+		baseBranch.GetComponent<Branch>().setupTreeForLevel(levelType);
+
 		InvokeRepeating("processGrowthCycle", growthCycleTime, growthCycleTime);
 	}
 	
@@ -52,20 +69,33 @@ public class BonsaiManager : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space)) {
 			processGrowthCycle();
 		}
-
-		/*
-		//Grow tree on a timer
-		if(Time.time % growthCycleTime == 0) {
-			processGrowthCycle();
-		}
-		*/
-
-		//Debug.Log("Branches: N-" + numBranches + ", D-" + numDeadBranches + ", I-" + numInfestedBranches
-		//			+ "; Leaves: N-" + numLeaves + ", D-" + numDeadLeaves);
 	}
 
+	/*
+	 * Initiate the growth cycle for the entire tree
+	 */
 	void processGrowthCycle() {
 		baseBranch.GetComponent<Branch>().processGrowthCycle();
+	}
+
+	/*
+	 * Increments the counter for the number of tree components
+	 * extending past the bounding zone
+	 */
+	public void registerZoneExtension(int[] extensions) {
+		for(int i = 0; i < 10; i++) {
+			zoneExtensions[i] += extensions[i];
+		}
+	}
+
+	/*
+	 * Decrements the counter for the number of tree components
+	 * extending past the bounding zone
+	 */
+	public void registerRemovalOfZoneExtension(int[] removals) {
+		for(int i = 0; i < 10; i++) {
+			zoneExtensions[i] -= removals[i];
+		}
 	}
 
 	public void addLeaf() {
@@ -134,5 +164,9 @@ public class BonsaiManager : MonoBehaviour {
 
 	public int getNumDeadBranches() {
 		return numDeadBranches;
+	}
+
+	public int[] getHitboxCollisions() {
+		return zoneExtensions;
 	}
 }

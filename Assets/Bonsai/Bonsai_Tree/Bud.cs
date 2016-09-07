@@ -42,30 +42,39 @@ public class Bud : MonoBehaviour {
 	public void processGrowthCycle() {
 		if(isLeaf) {
 			GameObject newLeaf = Instantiate(Resources.Load("Bonsai/LeafPrefab"), Vector3.zero, Quaternion.identity, transform.parent) as GameObject;
+			//Set transform
 			newLeaf.transform.localPosition = transform.localPosition;
 			newLeaf.transform.localRotation = transform.localRotation;
 			newLeaf.transform.Rotate(-90, 0, 0);
-			newLeaf.transform.GetComponent<Leaf>().setDepth(depth);
 
-			//newLeaf.transform.GetComponent<Leaf>().setWPosition(w);
+			//Initialize Variables
+			newLeaf.GetComponent<Leaf>().setDepth(depth);
+			newLeaf.GetComponent<Leaf>().setManager(manager);
+			newLeaf.GetComponent<Leaf>().checkIfLeafSatisfiesContract();
+
+			//Set w position
 			newLeaf.GetComponent<HyperColliderManager>().setW(transform.GetChild(0).GetComponent<HyperObject>().w);
 			newLeaf.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
 
-			newLeaf.transform.GetComponent<Leaf>().setManager(manager);
+			//Register Leaf Added
 			transform.parent.GetComponent<Branch>().registerLeafAdded();
 		}
 		else {
 			GameObject newBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), Vector3.zero, Quaternion.identity, transform.parent) as GameObject;
 			newBranch.transform.localPosition = transform.localPosition;
 			newBranch.transform.localRotation = transform.localRotation;
-			newBranch.transform.Rotate(-90, 0, 0);
-			newBranch.transform.GetComponent<Branch>().setDepth(depth);
+			//newBranch.transform.Rotate(-90, 0, 0);
 
-			//newBranch.transform.GetComponent<Branch>().setWPosition(w);
+			//Initialize Variables
+			newBranch.GetComponent<Branch>().setDepth(depth);
+			newBranch.GetComponent<Branch>().setManager(manager);
+			newBranch.GetComponent<Branch>().checkIfBranchSatisfiesContract();
+
+			//Set w position
 			newBranch.GetComponent<HyperColliderManager>().setW(transform.GetChild(0).GetComponent<HyperObject>().w);
 			newBranch.GetComponent<HyperColliderManager>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
 
-			newBranch.transform.GetComponent<Branch>().setManager(manager);
+			//Register Branch Added
 			transform.parent.GetComponent<Branch>().registerBranchAdded();
 		}
 		didGrow = true;

@@ -15,20 +15,28 @@ public class Leaf : MonoBehaviour {
 	float DARKEN_VALUE = 0.1f;
 	float DARKEN_ALPHA = 0.75f;
 
+	int[] zoneExtensions;
+
 	bool canSnip;       //Whether this leaf can be snipped or not
 	bool isDead;       //Whether the leaf is alive or not
 
 	static int ID = 0;
 
-	// Use this for initialization
-	void Start() {
+	void Awake() {
 		age = 0;
 		canSnip = true;
 		isDead = false;
 
+		zoneExtensions = new int[10];
+
 		//name the leaf
 		this.gameObject.name = "Leaf_" + ID;
 		ID++;
+	}
+
+	// Use this for initialization
+	void Start() {
+		
 	}
 
 	void OnDestroy() {
@@ -45,6 +53,11 @@ public class Leaf : MonoBehaviour {
 			if(isDead) {
 				manager.GetComponent<BonsaiManager>().removeDeadLeaf();
 			}
+
+			manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension(zoneExtensions);
+
+			//if(zoneExtension != "None")
+			//	Debug.Log(gameObject.name + " left the bounding zone for " + zoneExtension);
 		}
 	}
 
@@ -137,6 +150,110 @@ public class Leaf : MonoBehaviour {
 	 */
 	int checkOverhangingLeaves() {
 		return Physics.RaycastAll(transform.GetChild(1).position, Vector3.up, 100.0f).Length;
+	}
+
+	/*
+	 * Wrapper for checking if the leaf extends past a zone marker
+	 * required of the contract
+	 */
+	public void checkIfLeafSatisfiesContract() {
+		if(manager.GetComponent<BonsaiManager>() != null) {
+			switch(manager.GetComponent<BonsaiManager>().levelType) {
+				case BonsaiManager.CONTRACTLEVEL.NONE:
+
+					break;
+				case BonsaiManager.CONTRACTLEVEL.TOKYO:
+					checkTokyoHitboxCollision();
+					break;
+				default:
+
+					break;
+			}
+		}
+	}
+
+	/*
+	 * checks if the leaf extends beyond one of the Tokyo contract zones
+	 */
+	void checkTokyoHitboxCollision() {
+		Transform hitboxes = manager.transform.GetChild(0);
+		//Top
+		if(transform.position.y >= hitboxes.GetChild(0).position.y || 
+			transform.GetChild(1).position.y >= hitboxes.GetChild(0).position.y ) {
+			zoneExtensions[0] = 1;
+		}
+
+		//Bottom
+		if(transform.position.y <= hitboxes.GetChild(1).position.y || 
+			transform.GetChild(1).position.y <= hitboxes.GetChild(1).position.y ) {
+			zoneExtensions[1] = 1;
+		}
+
+		/***	Lower	***/
+
+		if(transform.position.y <= hitboxes.GetChild(2).position.y &&
+		   transform.GetChild(1).position.y <= hitboxes.GetChild(2).position.y) {
+
+			//North
+			if(transform.position.z >= hitboxes.GetChild(2).position.z ||
+			  transform.GetChild(1).position.z >= hitboxes.GetChild(2).position.z) {
+				zoneExtensions[2] = 1;
+			}
+
+			//South
+			if(transform.position.z <= hitboxes.GetChild(3).position.z ||
+			  transform.GetChild(1).position.z <= hitboxes.GetChild(3).position.z) {
+				zoneExtensions[3] = 1;
+			}
+
+			//East
+			if(transform.position.x >= hitboxes.GetChild(4).position.x ||
+			  transform.GetChild(1).position.x >= hitboxes.GetChild(4).position.x) {
+				zoneExtensions[4] = 1;
+			}
+
+			//West
+			if(transform.position.x <= hitboxes.GetChild(5).position.x ||
+			  transform.GetChild(1).position.x <= hitboxes.GetChild(5).position.x) {
+				zoneExtensions[5] = 1;
+			}
+		}
+
+		/***	Upper	***/
+
+		if(transform.position.y <= hitboxes.GetChild(0).position.y &&
+			transform.GetChild(1).position.y <= hitboxes.GetChild(0).position.y) {
+
+			//North
+			if(transform.position.z >= hitboxes.GetChild(2).position.z ||
+				transform.GetChild(1).position.z >= hitboxes.GetChild(2).position.z) {
+				zoneExtensions[6] = 1;
+			}
+
+			//South
+			if(transform.position.z <= hitboxes.GetChild(3).position.z ||
+				transform.GetChild(1).position.z <= hitboxes.GetChild(3).position.z) {
+				zoneExtensions[7] = 1;
+			}
+
+			//East
+			if(transform.position.x >= hitboxes.GetChild(4).position.x ||
+				transform.GetChild(1).position.x >= hitboxes.GetChild(4).position.x) {
+				zoneExtensions[8] = 1;
+			}
+
+			//West
+			if(transform.position.x <= hitboxes.GetChild(5).position.x ||
+				transform.GetChild(1).position.x <= hitboxes.GetChild(5).position.x) {
+				zoneExtensions[9] = 1;
+			}
+		}
+
+		if(manager.GetComponent<BonsaiManager>() != null)
+			manager.GetComponent<BonsaiManager>().registerZoneExtension(zoneExtensions);
+
+		//if(zoneExtension != "None")
+		//	Debug.Log(gameObject.name + " moved past the bounding zone for " + zoneExtension);
 	}
 
 	/*

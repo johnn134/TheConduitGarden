@@ -19,7 +19,7 @@ public class BonsaiManager : MonoBehaviour {
 	int numDeadBranches;
 	int numInfestedBranches;
 
-	int[] zoneExtensions;
+	int zoneExtensions;
 
 	static int ID = 0;
 
@@ -36,10 +36,7 @@ public class BonsaiManager : MonoBehaviour {
 		numDeadBranches = 0;
 		numInfestedBranches = 0;
 
-		zoneExtensions = new int[10];
-
-		for(int i = 0; i < 6; i++)
-			zoneExtensions[i] = 0;
+		zoneExtensions = 0;
 
 		//Name the tree
 		this.gameObject.name = "BonsaiTree_" + ID;
@@ -54,7 +51,6 @@ public class BonsaiManager : MonoBehaviour {
 
 		//baseBranch.GetComponent<Branch>().setWPosition(3);
 		baseBranch.GetComponent<HyperColliderManager>().setW(3);
-		baseBranch.GetComponent<Branch>().updateWVisual();
 
 		baseBranch.GetComponent<Branch>().setManager(this.gameObject);
 
@@ -69,6 +65,10 @@ public class BonsaiManager : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Space)) {
 			processGrowthCycle();
 		}
+
+		if(levelType == CONTRACTLEVEL.TOKYO) {
+
+		}
 	}
 
 	/*
@@ -82,20 +82,16 @@ public class BonsaiManager : MonoBehaviour {
 	 * Increments the counter for the number of tree components
 	 * extending past the bounding zone
 	 */
-	public void registerZoneExtension(int[] extensions) {
-		for(int i = 0; i < 10; i++) {
-			zoneExtensions[i] += extensions[i];
-		}
+	public void registerZoneExtension() {
+		zoneExtensions += 1;
 	}
 
 	/*
 	 * Decrements the counter for the number of tree components
 	 * extending past the bounding zone
 	 */
-	public void registerRemovalOfZoneExtension(int[] removals) {
-		for(int i = 0; i < 10; i++) {
-			zoneExtensions[i] -= removals[i];
-		}
+	public void registerRemovalOfZoneExtension() {
+		zoneExtensions -= 1;
 	}
 
 	public void addLeaf() {
@@ -166,7 +162,7 @@ public class BonsaiManager : MonoBehaviour {
 		return numDeadBranches;
 	}
 
-	public int[] getHitboxCollisions() {
+	public int getHitboxCollisions() {
 		return zoneExtensions;
 	}
 }

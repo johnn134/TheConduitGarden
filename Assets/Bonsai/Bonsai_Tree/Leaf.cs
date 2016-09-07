@@ -54,7 +54,7 @@ public class Leaf : MonoBehaviour {
 				manager.GetComponent<BonsaiManager>().removeDeadLeaf();
 			}
 
-			manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension(zoneExtensions);
+			manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension();
 
 			//if(zoneExtension != "None")
 			//	Debug.Log(gameObject.name + " left the bounding zone for " + zoneExtension);
@@ -250,7 +250,7 @@ public class Leaf : MonoBehaviour {
 		}
 
 		if(manager.GetComponent<BonsaiManager>() != null)
-			manager.GetComponent<BonsaiManager>().registerZoneExtension(zoneExtensions);
+			manager.GetComponent<BonsaiManager>().registerZoneExtension();
 
 		//if(zoneExtension != "None")
 		//	Debug.Log(gameObject.name + " moved past the bounding zone for " + zoneExtension);
@@ -329,10 +329,6 @@ public class Leaf : MonoBehaviour {
 	 */
 	void setVisualColor(Color c) {
 		transform.GetChild(0).GetComponent<MeshRenderer>().material.color = c;
-	}
-
-	public void updateWVisual() {
-		transform.GetChild(0).GetComponent<HyperObject>().WMove();
 	}
 
 	/*

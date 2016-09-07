@@ -106,7 +106,7 @@ public class Branch : MonoBehaviour {
 			if(isDead)
 				manager.GetComponent<BonsaiManager>().removeDeadBranch();
 
-			manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension(zoneExtensions);
+			manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension();
 
 			//if(zoneExtension != "None")
 			//	Debug.Log(gameObject.name + " left the bounding zone for " + zoneExtension);
@@ -720,10 +720,14 @@ public class Branch : MonoBehaviour {
 		}
 
 		if(manager.GetComponent<BonsaiManager>() != null)
-			manager.GetComponent<BonsaiManager>().registerZoneExtension(zoneExtensions);
+			manager.GetComponent<BonsaiManager>().registerZoneExtension();
 
 		//if(zoneExtension != "None")
 		//	Debug.Log(gameObject.name + " moved past the bounding zone for " + zoneExtension);
+	}
+
+	void checkBoundsForTokyo() {
+		
 	}
 
 	/*
@@ -794,7 +798,6 @@ public class Branch : MonoBehaviour {
 
 		//newBud.transform.GetComponent<Bud>().setWPosition(Mathf.Clamp(w + Random.Range(-1, 2), 0, 6));   //the w value is clamped between 0 and 6 inclusive
 		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-		newBud.GetComponent<Bud>().updateWVisual();
 
 		newBud.transform.GetComponent<Bud>().setManager(manager);
 		if(isLeaf)
@@ -823,7 +826,6 @@ public class Branch : MonoBehaviour {
 
 			//Set the branch's w position
 			newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-			newBud.GetComponent<Bud>().updateWVisual();
 
 			newBud.transform.GetComponent<Bud>().setManager(manager);
 			manager.GetComponent<BonsaiManager>().addBranch();
@@ -845,7 +847,6 @@ public class Branch : MonoBehaviour {
 		//newBranch.transform.localPosition = newBranch.transform.localPosition + newBranch.transform.up * 0.025f;	//This is for offsetting it from the tipPoint
 
 		newBranch.GetComponent<HyperColliderManager>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-		newBranch.GetComponent<Branch>().updateWVisual();
 
 		newBranch.transform.GetComponent<Branch>().setDepth(depth + 1);
 		newBranch.transform.GetComponent<Branch>().setManager(manager);
@@ -864,7 +865,6 @@ public class Branch : MonoBehaviour {
 		newBug.transform.localRotation = Quaternion.identity;
 
 		newBug.GetComponent<HyperColliderManager>().setW(GetComponent<HyperColliderManager>().w);
-		newBug.GetComponent<BonsaiBug>().updateWVisual();
 
 		newBug.GetComponent<BonsaiBug>().setOrigin(newPos.x, transform.GetChild(1).localPosition.y / 2, newPos.z);
 		newBug.GetComponent<BonsaiBug>().setMovementRange(transform.GetChild(1).localPosition.y / 2);
@@ -1097,12 +1097,6 @@ public class Branch : MonoBehaviour {
 		transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().material.color = c;
 		transform.GetChild(0).GetChild(1).GetComponent<MeshRenderer>().material.color = c;
 		transform.GetChild(0).GetChild(2).GetComponent<MeshRenderer>().material.color = c;
-	}
-
-	public void updateWVisual() {
-		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().WMove();
-		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().WMove();
-		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().WMove();
 	}
 
 	#endregion

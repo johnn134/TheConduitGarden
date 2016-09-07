@@ -55,7 +55,6 @@ public class Bud : MonoBehaviour {
 
 			//Set w position
 			newLeaf.GetComponent<HyperColliderManager>().setW(transform.GetChild(0).GetComponent<HyperObject>().w);
-			newLeaf.GetComponent<Leaf>().updateWVisual();
 
 			//Register Leaf Added
 			transform.parent.GetComponent<Branch>().registerLeafAdded();
@@ -73,7 +72,6 @@ public class Bud : MonoBehaviour {
 
 			//Set w position
 			newBranch.GetComponent<HyperColliderManager>().setW(transform.GetChild(0).GetComponent<HyperObject>().w);
-			newBranch.GetComponent<Branch>().updateWVisual();
 
 			//Register Branch Added
 			transform.parent.GetComponent<Branch>().registerBranchAdded();
@@ -134,10 +132,6 @@ public class Bud : MonoBehaviour {
 	 */
 	void setVisualColor(Color c) {
 		transform.GetChild(0).GetComponent<MeshRenderer>().material.color = c;
-	}
-
-	public void updateWVisual() {
-		transform.GetChild(0).GetComponent<HyperObject>().WMove();
 	}
 
 	/*

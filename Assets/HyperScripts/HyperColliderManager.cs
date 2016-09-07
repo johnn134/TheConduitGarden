@@ -4,82 +4,45 @@ using Valve.VR;
 
 public class HyperColliderManager : MonoBehaviour {
 
-    public int w;                           //point on the w axis
-    public int w_depth;                     //how far along the w axis this object extends
+    public int w;                           		//point on the w axis
+    public int w_depth;                     		//how far along the w axis this object extends
 
-    public bool movable = true;             //is the object movable?
+    public bool movable = true;            			//is the object movable?
 
-    public bool isParent = false;           //is this object the parent?
+    public bool isParent = false;           		//is this object the parent?
     //NOTE: Enable even if no children OR if has both HyperObject and HyperColliderManager DO NOT enable this as parent and enable on the other
 
-    bool controllersReady = false;          //give time before trying to get input from the controllers
+    bool controllersReady = false;          		//give time before trying to get input from the controllers
 
     SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
 
-    public FourthDManager IVDManager;       //the 4D manager
+    public FourthDManager IVDManager;       		//the 4D manager
+
+	HyperCreature hypPlayer;						//Reference to the player
+
+	void Awake(){
+		//if this is the parent perform all the initialization for this object
+		if (isParent)
+			setW(w);
+
+		//locate the 4Dmanager
+		IVDManager = Object.FindObjectOfType<FourthDManager>();
+
+		controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
+
+		hypPlayer = Object.FindObjectOfType<HyperCreature>();
+	}
 
     void Start()
     {
-        //locate the 4Dmanager
-        IVDManager = Object.FindObjectOfType<FourthDManager>();
-
-        controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
-
         Invoke("GetReady", 5);
 
         SetCollisions();
-
-        //if this is the parent perform all the initialization for this object
-        if (isParent)
-        {
-            setW(w);
-            WMove();
-        }
     }
 
     void GetReady()
     {
         controllersReady = true;
-    }
-
-    //have the objects detect the vive controller inputs to move themselves
-    /*void LateUpdate()
-    {
-        if (controllersReady && isParent)
-        {
-            for (int i = 0; i < controllerManager.indices.Length; i++)
-            {
-                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
-                {
-                    WMove();
-                }
-            }
-        }
-    }*/
-
-    public void WMove(int newW)
-    {
-        newW = Object.FindObjectOfType<HyperCreature>().w;
-        recurseChildrenWMove(transform, newW);
-    }
-
-    public void WMove()
-    {
-        int newW = Object.FindObjectOfType<HyperCreature>().w;
-        recurseChildrenWMove(transform, newW);
-    }
-
-    void recurseChildrenWMove(Transform t, int newW)
-    {
-        foreach (Transform child in t)
-        {
-            if (child.GetComponent<HyperObject>())
-                child.GetComponent<HyperObject>().WMove(newW);
-            else if (child.GetComponent<HyperColliderManager>())
-                child.GetComponent<HyperColliderManager>().WMove(newW);
-            else if (child.childCount > 0)
-                recurseChildrenWMove(child, newW);
-        }
     }
 
     public void setW(int newW)

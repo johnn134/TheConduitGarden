@@ -28,24 +28,25 @@ public class HyperObject : MonoBehaviour {
 
     const int TRANSPARENT_QUEUE_ORDER = 3000;
 
-    void Start()
-    {
-        //locate the 4Dmanager
-        IVDManager = Object.FindObjectOfType<FourthDManager>();
+	void Awake(){
+		//if this is the parent perform all the initialization for this object
+		if (isParent)
+			setW(w);
+		
+		//locate the 4Dmanager
+		IVDManager = Object.FindObjectOfType<FourthDManager>();
 
-        controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
+		controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
 
 		_cachedRenderer = GetComponent<Renderer>();
 
 		hypPlayer = Object.FindObjectOfType<HyperCreature>();
+	}
 
+    void Start()
+    {
         Invoke("GetReady", 5);
 
-        //if this is the parent perform all the initialization for this object
-        if (isParent)
-        {
-            setW(w);
-        }
 		WMove();
     }
 
@@ -77,10 +78,10 @@ public class HyperObject : MonoBehaviour {
     //the player has moved to a new w point, remove once 4D shader is implemented
     public void WMove()
     {
-		if(!hypPlayer)
+		/*if(!hypPlayer)
 			hypPlayer = Object.FindObjectOfType<HyperCreature>();
 		if(!_cachedRenderer)
-			_cachedRenderer = GetComponent<Renderer>();
+			_cachedRenderer = GetComponent<Renderer>();*/
 		int newW = hypPlayer.w;
         if (isVisibleSolid(newW))
         {//this object is on the player's w point or is wide enough to be seen and touched

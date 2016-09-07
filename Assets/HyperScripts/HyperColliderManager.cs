@@ -20,26 +20,24 @@ public class HyperColliderManager : MonoBehaviour {
 
 	HyperCreature hypPlayer;						//Reference to the player
 
-    void Start()
-    {
-        //locate the 4Dmanager
-        IVDManager = Object.FindObjectOfType<FourthDManager>();
+	void Awake(){
+		//if this is the parent perform all the initialization for this object
+		if (isParent)
+			setW(w);
 
-        controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
+		//locate the 4Dmanager
+		IVDManager = Object.FindObjectOfType<FourthDManager>();
+
+		controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
 
 		hypPlayer = Object.FindObjectOfType<HyperCreature>();
+	}
 
+    void Start()
+    {
         Invoke("GetReady", 5);
 
         SetCollisions();
-
-        //if this is the parent perform all the initialization for this object
-        if (isParent)
-        {
-            setW(w);
-            
-        }
-		//WMove();
     }
 
     void GetReady()

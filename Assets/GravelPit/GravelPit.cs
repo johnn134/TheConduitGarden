@@ -63,8 +63,8 @@ public class GravelPit : MonoBehaviour {
 		tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z + 5) * (float)102.4);
 
 		float rotation = (float)rake.GetComponent<Transform>().rotation.z;
-
-		if (((rotation <= 50.0f) && (rotation >= 0.0f)) || ((rotation < 360.0f) && (rotation >= 310.0f))) {
+		Debug.Log("DOT: " + Vector3.Dot(Vector3.up, rake.transform.up));
+		if (Vector3.Dot(Vector3.up, rake.transform.up) > 0) {
 			if (tine1collision == true) {
 				for (x = ((int)tine1Position.x - 5); x <= ((int)tine1Position.x + 5); x++) {
 					for (z = ((int)tine1Position.z - 5); z <= ((int)tine1Position.z + 5); z++) {

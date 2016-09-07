@@ -26,6 +26,9 @@ public class Fish : MonoBehaviour {
 
     public float maxSize = .66f;                    //the size of the fish at the largest size
     public float minSize = .33f;                    //the size of the fish at the smallest size
+    public float happySpeed = .5f;                  //the speed of the fish when happy
+    public float hungrySpeed = .1f;                 //the speed of the fish when hungry
+    public float huntingSpeed = 1f;                 //the speed of the fish when hunting
 
     public Vector3 wanderArea1;                     //point 1 of the area the fish can swin in
     public Vector3 wanderArea2;                     //point 2 of the area the fish can swin in
@@ -145,7 +148,7 @@ public class Fish : MonoBehaviour {
     void BehaveHappy()
     {
         //move forwards while restricting speed
-        _cachedTransform.Translate(Vector3.forward * Time.deltaTime / 2);
+        _cachedTransform.Translate(Vector3.forward * Time.deltaTime * happySpeed);
 
         //smoothly turn towards the wander location
         if (_cachedTransform.rotation != Quaternion.LookRotation(wanderLoc - _cachedTransform.position))
@@ -175,7 +178,7 @@ public class Fish : MonoBehaviour {
     void BehaveHungry()
     {
         //move forwards while restricting speed
-        _cachedTransform.Translate(Vector3.forward * Time.deltaTime / 10);
+        _cachedTransform.Translate(Vector3.forward * Time.deltaTime * hungrySpeed);
 
         //smoothly turn towards the wander location
         if (_cachedTransform.rotation != Quaternion.LookRotation(wanderLoc - _cachedTransform.position))
@@ -204,7 +207,7 @@ public class Fish : MonoBehaviour {
             if (target.GetComponent<HyperColliderManager>().w == myHyper.w && target.GetComponent<Fish>().size <= size)
             {
                 //move forwards while restricting speed
-                _cachedTransform.Translate(Vector3.forward * Time.deltaTime);
+                _cachedTransform.Translate(Vector3.forward * Time.deltaTime * huntingSpeed);
 
                 //smoothly turn towards the target location
                 if (_cachedTransform.rotation != Quaternion.LookRotation(target.transform.position - _cachedTransform.position))
@@ -245,7 +248,7 @@ public class Fish : MonoBehaviour {
                 //slowly approach the target until close enough
                 if (Vector3.Distance(_cachedTransform.position, target.transform.position) < .5f)
                 {
-                    _cachedTransform.Translate(Vector3.forward * Time.deltaTime / 2);
+                    _cachedTransform.Translate(Vector3.forward * Time.deltaTime * happySpeed);
 
                     //smoothly turn towards the target location
                     if (_cachedTransform.rotation != Quaternion.LookRotation(target.transform.position - _cachedTransform.position))
@@ -259,7 +262,7 @@ public class Fish : MonoBehaviour {
                 }
                 else
                 {
-                    _cachedTransform.Translate(Vector3.forward * Time.deltaTime / 6);
+                    _cachedTransform.Translate(Vector3.forward * Time.deltaTime * hungrySpeed * 2);
 
                     //smoothly turn towards the target location
                     if (_cachedTransform.rotation != Quaternion.LookRotation(target.transform.position - _cachedTransform.position))
@@ -293,7 +296,7 @@ public class Fish : MonoBehaviour {
         //stop movement and dull color
         if (state == State.Hungry)
         {
-            foreach (Transform child in transform)
+            foreach (Transform child in _cachedTransform)
             {
                 child.GetComponent<HyperObject>().dullCoef = 2;
                 child.GetComponent<HyperObject>().WMove();
@@ -308,7 +311,7 @@ public class Fish : MonoBehaviour {
     void DoEat()
     {
         state = State.Happy;
-        foreach (Transform child in transform)
+        foreach (Transform child in _cachedTransform)
         {
             child.GetComponent<HyperObject>().dullCoef = 1;
             child.GetComponent<HyperObject>().WMove();

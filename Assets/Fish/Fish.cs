@@ -265,7 +265,7 @@ public class Fish : MonoBehaviour {
             foreach (Transform child in transform)
             {
                 child.GetComponent<HyperObject>().dullCoef = 2;
-                child.GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+                child.GetComponent<HyperObject>().WMove();
             }
 
         }
@@ -280,7 +280,7 @@ public class Fish : MonoBehaviour {
         foreach (Transform child in transform)
         {
             child.GetComponent<HyperObject>().dullCoef = 1;
-            child.GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+            child.GetComponent<HyperObject>().WMove();
         }
 
         //restart feeding cycle
@@ -323,4 +323,13 @@ public class Fish : MonoBehaviour {
             }
         }
     }
+
+	public void updateWVisual() {
+		transform.GetChild(0).GetComponent<HyperObject>().WMove();
+		transform.GetChild(1).GetComponent<HyperObject>().WMove();
+		transform.GetChild(2).GetComponent<HyperObject>().WMove();
+		transform.GetChild(3).GetComponent<HyperObject>().WMove();
+		transform.GetChild(4).GetComponent<HyperObject>().WMove();
+		transform.GetChild(5).GetComponent<HyperObject>().WMove();
+	}
 }

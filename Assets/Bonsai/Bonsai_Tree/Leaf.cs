@@ -118,7 +118,7 @@ public class Leaf : MonoBehaviour {
 		//Color oldColor = transform.GetChild(0).GetComponent<MeshRenderer>().material.color;
 		//setVisualColor(new Color (oldColor.r * DARKEN_VALUE, oldColor.g * DARKEN_VALUE, oldColor.b * DARKEN_VALUE, DARKEN_ALPHA));
 		transform.GetChild(0).GetComponent<HyperObject>().dullCoef = 4;
-		transform.GetChild(0).GetComponent<HyperObject>().WMove(GameObject.FindGameObjectWithTag("Player").GetComponent<HyperCreature>().w);
+		transform.GetChild(0).GetComponent<HyperObject>().WMove();
 
 		isDead = true;
 		manager.GetComponent<BonsaiManager>().addDeadLeaf();
@@ -329,6 +329,10 @@ public class Leaf : MonoBehaviour {
 	 */
 	void setVisualColor(Color c) {
 		transform.GetChild(0).GetComponent<MeshRenderer>().material.color = c;
+	}
+
+	public void updateWVisual() {
+		transform.GetChild(0).GetComponent<HyperObject>().WMove();
 	}
 
 	/*

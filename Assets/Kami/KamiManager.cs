@@ -37,7 +37,7 @@ public class KamiManager : MonoBehaviour {
         {
 			nObj = (GameObject)Instantiate(Resources.Load("Kami/Kami"), nPosition, nRotation);
             nObj.GetComponent<HyperObject>().setW(nW);
-            nObj.GetComponent<HyperObject>().WMove(GameObject.Find("CameraRig").GetComponent<HyperCreature>().w);//change to Slide(0) once 4d shader is implemented
+            nObj.GetComponent<HyperObject>().WMove();//change to Slide(0) once 4d shader is implemented
             allKami.Add(nObj);
             numKami += 1;
             nObj.GetComponent<Kami>().id = curIndex;

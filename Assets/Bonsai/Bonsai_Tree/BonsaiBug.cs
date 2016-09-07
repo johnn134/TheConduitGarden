@@ -148,10 +148,6 @@ public class BonsaiBug : MonoBehaviour {
 		transform.GetChild(0).GetComponent<MeshRenderer>().material.color = c;
 	}
 
-	public void updateWVisual() {
-		transform.GetChild(0).GetComponent<HyperObject>().WMove();
-	}
-
 	/*
 	 * Sets the bonsai manager this leaf answers to
 	 */

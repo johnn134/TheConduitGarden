@@ -166,7 +166,7 @@ public class BonsaiShrine : MonoBehaviour {
 
 		for(int i = 0; i < trees.Length; i++) {
 			for(int j = 0; j < 10; j++) {
-				if(trees[i].GetComponent<BonsaiManager>().getHitboxCollisions()[j] > 0) {
+				if(trees[i].GetComponent<BonsaiManager>().getHitboxCollisions() > 0) {
 					satisfied = false;
 				}
 			}

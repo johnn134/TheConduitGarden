@@ -7,6 +7,12 @@ TagManager:
   - RightControl
   - LeftControl
   - Tool
+  - Pit
+  - Rake
+  - Tine 1
+  - Tine 2
+  - Tine 3
+  - Tine 4
   layers:
   - Default
   - TransparentFX

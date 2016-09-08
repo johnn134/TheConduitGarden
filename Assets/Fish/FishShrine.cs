@@ -26,12 +26,11 @@ public class FishShrine : MonoBehaviour {
 
         particleObj = GameObject.Find("ShrineFish/Particles").GetComponent<ParticleSystem>();
 
-        particleObj.emissionRate = 0;
+        var em = particleObj.emission;
+        em.rate = 0;
 
         foreach (int node in onWs)
             maxPoints += node;
-
-        Debug.Log("MAX POINTS: " + maxPoints);
 
         //cache the transforms of all the lights and set their color
         lights[0] = GameObject.Find("ShrineFish/Visual/LevelOneLight").transform;
@@ -66,11 +65,12 @@ public class FishShrine : MonoBehaviour {
         float[] pointMatrix = new float[] { 0, 0, 0, 0, 0, 0, 0 };
         foreach(GameObject fish in allFish)
         {
+            int fishW = fish.GetComponent<HyperColliderManager>().w;
             if (fish)
             {
-                if (onWs[fish.GetComponent<HyperColliderManager>().w] > 0 && pointMatrix[fish.GetComponent<HyperColliderManager>().w] < onWs[fish.GetComponent<HyperColliderManager>().w] && (int)fish.GetComponent<Fish>().size == 2)
+                if (onWs[fishW] > 0 && pointMatrix[fishW] < onWs[fishW] && (int)fish.GetComponent<Fish>().size == 2)
                 {
-                    pointMatrix[fish.GetComponent<HyperColliderManager>().w] += 1;
+                    pointMatrix[fishW] += 1;
                     points++;
                 }
             }
@@ -102,14 +102,6 @@ public class FishShrine : MonoBehaviour {
             }
         }*/
 
-        Debug.Log("Matrix: " + pointMatrix[0] + ", "
-                             + pointMatrix[1] + ", "
-                             + pointMatrix[2] + ", "
-                             + pointMatrix[3] + ", "
-                             + pointMatrix[4] + ", "
-                             + pointMatrix[5] + ", "
-                             + pointMatrix[6]);
-
         UpdateLights(pointMatrix);
 
         if(points >= maxPoints/3 && stage == 0 ||
@@ -129,9 +121,9 @@ public class FishShrine : MonoBehaviour {
         if (points >= maxPoints && !activated)
         {
             activated = true;
-            Debug.Log("ACTIVATED");
             CancelInvoke();
-            particleObj.emissionRate = 5;
+            var em = particleObj.emission;
+            em.rate = 5;
             kamiManager.MakeKami(transform.position, transform.rotation, 0);
             InvokeRepeating("MakeKami", kamiManager.kamiComeRate, kamiManager.kamiComeRate);
             //GetComponent<HyperObject>().dullCoef = .1f;
@@ -140,11 +132,11 @@ public class FishShrine : MonoBehaviour {
         if (points < maxPoints && activated)
         {
             activated = false;
-            Debug.Log("DEACTIVATED");
             CancelInvoke();
             ScareKami();
             InvokeRepeating("ScareKami", kamiManager.kamiLeaveRate, kamiManager.kamiLeaveRate);
-            particleObj.GetComponent<ParticleSystem>().emissionRate = 0;
+            var em = particleObj.emission;
+            em.rate = 0;
             /*foreach (Transform child in transform)
             {
                 if (child.GetComponent<HyperObject>())

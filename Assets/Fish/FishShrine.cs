@@ -4,15 +4,18 @@ using System.Collections.Generic;
 
 public class FishShrine : MonoBehaviour {
 
-    //public int requiredNumLargeFish = 1;
-    public int[] onWs = new int[] {0, 0, 0, 0, 0, 0, 0};
-    FishManager fishManager;
-    KamiManager kamiManager;
-    float maxPoints = 0.0f;
-    float points = 0.0f;
-    bool activated = false;
-    GameObject particleObj;
-    int stage = 0;
+    int stage = 0;                                              //how many thirds of the way the shrine is to activation
+
+    public int[] onWs = new int[] {0, 0, 0, 0, 0, 0, 0};        //the number of fish required on each w point to activate the shrine
+
+    float maxPoints = 0.0f;                                     //the total points the shine needs to activate
+    float points = 0.0f;                                        //the current number of points the shrine has
+
+    bool activated = false;                                     //is the shine activated
+
+    FishManager fishManager;                                    //reference to the fish manager
+    KamiManager kamiManager;                                    //reference to the kami manager
+    GameObject particleObj;                                     //the particle emmiter on this shrine
 
 	void Start () {
         fishManager = Object.FindObjectOfType<FishManager>();

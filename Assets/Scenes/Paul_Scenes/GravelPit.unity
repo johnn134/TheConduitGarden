@@ -437,6 +437,7 @@ Prefab:
       propertyPath: tine4
       value: 
       objectReference: {fileID: 847970114}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114000011607997016, guid: 6ddb58e5bc8f233478b015281ca69e15, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 6ddb58e5bc8f233478b015281ca69e15, type: 2}
   m_IsPrefabParent: 0

@@ -17,10 +17,9 @@ public class Alpha : MonoBehaviour {
 	public bool tine4Collision;
 	public Texture2D texture;
 	public Color color;
+	public Color originalColor;
 	public int[,] coordinates;
 	public int raked;
-	public Texture2D originalPit;
-	public Texture2D currentPit;
 	private int x;
 	private int z;
 	private int originalThird;
@@ -42,13 +41,16 @@ public class Alpha : MonoBehaviour {
 		color.b = 0.2f;
 		color.a = 1.0f;
 
+		originalColor.r = 0.0f;
+		originalColor.g = 0.0f;
+		originalColor.b = 0.0f;
+		originalColor.a = 0.0f;
+
 		coordinates = new int[1024, 1024];
 
-		originalThird = (int)Mathf.Ceil(originalPit.width / 3);
+		originalThird = (int)Mathf.Ceil(texture.width / 3);
 
 		isRakedEnough = false;
-
-		Debug.Log (texture.GetPixel(512,512));
 	}
 
 	void Update() {
@@ -65,8 +67,6 @@ public class Alpha : MonoBehaviour {
 
 		tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x + 5) * (float)102.4);
 		tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z + 5) * (float)102.4);
-
-		float rotation = (float)rake.GetComponent<Transform>().rotation.z;
 
 		if (Vector3.Dot(Vector3.up, transform.up) > 0) {
 			if (tine1Collision == true) {
@@ -136,7 +136,7 @@ public class Alpha : MonoBehaviour {
 			}
 		}
 
-		if (raked == (originalThird * originalPit.height)) {
+		if (raked == (originalThird * texture.height)) {
 			isRakedEnough = true;
 			Debug.Log("Raked enough.");
 		}
@@ -196,27 +196,24 @@ public class Alpha : MonoBehaviour {
 
 	void clearPitSection1() {
 		for (int i = 0; i <= originalThird; i++) {
-			for (int j = 0; j <= originalPit.height; j++) {
-				Color originalColor = originalPit.GetPixel(i, j);
-				currentPit.SetPixel(i, j, originalColor);
+			for (int j = 0; j <= texture.height; j++) {
+				texture.SetPixel(i, j, originalColor);
 			}
 		}
 	}
 
 	void clearPitSection2() {
 		for (int i = originalThird; i <= (originalThird * 2); i++) {
-			for (int j = 0; j <= originalPit.height; j++) {
-				Color originalColor = originalPit.GetPixel(i, j);
-				currentPit.SetPixel(i, j, originalColor);
+			for (int j = 0; j <= texture.height; j++) {
+				texture.SetPixel(i, j, originalColor);
 			}
 		}
 	}
 
 	void clearPitSection3() {
-		for (int i = (originalThird * 2); i <= originalPit.width; i++) {
-			for (int j = 0; j <= originalPit.height; j++) {
-				Color originalColor = originalPit.GetPixel(i, j);
-				currentPit.SetPixel(i, j, originalColor);
+		for (int i = (originalThird * 2); i <= texture.width; i++) {
+			for (int j = 0; j <= texture.height; j++) {
+				texture.SetPixel(i, j, originalColor);
 			}
 		}
 	}

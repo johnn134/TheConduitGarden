@@ -13,6 +13,7 @@ TagManager:
   - Tine 2
   - Tine 3
   - Tine 4
+  - Alpha
   layers:
   - Default
   - TransparentFX

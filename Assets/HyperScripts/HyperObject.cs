@@ -35,7 +35,9 @@ public class HyperObject : MonoBehaviour {
 		_cachedRenderer = GetComponent<Renderer>();
 
 		hypPlayer = Object.FindObjectOfType<HyperCreature>();
-	}
+
+        Debug.Log("Shader KW: " + _cachedRenderer.material.shaderKeywords[0]);
+    }
 
     void Start()
     {
@@ -75,6 +77,8 @@ public class HyperObject : MonoBehaviour {
             //if got -1 for target alpha then already proper alpha so skip the color lerp
             if (targA != -1.0f)
             {
+                _cachedRenderer.material.SetFloat("_Mode", 2);
+
                 //fade out if not on player's w point
                 if (w_depth > 0)
                 {
@@ -260,6 +264,11 @@ public class HyperObject : MonoBehaviour {
 
         _cachedRenderer.material.color = targetColor;
 
+        if(targetA == 1f)
+        {
+            _cachedRenderer.material.SetFloat("_Mode", 0);
+            //_cachedRenderer.material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+        }
     }
 
     //move this object along the w axis by deltaW

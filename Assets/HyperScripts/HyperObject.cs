@@ -67,25 +67,29 @@ public class HyperObject : MonoBehaviour {
         {//this object is on the player's w point or is wide enough to be seen and touched
             StartCoroutine(ColorTrans(newW, 1.0f));
         }
-		else if(_cachedRenderer.material.color.a != .2f){
-            float targA = .2f;
-            if (vanishWhenTransparent)
-                targA = 0.0f;
+		else{
+            float targA = PeripheralAlpha(newW);
+            /*if (vanishWhenTransparent)
+                targA = 0.0f;*/
 
-            //fade out if not on player's w point
-            if (w_depth > 0)
+            //if got -1 for target alpha then already proper alpha so skip the color lerp
+            if (targA != -1.0f)
             {
-                if (w > newW)
-                    StartCoroutine(ColorTrans(w, targA));
+                //fade out if not on player's w point
+                if (w_depth > 0)
+                {
+                    if (w > newW)
+                        StartCoroutine(ColorTrans(w, targA));
+                    else
+                        StartCoroutine(ColorTrans(w + w_depth, targA));
+                }
                 else
-                    StartCoroutine(ColorTrans(w + w_depth, targA));
-            }
-            else
-            {
-                if (w < newW)
-                    StartCoroutine(ColorTrans(w, targA));
-                else
-                    StartCoroutine(ColorTrans(w + w_depth, targA));
+                {
+                    if (w < newW)
+                        StartCoroutine(ColorTrans(w, targA));
+                    else
+                        StartCoroutine(ColorTrans(w + w_depth, targA));
+                }
             }
         }
 
@@ -205,14 +209,27 @@ public class HyperObject : MonoBehaviour {
         return 0;
     }
 
+    float PeripheralAlpha(int newW)
+    {
+        if (Mathf.Abs(newW - w) <= hypPlayer.w_perif * 2)
+        {
+            if (_cachedRenderer.material.color.a == .2f)
+                return -1.0f;
+
+            return .2f;
+        }
+
+        if (_cachedRenderer.material.color.a == 0.0f)
+            return -1.0f;
+
+        return 0.0f;
+    }
+
     //smoothly change the color of this object, rmove once 4D shader is implemented
     IEnumerator ColorTrans(int newW, float targetA){
         Color targetColor;
-        Color curColor;
-		curColor = _cachedRenderer.material.color;
 		
 		//deturmine the target color based on w point
-        
 		if(newW == 0)
 			targetColor = Color.red;
 		else if(newW == 1)
@@ -234,13 +251,16 @@ public class HyperObject : MonoBehaviour {
 		targetColor.g /= dullCoef;
 		targetColor.b /= dullCoef;
 		
-		for(float i = 0.0f; i < 1.0f; i += .1f){
-
-			_cachedRenderer.material.color = Color.Lerp(curColor, targetColor, i);
+		for(float i = 0.0f; i <= 1.0f; i += .1f){
+            
+			_cachedRenderer.material.color = Color.Lerp(_cachedRenderer.material.color, targetColor, .2f);
 
 			yield return null;
 		}
-	}
+
+        _cachedRenderer.material.color = targetColor;
+
+    }
 
     //move this object along the w axis by deltaW
 	public bool SlideW(int deltaW){

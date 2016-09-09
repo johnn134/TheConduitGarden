@@ -7,15 +7,15 @@ public class Leaf : MonoBehaviour {
 
 	int age;            //The age of this leaf
 	int w;              //The position of this leaf on the fourth dimension
-	int deathTime;      //The age at which this leaf died
+	//int deathTime;      //The age at which this leaf died
 
-	int depth = 0;                  //The depth of this leaf on the tree
+	//int depth = 0;                  //The depth of this leaf on the tree
 	int minAcceptableCoverage = 1;  //Number of leaves allowed to overshadow this leaf each growth cycle
 
 	float DARKEN_VALUE = 0.1f;
 	float DARKEN_ALPHA = 0.75f;
 
-	int[] zoneExtensions;
+	bool zoneExtension;
 
 	bool canSnip;       //Whether this leaf can be snipped or not
 	bool isDead;       //Whether the leaf is alive or not
@@ -27,7 +27,7 @@ public class Leaf : MonoBehaviour {
 		canSnip = true;
 		isDead = false;
 
-		zoneExtensions = new int[10];
+		zoneExtension = false;
 
 		//name the leaf
 		this.gameObject.name = "Leaf_" + ID;
@@ -54,10 +54,8 @@ public class Leaf : MonoBehaviour {
 				manager.GetComponent<BonsaiManager>().removeDeadLeaf();
 			}
 
-			manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension();
-
-			//if(zoneExtension != "None")
-			//	Debug.Log(gameObject.name + " left the bounding zone for " + zoneExtension);
+			if(zoneExtension)
+				manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension();
 		}
 	}
 
@@ -112,7 +110,7 @@ public class Leaf : MonoBehaviour {
 
 	public void makeLeafDead() {
 		//Set the death time
-		deathTime = age;
+		//deathTime = age;
 
 		//Darken the leaf to show it is dead
 		//Color oldColor = transform.GetChild(0).GetComponent<MeshRenderer>().material.color;
@@ -142,7 +140,7 @@ public class Leaf : MonoBehaviour {
 	 * Checks whether the leaf is facing above or below the horizon
 	 */
 	bool checkFacingAboveTheHorizon() {
-		return Vector3.Dot(Vector3.up, transform.up) >= 0;
+		return Vector3.Dot(Vector3.up, transform.up) >= -0.05f;	//-0.05f allows for a slight amount of tilt down. Like 2.5 degrees
 	}
 
 	/*
@@ -163,7 +161,7 @@ public class Leaf : MonoBehaviour {
 
 					break;
 				case BonsaiManager.CONTRACTLEVEL.TOKYO:
-					checkTokyoHitboxCollision();
+					checkBoundsForTokyo();
 					break;
 				default:
 
@@ -173,87 +171,18 @@ public class Leaf : MonoBehaviour {
 	}
 
 	/*
-	 * checks if the leaf extends beyond one of the Tokyo contract zones
+	 * Determines if the branch extends past the bounding zone for the Tokyo contract
 	 */
-	void checkTokyoHitboxCollision() {
-		Transform hitboxes = manager.transform.GetChild(0);
-		//Top
-		if(transform.position.y >= hitboxes.GetChild(0).position.y || 
-			transform.GetChild(1).position.y >= hitboxes.GetChild(0).position.y ) {
-			zoneExtensions[0] = 1;
+	void checkBoundsForTokyo() {
+		GameObject shrine = FindObjectOfType<BonsaiShrine>().gameObject;
+		bool a = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(1).position, manager);
+		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.position, manager);
+		if(!a || !b) {
+			zoneExtension = true;
+			Debug.Log(gameObject.name + " extends past zone");
+			if(manager.GetComponent<BonsaiManager>() != null)
+				manager.GetComponent<BonsaiManager>().registerZoneExtension();
 		}
-
-		//Bottom
-		if(transform.position.y <= hitboxes.GetChild(1).position.y || 
-			transform.GetChild(1).position.y <= hitboxes.GetChild(1).position.y ) {
-			zoneExtensions[1] = 1;
-		}
-
-		/***	Lower	***/
-
-		if(transform.position.y <= hitboxes.GetChild(2).position.y &&
-		   transform.GetChild(1).position.y <= hitboxes.GetChild(2).position.y) {
-
-			//North
-			if(transform.position.z >= hitboxes.GetChild(2).position.z ||
-			  transform.GetChild(1).position.z >= hitboxes.GetChild(2).position.z) {
-				zoneExtensions[2] = 1;
-			}
-
-			//South
-			if(transform.position.z <= hitboxes.GetChild(3).position.z ||
-			  transform.GetChild(1).position.z <= hitboxes.GetChild(3).position.z) {
-				zoneExtensions[3] = 1;
-			}
-
-			//East
-			if(transform.position.x >= hitboxes.GetChild(4).position.x ||
-			  transform.GetChild(1).position.x >= hitboxes.GetChild(4).position.x) {
-				zoneExtensions[4] = 1;
-			}
-
-			//West
-			if(transform.position.x <= hitboxes.GetChild(5).position.x ||
-			  transform.GetChild(1).position.x <= hitboxes.GetChild(5).position.x) {
-				zoneExtensions[5] = 1;
-			}
-		}
-
-		/***	Upper	***/
-
-		if(transform.position.y <= hitboxes.GetChild(0).position.y &&
-			transform.GetChild(1).position.y <= hitboxes.GetChild(0).position.y) {
-
-			//North
-			if(transform.position.z >= hitboxes.GetChild(2).position.z ||
-				transform.GetChild(1).position.z >= hitboxes.GetChild(2).position.z) {
-				zoneExtensions[6] = 1;
-			}
-
-			//South
-			if(transform.position.z <= hitboxes.GetChild(3).position.z ||
-				transform.GetChild(1).position.z <= hitboxes.GetChild(3).position.z) {
-				zoneExtensions[7] = 1;
-			}
-
-			//East
-			if(transform.position.x >= hitboxes.GetChild(4).position.x ||
-				transform.GetChild(1).position.x >= hitboxes.GetChild(4).position.x) {
-				zoneExtensions[8] = 1;
-			}
-
-			//West
-			if(transform.position.x <= hitboxes.GetChild(5).position.x ||
-				transform.GetChild(1).position.x <= hitboxes.GetChild(5).position.x) {
-				zoneExtensions[9] = 1;
-			}
-		}
-
-		if(manager.GetComponent<BonsaiManager>() != null)
-			manager.GetComponent<BonsaiManager>().registerZoneExtension();
-
-		//if(zoneExtension != "None")
-		//	Debug.Log(gameObject.name + " moved past the bounding zone for " + zoneExtension);
 	}
 
 	/*
@@ -273,9 +202,9 @@ public class Leaf : MonoBehaviour {
 	/*
 	 * Sets the depth of this leaf
 	 */
-	public void setDepth(int newDepth) {
-		depth = newDepth;
-	}
+	//public void setDepth(int newDepth) {
+	//	depth = newDepth;
+	//}
 
 	/*
 	 * Sets the w position of this leaf and adjusts the color accordingly

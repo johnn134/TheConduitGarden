@@ -665,35 +665,30 @@ public class Branch : MonoBehaviour {
 		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqTopZone(transform.GetChild(1).position, 
 				transform.GetChild(2).position, manager)) {
 			requiredZonePasses[0] = 1;
-			Debug.Log(gameObject.name + " passes through top zone");
 		}
 
 		//Check for the north requirement
 		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqNorthZone(transform.GetChild(1).position, 
 				transform.GetChild(2).position, manager)) {
 			requiredZonePasses[1] = 1;
-			Debug.Log(gameObject.name + " passes through north zone");
 		}
 
 		//check for the east requirement
 		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqEastZone(transform.GetChild(1).position, 
 				transform.GetChild(2).position, manager)) {
 			requiredZonePasses[2] = 1;
-			Debug.Log(gameObject.name + " passes through east zone");
 		}
 
 		//check for the south requirement
 		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqSouthZone(transform.GetChild(1).position, 
 				transform.GetChild(2).position, manager)) {
 			requiredZonePasses[3] = 1;
-			Debug.Log(gameObject.name + " passes through south zone");
 		}
 
 		//check for the west requirement
 		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqWestZone(transform.GetChild(1).position, 
 				transform.GetChild(2).position, manager)) {
 			requiredZonePasses[4] = 1;
-			Debug.Log(gameObject.name + " passes through west zone");
 		}
 
 		//Send passes

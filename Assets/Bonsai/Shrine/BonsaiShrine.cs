@@ -376,20 +376,18 @@ public class BonsaiShrine : MonoBehaviour {
 	bool checkTokyoContractProgress() {
 		bool satisfied = true;
 
-		for(int i = 0; i < trees.Length; i++) {
-			for(int j = 0; j < 10; j++) {
-				int[] reqZonePasses = trees[i].GetComponent<BonsaiManager>().getReqZonePasses();
-				if(trees[i].GetComponent<BonsaiManager>().getZoneExtensions() > 0 &&
-					reqZonePasses[0] > 0 &&
-					reqZonePasses[1] > 0 &&
-					reqZonePasses[2] > 0 &&
-					reqZonePasses[3] > 0 &&
-					reqZonePasses[4] > 0) {
-					satisfied = false;
-				}
+		foreach(GameObject tree in trees) {
+			int[] reqZonePasses = tree.GetComponent<BonsaiManager>().getReqZonePasses();
+			if(tree.GetComponent<BonsaiManager>().getZoneExtensions() > 0 ||
+				reqZonePasses[0] <= 0 ||
+				reqZonePasses[1] <= 0 ||
+				reqZonePasses[2] <= 0 ||
+				reqZonePasses[3] <= 0 ||
+				reqZonePasses[4] <= 0) {
+				satisfied = false;
 			}
 		}
-
+		
 		return satisfied;
 	}
 
@@ -402,13 +400,16 @@ public class BonsaiShrine : MonoBehaviour {
 		if(point.y < tree.transform.position.y + TOKYO_LOWEST_HEIGHT ||
 			point.y > tree.transform.position.y + TOKYO_TOP_HEIGHT) {	//Above or below
 			inZone = false;
+			//Debug.Log("height issue");
 		}
 		else {
+			Vector3 pointPos = new Vector3(point.x, 0.0f, point.z);
+			Vector3 treePos = new Vector3(tree.transform.position.x, 0.0f, tree.transform.position.z);
+
 			if(point.y < tree.transform.position.y + TOKYO_BASE_HEIGHT) {	//Below Median
-				Vector3 pointPos = new Vector3(point.x, 0.0f, point.z);
-				Vector3 treePos = new Vector3(tree.transform.position.x, 0.0f, tree.transform.position.z);
 				if(Vector3.Distance(pointPos, treePos) > TOKYO_BASE_RADIUS) {
 					inZone = false;
+					//Debug.Log("base issue");
 				}
 			}
 			else {	//Above Median
@@ -417,10 +418,9 @@ public class BonsaiShrine : MonoBehaviour {
 				float coneHeight = Mathf.Tan(angle) * TOKYO_BASE_RADIUS;
 				float pointRadius = (coneHeight - (point.y - (tree.transform.position.y + TOKYO_BASE_HEIGHT))) / Mathf.Tan(angle);
 
-				float distance = Mathf.Sqrt(Mathf.Pow(point.x, 2) + Mathf.Pow(point.z, 2));
-
-				if(distance > pointRadius) {
+				if(Vector3.Distance(pointPos, treePos) > pointRadius) {
 					inZone = false;
+					//Debug.Log("top issue");
 				}
 			}
 		}
@@ -457,7 +457,7 @@ public class BonsaiShrine : MonoBehaviour {
 		float y = start.y - ((tree.transform.position.z + TOKYO_REQ_BASE_OFFSET - start.z) / slopeYZ);
 		float distance = Mathf.Sqrt(Mathf.Pow(x - tree.transform.position.x, 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_REQ_BASE_HEIGHT), 2));
 
-		return distance < TOKYO_REQ_TOP_RADIUS && isPointBetween(tree.transform.position.z + TOKYO_REQ_BASE_OFFSET, start.z, end.z);
+		return distance < TOKYO_REQ_BASE_RADIUS && isPointBetween(tree.transform.position.z + TOKYO_REQ_BASE_OFFSET, start.z, end.z);
 	}
 
 	/*
@@ -473,7 +473,7 @@ public class BonsaiShrine : MonoBehaviour {
 		float z = start.z - ((tree.transform.position.x + TOKYO_REQ_BASE_OFFSET - start.x) / slopeXZ);
 		float distance = Mathf.Sqrt(Mathf.Pow(z - tree.transform.position.z, 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_REQ_BASE_HEIGHT), 2));
 
-		return distance < TOKYO_REQ_TOP_RADIUS && isPointBetween(tree.transform.position.x + TOKYO_REQ_BASE_OFFSET, start.x, end.x);
+		return distance < TOKYO_REQ_BASE_RADIUS && isPointBetween(tree.transform.position.x + TOKYO_REQ_BASE_OFFSET, start.x, end.x);
 	}
 
 	/*
@@ -489,7 +489,7 @@ public class BonsaiShrine : MonoBehaviour {
 		float y = start.y - ((tree.transform.position.z - TOKYO_REQ_BASE_OFFSET - start.z) / slopeYZ);
 		float distance = Mathf.Sqrt(Mathf.Pow(x - tree.transform.position.x, 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_REQ_BASE_HEIGHT), 2));
 
-		return distance < TOKYO_REQ_TOP_RADIUS && isPointBetween(tree.transform.position.z - TOKYO_REQ_BASE_OFFSET, start.z, end.z);
+		return distance < TOKYO_REQ_BASE_RADIUS && isPointBetween(tree.transform.position.z - TOKYO_REQ_BASE_OFFSET, start.z, end.z);
 	}
 
 	/*
@@ -501,11 +501,11 @@ public class BonsaiShrine : MonoBehaviour {
 		float slopeXY = (end.x - start.x) / (end.y - start.y);
 		float slopeXZ = (end.x - start.x) / (end.z - start.z);
 
-		float y = start.y - ((tree.transform.position.x + TOKYO_REQ_BASE_OFFSET - start.x) / slopeXY);
-		float z = start.z - ((tree.transform.position.x + TOKYO_REQ_BASE_OFFSET - start.x) / slopeXZ);
+		float y = start.y - ((tree.transform.position.x - TOKYO_REQ_BASE_OFFSET - start.x) / slopeXY);
+		float z = start.z - ((tree.transform.position.x - TOKYO_REQ_BASE_OFFSET - start.x) / slopeXZ);
 		float distance = Mathf.Sqrt(Mathf.Pow(z - tree.transform.position.z, 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_REQ_BASE_HEIGHT), 2));
 
-		return distance < TOKYO_REQ_TOP_RADIUS && isPointBetween(tree.transform.position.x - TOKYO_REQ_BASE_OFFSET, start.x, end.x);
+		return distance < TOKYO_REQ_BASE_RADIUS && isPointBetween(tree.transform.position.x - TOKYO_REQ_BASE_OFFSET, start.x, end.x);
 	}
 
 	/*

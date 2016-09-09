@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BonsaiBug : MonoBehaviour {
 
-	GameObject manager;
+	//GameObject manager;
 
 	int w;
 
@@ -151,7 +151,7 @@ public class BonsaiBug : MonoBehaviour {
 	/*
 	 * Sets the bonsai manager this leaf answers to
 	 */
-	public void setManager(GameObject newManager) {
-		manager = newManager;
-	}
+	//public void setManager(GameObject newManager) {
+	//	manager = newManager;
+	//}
 }

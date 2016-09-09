@@ -20,7 +20,7 @@ public class Branch : MonoBehaviour {
 	int depth = 0;              //The depth of this branch in the tree
 	int w = 0;              	//Position on the fourth dimension
 
-	int[] zoneExtensions;
+	int[] requiredZonePasses;
 
 	float budRange;     	//Maximum distance from the center of the branch tip to grow a bud
 	float leafRange;    	//Stores the radius of the rounded branch tip
@@ -30,6 +30,7 @@ public class Branch : MonoBehaviour {
 	bool isDead;    		//Is this branch diseased
 	bool isInfested;    	//Does ths branch have bugs on it
 	bool leavesAreDead;		//Are all leaves on this branch dead
+	bool zoneExtension;		//Does the branch pass outside the bound zone
 
 	bool canSnip = true;       	//Tells whether this branch can be snipped off
 
@@ -65,10 +66,15 @@ public class Branch : MonoBehaviour {
 		growthStep = 0;
 		numBugs = 0;
 
-		zoneExtensions = new int[10];
-
+		zoneExtension = false;
 		runGrowth = false;
 		isTip = true;
+
+		requiredZonePasses = new int[5];
+
+		for(int i = 0; i < 5; i++) {
+			requiredZonePasses[i] = 0;
+		}
 
 		//Infestation and Death variables
 		leavesDeathTime = -1;
@@ -106,10 +112,10 @@ public class Branch : MonoBehaviour {
 			if(isDead)
 				manager.GetComponent<BonsaiManager>().removeDeadBranch();
 
-			manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension();
+			if(zoneExtension)
+				manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension();
 
-			//if(zoneExtension != "None")
-			//	Debug.Log(gameObject.name + " left the bounding zone for " + zoneExtension);
+			manager.GetComponent<BonsaiManager>().registerRemovalOfReqZonePasses(requiredZonePasses);
 		}
 	}
 
@@ -399,8 +405,6 @@ public class Branch : MonoBehaviour {
 
 					newRot = new Vector3(Random.Range(-90.0f, 90.0f), 0.0f, Random.Range(-90.0f, 90.0f));
 
-					Quaternion temp = Quaternion.identity;
-
 					foundPos = true;
 					for(int j = 0; j < i + numBranches; j++) {
 						if(Quaternion.Angle(branchRotations[j], Quaternion.Euler(newRot)) <= BUD_OFFSET) {
@@ -632,7 +636,7 @@ public class Branch : MonoBehaviour {
 
 					break;
 				case BonsaiManager.CONTRACTLEVEL.TOKYO:
-					checkTokyoHitboxCollision();
+					checkBoundsForTokyo();
 					break;
 				default:
 
@@ -642,92 +646,54 @@ public class Branch : MonoBehaviour {
 	}
 
 	/*
-	 * checks if the branch extends beyond one of the Tokyo contract zones
+	 * Determines if the branch extends past the bounding zone for the Tokyo contract
 	 */
-	void checkTokyoHitboxCollision() {
-		Transform zones = manager.transform.GetChild(0);
-
-		//Top
-		if(transform.GetChild(1).position.y >= zones.GetChild(0).position.y || 
-			transform.GetChild(2).position.y >= zones.GetChild(0).position.y ) {
-			zoneExtensions[0] = 1;
-		}
-
-		//Bottom
-		if(transform.GetChild(1).position.y <= zones.GetChild(1).position.y || 
-			transform.GetChild(2).position.y <= zones.GetChild(1).position.y ) {
-			zoneExtensions[1] = 1;
-		}
-
-		/***	Lower	***/
-
-		if(transform.GetChild(1).position.y <= zones.GetChild(2).position.y &&
-		   transform.GetChild(2).position.y <= zones.GetChild(2).position.y) {
-
-			//North Lower
-			if(transform.GetChild(1).position.z >= zones.GetChild(2).position.z ||
-			   transform.GetChild(2).position.z >= zones.GetChild(2).position.z) {
-				zoneExtensions[2] = 1;
-			}
-
-			//South Lower
-			if(transform.GetChild(1).position.z <= zones.GetChild(3).position.z ||
-			   transform.GetChild(2).position.z <= zones.GetChild(3).position.z) {
-				zoneExtensions[3] = 1;
-			}
-
-			//East Lower
-			if(transform.GetChild(1).position.x >= zones.GetChild(4).position.x ||
-			   transform.GetChild(2).position.x >= zones.GetChild(4).position.x) {
-				zoneExtensions[4] = 1;
-			}
-
-			//West Lower
-			if(transform.GetChild(1).position.x <= zones.GetChild(5).position.x ||
-			   transform.GetChild(2).position.x <= zones.GetChild(5).position.x) {
-				zoneExtensions[5] = 1;
-			}
-		}
-
-		/***	Upper	***/
-
-		else if(transform.GetChild(1).position.y <= zones.GetChild(0).position.y &&
-		        transform.GetChild(2).position.y <= zones.GetChild(0).position.y) {
-
-			//North Upper
-			if(transform.GetChild(1).position.z >= zones.GetChild(6).position.z ||
-			  transform.GetChild(2).position.z >= zones.GetChild(6).position.z) {
-				zoneExtensions[6] = 1;
-			}
-
-			//South Upper
-			if(transform.GetChild(1).position.z <= zones.GetChild(7).position.z ||
-			  transform.GetChild(2).position.z <= zones.GetChild(7).position.z) {
-				zoneExtensions[7] = 1;
-			}
-
-			//East Upper
-			if(transform.GetChild(1).position.x >= zones.GetChild(8).position.x ||
-			  transform.GetChild(2).position.x >= zones.GetChild(8).position.x) {
-				zoneExtensions[8] = 1;
-			}
-
-			//West Upper
-			if(transform.GetChild(1).position.x <= zones.GetChild(9).position.x ||
-			  transform.GetChild(2).position.x <= zones.GetChild(9).position.x) {
-				zoneExtensions[9] = 1;
-			}
-		}
-
-		if(manager.GetComponent<BonsaiManager>() != null)
-			manager.GetComponent<BonsaiManager>().registerZoneExtension();
-
-		//if(zoneExtension != "None")
-		//	Debug.Log(gameObject.name + " moved past the bounding zone for " + zoneExtension);
-	}
-
 	void checkBoundsForTokyo() {
-		
+		GameObject shrine = FindObjectOfType<BonsaiShrine>().gameObject;
+
+		//Check for the bounding zone
+		bool a = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(1).position, manager);
+		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(2).position, manager);
+		if(!a || !b) {
+			zoneExtension = true;
+			Debug.Log(gameObject.name + " extends past zone");
+			if(manager.GetComponent<BonsaiManager>() != null)
+				manager.GetComponent<BonsaiManager>().registerZoneExtension();
+		}
+
+		//Check for the top requirement
+		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqTopZone(transform.GetChild(1).position, 
+				transform.GetChild(2).position, manager)) {
+			requiredZonePasses[0] = 1;
+		}
+
+		//Check for the north requirement
+		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqNorthZone(transform.GetChild(1).position, 
+				transform.GetChild(2).position, manager)) {
+			requiredZonePasses[1] = 1;
+		}
+
+		//check for the east requirement
+		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqEastZone(transform.GetChild(1).position, 
+				transform.GetChild(2).position, manager)) {
+			requiredZonePasses[2] = 1;
+		}
+
+		//check for the south requirement
+		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqSouthZone(transform.GetChild(1).position, 
+				transform.GetChild(2).position, manager)) {
+			requiredZonePasses[3] = 1;
+		}
+
+		//check for the west requirement
+		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqWestZone(transform.GetChild(1).position, 
+				transform.GetChild(2).position, manager)) {
+			requiredZonePasses[4] = 1;
+		}
+
+		//Send passes
+		if(manager.GetComponent<BonsaiManager>() != null)
+			manager.GetComponent<BonsaiManager>().registerReqZonePasses(requiredZonePasses);
 	}
 
 	/*
@@ -774,7 +740,7 @@ public class Branch : MonoBehaviour {
 
 		GameObject b4 = b3.GetComponent<Branch>().addBranch(Vector3.zero);
 
-		GameObject b5 = b4.GetComponent<Branch>().addBranch(Vector3.zero);
+		b4.GetComponent<Branch>().addBranch(Vector3.zero);
 	}
 
 	#endregion
@@ -850,6 +816,8 @@ public class Branch : MonoBehaviour {
 
 		newBranch.transform.GetComponent<Branch>().setDepth(depth + 1);
 		newBranch.transform.GetComponent<Branch>().setManager(manager);
+		newBranch.transform.GetComponent<Branch>().checkIfBranchSatisfiesContract();
+
 		manager.GetComponent<BonsaiManager>().addBranch();
 		this.registerBranchAdded();
 

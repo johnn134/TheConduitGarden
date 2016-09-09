@@ -419,5 +419,5 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   movable: 0
-  isParent: 1
+  isParent: 0
   IVDManager: {fileID: 0}

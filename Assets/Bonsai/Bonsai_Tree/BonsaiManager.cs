@@ -19,7 +19,9 @@ public class BonsaiManager : MonoBehaviour {
 	int numDeadBranches;
 	int numInfestedBranches;
 
-	int zoneExtensions;
+	int zoneExtensions;			//The number of tree components extending past the contract bounding zone
+
+	int[] requiredZonePasses;
 
 	static int ID = 0;
 
@@ -38,6 +40,12 @@ public class BonsaiManager : MonoBehaviour {
 
 		zoneExtensions = 0;
 
+		requiredZonePasses = new int[5];
+
+		for(int i = 0; i < 5; i++) {
+			requiredZonePasses[i] = 0;
+		}
+
 		//Name the tree
 		this.gameObject.name = "BonsaiTree_" + ID;
 		ID++;
@@ -48,11 +56,10 @@ public class BonsaiManager : MonoBehaviour {
 		baseBranch.transform.localScale = new Vector3(treeSize, treeSize, treeSize);
 		baseBranch.GetComponent<Branch>().setcanSnip(false);
 		baseBranch.GetComponent<Branch>().setDepth(0);
-
-		//baseBranch.GetComponent<Branch>().setWPosition(3);
-		baseBranch.GetComponent<HyperColliderManager>().setW(3);
-
 		baseBranch.GetComponent<Branch>().setManager(this.gameObject);
+		baseBranch.GetComponent<Branch>().checkIfBranchSatisfiesContract();
+
+		baseBranch.GetComponent<HyperColliderManager>().setW(3);
 
 		baseBranch.GetComponent<Branch>().setupTreeForLevel(levelType);
 
@@ -92,6 +99,26 @@ public class BonsaiManager : MonoBehaviour {
 	 */
 	public void registerRemovalOfZoneExtension() {
 		zoneExtensions -= 1;
+	}
+
+	/*
+	 * Increments the counter for the number of tree components
+	 * passing through required zones
+	 */
+	public void registerReqZonePasses(int[] zones) {
+		for(int i = 0; i < 5; i++) {
+			requiredZonePasses[i] += zones[i];
+		}
+	}
+
+	/*
+	 * Decrements the counter for the number of tree components
+	 * passing through required zones
+	 */
+	public void registerRemovalOfReqZonePasses(int[] zones) {
+		for(int i = 0; i < 5; i++) {
+			requiredZonePasses[i] -= zones[i];
+		}
 	}
 
 	public void addLeaf() {
@@ -162,7 +189,11 @@ public class BonsaiManager : MonoBehaviour {
 		return numDeadBranches;
 	}
 
-	public int getHitboxCollisions() {
+	public int getZoneExtensions() {
 		return zoneExtensions;
+	}
+
+	public int[] getReqZonePasses() {
+		return requiredZonePasses;
 	}
 }

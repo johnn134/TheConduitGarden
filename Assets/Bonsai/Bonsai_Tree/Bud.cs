@@ -49,7 +49,7 @@ public class Bud : MonoBehaviour {
 			newLeaf.transform.Rotate(-90, 0, 0);
 
 			//Initialize Variables
-			newLeaf.GetComponent<Leaf>().setDepth(depth);
+			//newLeaf.GetComponent<Leaf>().setDepth(depth);
 			newLeaf.GetComponent<Leaf>().setManager(manager);
 			newLeaf.GetComponent<Leaf>().checkIfLeafSatisfiesContract();
 

@@ -12,8 +12,6 @@ public class HyperCreature : MonoBehaviour {
     {
         //locate the 4Dmanager
         IVDManager = Object.FindObjectOfType<FourthDManager>();
-
-        //WMove();//remove once 4D shaders are implemented
     }
 
 	//public function for other objects to call to tell the creature to move along the w axis

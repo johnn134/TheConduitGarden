@@ -273,7 +273,7 @@ public class HyperObject : MonoBehaviour {
 
         _cachedRenderer.material.color = targetColor;
 
-        if(targetA == 1f && !staticRenderMode)
+        if(targetA == 1f && !staticRenderMode && isVisibleSolid(hypPlayer.w))
         {
             _cachedRenderer.material.SetFloat("_Mode", 0);
             _cachedRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);

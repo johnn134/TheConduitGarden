@@ -39,6 +39,7 @@ GameObject:
   - 4: {fileID: 4000011536690460}
   - 33: {fileID: 33000012892836752}
   - 23: {fileID: 23000010361277468}
+  - 114: {fileID: 114000011705382564}
   m_Layer: 0
   m_Name: handgrip2
   m_TagString: Untagged
@@ -56,6 +57,7 @@ GameObject:
   - 4: {fileID: 4000012792079560}
   - 33: {fileID: 33000013200213266}
   - 23: {fileID: 23000013285039294}
+  - 114: {fileID: 114000012676648014}
   m_Layer: 0
   m_Name: blade
   m_TagString: Untagged
@@ -73,6 +75,7 @@ GameObject:
   - 4: {fileID: 4000012994076872}
   - 33: {fileID: 33000010168114162}
   - 23: {fileID: 23000011936211626}
+  - 114: {fileID: 114000011379327982}
   m_Layer: 0
   m_Name: tsuba
   m_TagString: Untagged
@@ -90,6 +93,7 @@ GameObject:
   - 4: {fileID: 4000014252808638}
   - 33: {fileID: 33000013059073244}
   - 23: {fileID: 23000010521939168}
+  - 114: {fileID: 114000011207699670}
   m_Layer: 0
   m_Name: blade base
   m_TagString: Untagged
@@ -140,6 +144,7 @@ GameObject:
   - 4: {fileID: 4000011409922332}
   - 33: {fileID: 33000010511349194}
   - 23: {fileID: 23000011198624474}
+  - 114: {fileID: 114000012127747080}
   m_Layer: 0
   m_Name: handgrip1
   m_TagString: Untagged
@@ -172,7 +177,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013576382872}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: 1, z: 2}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -490,8 +495,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.005, y: 0.025, z: 0.45}
-  m_Center: {x: 0.001, y: 0, z: 0}
+  m_Size: {x: 0.005, y: 0.05, z: 0.45}
+  m_Center: {x: 0.001, y: 0.0125, z: 0}
 --- !u!114 &114000010419630182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -508,6 +513,70 @@ MonoBehaviour:
   movable: 0
   isParent: 0
   IVDManager: {fileID: 0}
+--- !u!114 &114000011207699670
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012211896126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 0
+  dullCoef: 1
+  isParent: 0
+  staticRenderMode: 0
+--- !u!114 &114000011379327982
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011175192878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 0
+  dullCoef: 1
+  isParent: 0
+  staticRenderMode: 0
+--- !u!114 &114000011705382564
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010842322010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 0
+  dullCoef: 1
+  isParent: 0
+  staticRenderMode: 0
+--- !u!114 &114000012127747080
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013942754096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 0
+  dullCoef: 1
+  isParent: 0
+  staticRenderMode: 0
 --- !u!114 &114000012347038856
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -524,3 +593,19 @@ MonoBehaviour:
   movable: 1
   isParent: 1
   IVDManager: {fileID: 0}
+--- !u!114 &114000012676648014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010975926900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 0
+  dullCoef: 1
+  isParent: 0
+  staticRenderMode: 0

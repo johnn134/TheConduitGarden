@@ -18,35 +18,21 @@ public class GetInputVR : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (griping && other.gameObject.GetComponent<HyperColliderManager>().isVisibleSolid(gameObject.transform.parent.GetComponent<HyperCreature>().w) && (!holding || other.gameObject.Equals(holding.gameObject)) && other.gameObject.GetComponent<HyperColliderManager>().movable)
+        if(griping && !holding && other.gameObject.GetComponent<HyperColliderManager>().isVisibleSolid(gameObject.transform.parent.GetComponent<HyperCreature>().w) && other.gameObject.GetComponent<HyperColliderManager>().movable)
         {
             holding = other.gameObject;
-            holding.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-            holding.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
             holding.transform.parent = transform;
-            holding.transform.position = transform.position;
-            holding.transform.rotation = transform.rotation;
-            holding.GetComponent<Rigidbody>().angularVelocity = 3 * SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).angularVelocity;
-            holding.GetComponent<Rigidbody>().velocity = 2 * SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).velocity;
-        }
-        else
-        {
-            if (holding && other.gameObject.Equals(holding.gameObject))
-            {
-                holding.transform.parent = null;
-                holding = null;
-            }
         }
     }
 
-    void OnTriggerExit(Collider other)
+    /*void OnTriggerExit(Collider other)
     {
         if (holding && other.gameObject.Equals(holding.gameObject))
         {
             holding.transform.parent = null;
             holding = null;
         }
-    }
+    }*/
 
     EVRButtonId[] buttonIds = new EVRButtonId[] {
         EVRButtonId.k_EButton_ApplicationMenu,
@@ -204,11 +190,50 @@ public class GetInputVR : MonoBehaviour
 
 
         }
-        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_Grip))
-            griping = true;
-        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressUp(EVRButtonId.k_EButton_Grip))
+
+        /*if (griping && other.gameObject.GetComponent<HyperColliderManager>().isVisibleSolid(gameObject.transform.parent.GetComponent<HyperCreature>().w) && (!holding || other.gameObject.Equals(holding.gameObject)) && other.gameObject.GetComponent<HyperColliderManager>().movable)
         {
+            holding = other.gameObject;
+            holding.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+            holding.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
+            holding.transform.parent = transform;
+            holding.transform.position = transform.position;
+            holding.transform.rotation = transform.rotation;
+            holding.GetComponent<Rigidbody>().angularVelocity = 3 * SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).angularVelocity;
+            holding.GetComponent<Rigidbody>().velocity = 2 * SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).velocity;
+        }
+        else
+        {
+            if (holding && other.gameObject.Equals(holding.gameObject))
+            {
+                holding.transform.parent = null;
+                holding = null;
+            }
+        }*/
+
+        if (holding)
+        {
+            holding.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            holding.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            holding.transform.position = transform.position;
+            holding.transform.rotation = transform.rotation;
+
+        }
+
+        if (griping && !holding)
             griping = false;
+
+        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_Grip))
+        {
+            griping = !griping;
+
+            if (holding && !griping)
+            {
+                holding.GetComponent<Rigidbody>().angularVelocity = 3 * SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).angularVelocity;
+                holding.GetComponent<Rigidbody>().velocity = 2 * SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).velocity;
+                holding.transform.parent = null;
+                holding = null;
+            }
         }
 
         /*foreach (var index in controllerIndices)
@@ -252,7 +277,7 @@ public class GetInputVR : MonoBehaviour
         
     }
 
-    public void DetermineLayer(int newW)
+    /*public void DetermineLayer(int newW)
     {
         switch (newW)
         {
@@ -281,7 +306,7 @@ public class GetInputVR : MonoBehaviour
                 gameObject.layer = 0;
                 break;
         }
-    }
+    }*/
 }
 
 

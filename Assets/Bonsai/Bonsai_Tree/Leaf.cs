@@ -89,6 +89,13 @@ public class Leaf : MonoBehaviour {
 
 		//Check for the leaf to die if alive
 		checkForDeath();
+
+		//Tell parent branch that growth is over
+		if(transform.parent != null) {
+			if(transform.parent.GetComponent<Branch>() != null) {
+				transform.parent.GetComponent<Branch>().registerGrowthEnded();
+			}
+		}
 	}
 
 	/*

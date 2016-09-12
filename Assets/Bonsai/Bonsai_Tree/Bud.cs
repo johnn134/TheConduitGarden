@@ -35,6 +35,15 @@ public class Bud : MonoBehaviour {
 			else
 				manager.GetComponent<BonsaiManager>().removeBranch();
 		}
+
+		if(transform.parent != null) {
+			if(transform.parent.GetComponent<Branch>() != null) {
+				transform.parent.GetComponent<Branch>().registerBudRemoved();
+
+				if(didGrow)
+					transform.parent.GetComponent<Branch>().registerGrowthEnded();
+			}
+		}
 	}
 
 	/*
@@ -76,6 +85,7 @@ public class Bud : MonoBehaviour {
 			//Register Branch Added
 			transform.parent.GetComponent<Branch>().registerBranchAdded();
 		}
+
 		didGrow = true;
 
 		Destroy(this.gameObject);

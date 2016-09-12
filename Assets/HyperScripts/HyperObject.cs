@@ -225,7 +225,7 @@ public class HyperObject : MonoBehaviour {
 
     float PeripheralAlpha(int newW)
     {
-        if (Mathf.Abs(newW - w) <= hypPlayer.w_perif * 2)
+        if (Mathf.Abs(newW - w) <= hypPlayer.w_perif * 2 || Mathf.Abs(newW - (w + w_depth)) <= hypPlayer.w_perif * 2)
         {
             if (_cachedRenderer.material.color.a == .2f)
                 return -1.0f;

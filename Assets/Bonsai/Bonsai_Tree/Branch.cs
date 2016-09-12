@@ -5,8 +5,13 @@ public class Branch : MonoBehaviour {
 
 	GameObject manager; //Reference to the BonsaiManager
 
+	GameObject[] leaves;
+	GameObject[] buds;
+	GameObject[] branches;
+
 	int age;            	//How many growth cycles has this branch lived through
 	int numLeaves;      	//Number of leaves on this branch
+	int numBuds;
 	int numBranches;    	//Number of branches on this branch
 	int numBugs;
 	int growthStep;     	//Marks which step of the growth order is in effect
@@ -25,7 +30,8 @@ public class Branch : MonoBehaviour {
 	float budRange;     	//Maximum distance from the center of the branch tip to grow a bud
 	float leafRange;    	//Stores the radius of the rounded branch tip
 
-	bool runGrowth;     	//Tells whether the branch should be growing
+	bool isBranchGrowing;     	//Tells whether the branch should be growing
+	bool isWaitingForResponse;
 	bool isTip;         	//True if this branch has no child branches
 	bool isDead;    		//Is this branch diseased
 	bool isInfested;    	//Does ths branch have bugs on it
@@ -62,12 +68,14 @@ public class Branch : MonoBehaviour {
 		//Initialize variables
 		age = 0;
 		numLeaves = 0;
+		numBuds = 0;
 		numBranches = 0;
 		growthStep = 0;
 		numBugs = 0;
 
 		zoneExtension = false;
-		runGrowth = false;
+		isBranchGrowing = false;
+		isWaitingForResponse = false;
 		isTip = true;
 
 		requiredZonePasses = new int[5];
@@ -121,45 +129,47 @@ public class Branch : MonoBehaviour {
 
 	void FixedUpdate() {
 		//If the tree needs to grow, run the growth process on each part of this branch
-		if(runGrowth) {
-			if(growthStep >= 5) {   //End the growth cycle
-				runGrowth = false;
+		if(isBranchGrowing && !isWaitingForResponse) {
+			bool nextStep = false;
 
-				//Age the branch
-				age++;
+			switch(growthStep) {
+				case 0:
+					nextStep = processInfestation();
+					break;
+				case 1:
+					nextStep = processLeaves();
+					break;
+				case 2:
+					nextStep = processBuds();
+					break;
+				case 3:
+					nextStep = growBuds();
+					break;
+				case 4:
+					nextStep = processBranches();
+					break;
+				case 5:
+					isBranchGrowing = false;
+					age += 1;
+
+					//Tell parent that growth is over
+					if(depth > 0) {
+						if(transform.parent != null) {
+							if(transform.parent.GetComponent<Branch>() != null) {
+								transform.parent.GetComponent<Branch>().registerGrowthEnded();
+							}
+						}
+					}
+					else {
+						Debug.Log("Tree Growth has ended");
+					}
+
+					break;
 			}
-			else {  //Process the branch parts in growth order
-				bool nextStep = false;
 
-				//Growth order: check infestation stage, age leaves, evolve buds, grow new buds, process next branch
-				switch(growthStep) {
-					case 0:
-						processInfestation();
-						nextStep = true;
-						break;
-					case 1:
-						processLeaves();
-						nextStep = true;
-						break;
-					case 2:
-						nextStep = processBuds();
-						break;
-					case 3:
-						growBuds();
-						nextStep = true;
-						break;
-					case 4:
-						nextStep = processBranches();
-						break;
-				}
-
-				if(nextStep) {  //reset counter for next growth step
-					growthStep++;
-					growthCounter = transform.childCount - 1;
-				}
-				else {  //decrement growth counter after each child check
-					growthCounter--;
-				}
+			if(nextStep) {
+				growthStep++;
+				growthCounter = 0;
 			}
 		}
 	}
@@ -195,64 +205,96 @@ public class Branch : MonoBehaviour {
 	 * Initiates the growth cycle for this branch and children parts
 	 */
 	public void processGrowthCycle() {
-		if(!runGrowth) {
-			//Start growth cycle
-			runGrowth = true;
+		if(!isBranchGrowing) {
+			isBranchGrowing = true;
+			isWaitingForResponse = false;
 			growthStep = 0;
-			growthCounter = transform.childCount - 1;
+			growthCounter = 0;
 
-			//Note: the tree is aged at the end of the growth cycle in the fixedUpdate
+			if(depth == 0)
+				Debug.Log("Tree growth has started");
 		}
 	}
 
 	/*
-	 * Calls the processGrowthCycle on the currently focused branch
+	 * Calls the processGrowthCycle on the currently focused leaf
 	 */
-	bool processBranches() {
-		if(growthCounter <= 2) {
-			return true;
+	bool processLeaves() {
+		//Find all children leaves at the beginning
+		if(growthCounter == 0) {
+			leaves = getLeafChildren();
 		}
 
-		Transform temp = transform.GetChild(growthCounter);
-		if(temp.name.Length >= 6) {
-			if(temp.name.Substring(0, 6) == "Branch") {
-				temp.GetComponent<Branch>().processGrowthCycle();
+		//Call processGrowthCycle on the current leaf child
+		if(growthCounter < leaves.Length) {
+			if(leaves[growthCounter] != null) {
+				isWaitingForResponse = true;
+				leaves[growthCounter].GetComponent<Leaf>().processGrowthCycle();
 			}
+			else {
+				growthCounter++;
+			}
+
+			return false;	//wait for response
 		}
 
-		return false;
+		return true;	//all leaves have been grown
 	}
 
 	/*
 	 * Calls the processGrowthCycle on the currently focused bud
 	 */
 	bool processBuds() {
-		if(growthCounter <= 2) {
-			return true;
+		//Find all children buds at the beginning
+		if(growthCounter == 0) {
+			buds = getBudChildren();
 		}
 
-		if(transform.GetChild(growthCounter).GetComponent<Bud>() != null) {
-			transform.GetChild(growthCounter).GetComponent<Bud>().processGrowthCycle();
+		//Call processGrowthCycle on the current bud child
+		if(growthCounter < buds.Length) {
+			if(buds[growthCounter] != null) {
+				isWaitingForResponse = true;
+				buds[growthCounter].GetComponent<Bud>().processGrowthCycle();
+			}
+			else {
+				growthCounter++;
+			}
+
+			return false;	//wait for response
 		}
 
-		return false;
+		return true;	//all buds have been grown
 	}
 
 	/*
-	 * Calls the processGrowthCycle on the currently focused leaf
+	 * Calls the processGrowthCycle on the currently focused branch
 	 */
-	void processLeaves() {
-		for(int i = transform.childCount - 1; i > 2; i--) {
-			if(transform.GetChild(i).GetComponent<Leaf>() != null) {
-				transform.GetChild(i).GetComponent<Leaf>().processGrowthCycle();
-			}
+	bool processBranches() {
+		//Find all children branches at the beginning
+		if(growthCounter == 0) {
+			branches = getBranchChildren();
 		}
+
+		//Call processGrowthCycle on the current branch child
+		if(growthCounter < branches.Length) {
+			if(branches[growthCounter] != null) {
+				isWaitingForResponse = true;
+				branches[growthCounter].GetComponent<Branch>().processGrowthCycle();
+			}
+			else {
+				growthCounter++;
+			}
+
+			return false;	//wait for response
+		}
+
+		return true;	//all branches have been grown
 	}
 
 	/*
 	 * Wrapper for growing new leaf and branch buds on the branch
 	 */
-	void growBuds() {
+	bool growBuds() {
 		if(!isDead) {
 			if(manager.GetComponent<BonsaiManager>().getNumBranches() < manager.GetComponent<BonsaiManager>().maxBranches) {
 				growBranchBuds();
@@ -261,6 +303,8 @@ public class Branch : MonoBehaviour {
 				growLeafBuds();
 			}
 		}
+
+		return true;
 	}
 
 	/*
@@ -435,7 +479,7 @@ public class Branch : MonoBehaviour {
 	/*
 	 * Determines the correct action to take for the current stage of infestation
 	 */
-	void processInfestation() {
+	bool processInfestation() {
 		if(!isDead && !isInfested) {	//Branch is alive and clean
 			//Check if all of the branches leaves have died
 			bool tempLAD = checkIfAllLeavesAreDead();
@@ -474,6 +518,8 @@ public class Branch : MonoBehaviour {
 		}
 
 		/*** Branch is dead and clean so nothing happens ***/
+
+		return true;
 	}
 
 	/*
@@ -765,7 +811,10 @@ public class Branch : MonoBehaviour {
 		//newBud.transform.GetComponent<Bud>().setWPosition(Mathf.Clamp(w + Random.Range(-1, 2), 0, 6));   //the w value is clamped between 0 and 6 inclusive
 		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
 
+		this.registerBudAdded();
+
 		newBud.transform.GetComponent<Bud>().setManager(manager);
+
 		if(isLeaf)
 			manager.GetComponent<BonsaiManager>().addLeaf();
 		else
@@ -792,6 +841,8 @@ public class Branch : MonoBehaviour {
 
 			//Set the branch's w position
 			newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+
+			this.registerBudAdded();
 
 			newBud.transform.GetComponent<Bud>().setManager(manager);
 			manager.GetComponent<BonsaiManager>().addBranch();
@@ -837,7 +888,7 @@ public class Branch : MonoBehaviour {
 		newBug.GetComponent<BonsaiBug>().setOrigin(newPos.x, transform.GetChild(1).localPosition.y / 2, newPos.z);
 		newBug.GetComponent<BonsaiBug>().setMovementRange(transform.GetChild(1).localPosition.y / 2);
 
-		numBugs++;
+		numBugs++;	//register that a bug has been added
 
 		return newBug;
 	}
@@ -878,6 +929,28 @@ public class Branch : MonoBehaviour {
 		if(numBranches == 0) {
 			isTip = true;
 		}
+	}
+
+	/*
+	 * Increment the number of buds on this branch
+	 */
+	public void registerBudAdded() {
+		numBuds++;
+	}
+
+	/*
+	 * Decrement the number of buds on this branch
+	 */
+	public void registerBudRemoved() {
+		numBuds--;
+	}
+
+	/*
+	 * Called at the end of a child leaf's growth cycle
+	 */
+	public void registerGrowthEnded() {
+		isWaitingForResponse = false;
+		growthCounter++;
 	}
 
 	/*
@@ -928,9 +1001,10 @@ public class Branch : MonoBehaviour {
 			return true;
 		}
 		else {
-			for(int i = transform.childCount - 1; i > 2; i--) {
-				if(transform.GetChild(i).name.Substring(0, 6) == "Branch") {
-					if(transform.GetChild(i).GetChild(1).position.y > transform.GetChild(1).position.y) {
+			GameObject[] bs = getBranchChildren();
+			for(int i = 0; i < bs.Length; i++) {
+				if(bs[i] != null) {
+					if(bs[i].transform.GetChild(1).position.y > transform.GetChild(1).position.y) {
 						return false;
 					}
 				}
@@ -943,6 +1017,9 @@ public class Branch : MonoBehaviour {
 	 * Returns an array of branch Gameobjects that are children of this branch
 	 */
 	GameObject[] getBranchChildren() {
+		if(numBranches == 0)
+			return new GameObject[0];
+		
 		GameObject[] branchChildren = new GameObject[numBranches];
 		int counter = 0;
 		foreach (Transform child in transform) {
@@ -975,6 +1052,9 @@ public class Branch : MonoBehaviour {
 	 * Returns an array of leaf Gameobjects that are children of this branch
 	 */
 	GameObject[] getLeafChildren() {
+		if(numLeaves == 0)
+			return new GameObject[0];
+		
 		GameObject[] leafChildren = new GameObject[numLeaves];
 		int counter = 0;
 		foreach (Transform child in transform) {
@@ -1018,6 +1098,24 @@ public class Branch : MonoBehaviour {
 		}
 
 		return q;
+	}
+
+	/*
+	 * Returns an array of bud Gameobjects that are children of this branch
+	 */
+	GameObject[] getBudChildren() {
+		if(numBuds == 0)
+			return new GameObject[0];
+		
+		GameObject[] budChildren = new GameObject[numBuds];
+		int counter = 0;
+		foreach (Transform child in transform) {
+			if(child.GetComponent<Bud>() != null) {
+				budChildren [counter] = child.gameObject;
+				counter++;
+			}
+		}
+		return budChildren;
 	}
 
 	/*

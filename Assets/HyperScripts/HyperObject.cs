@@ -14,7 +14,7 @@ public class HyperObject : MonoBehaviour {
     public bool isParent = false;                   //is this object the parent?
     //NOTE: Enable even if no children and if has both HyperObject and HyperColliderManager enable this as parent and not the other
 
-    public bool vanishWhenTransparent = false;      //enable if alpha should be 0 at all times if not visible from the player's w point
+    public bool staticRenderMode = false;      //enable if alpha should be 0 at all times if not visible from the player's w point
 
     FourthDManager IVDManager;                      //the 4D manager
 
@@ -35,8 +35,6 @@ public class HyperObject : MonoBehaviour {
 		_cachedRenderer = GetComponent<Renderer>();
 
 		hypPlayer = Object.FindObjectOfType<HyperCreature>();
-
-        Debug.Log("Shader KW: " + _cachedRenderer.material.shaderKeywords[0]);
     }
 
     void Start()
@@ -73,6 +71,18 @@ public class HyperObject : MonoBehaviour {
             float targA = PeripheralAlpha(newW);
             /*if (vanishWhenTransparent)
                 targA = 0.0f;*/
+
+            if (!staticRenderMode)
+            {
+                _cachedRenderer.material.SetFloat("_Mode", 2);
+                _cachedRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                _cachedRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                _cachedRenderer.material.SetInt("_ZWrite", 0);
+                _cachedRenderer.material.DisableKeyword("_ALPHATEST_ON");
+                _cachedRenderer.material.EnableKeyword("_ALPHABLEND_ON");
+                _cachedRenderer.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                _cachedRenderer.material.renderQueue = 3000;
+            }
 
             //if got -1 for target alpha then already proper alpha so skip the color lerp
             if (targA != -1.0f)
@@ -264,10 +274,16 @@ public class HyperObject : MonoBehaviour {
 
         _cachedRenderer.material.color = targetColor;
 
-        if(targetA == 1f)
+        if(targetA == 1f && !staticRenderMode)
         {
             _cachedRenderer.material.SetFloat("_Mode", 0);
-            //_cachedRenderer.material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+            _cachedRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            _cachedRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+            _cachedRenderer.material.SetInt("_ZWrite", 1);
+            _cachedRenderer.material.DisableKeyword("_ALPHATEST_ON");
+            _cachedRenderer.material.DisableKeyword("_ALPHABLEND_ON");
+            _cachedRenderer.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            _cachedRenderer.material.renderQueue = -1;
         }
     }
 
@@ -287,7 +303,6 @@ public class HyperObject : MonoBehaviour {
             }
         }
         return false;
-        //SetCollisions();
     }
 
     void recurseChildrenSlideW(Transform t, int deltaW, bool childrenClear)

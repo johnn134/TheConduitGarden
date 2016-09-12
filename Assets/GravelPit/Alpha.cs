@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Alpha : MonoBehaviour {
 	public GameObject rake;
+	public GameObject gravel;
 	public GameObject tine1;
 	public Vector3 tine1Position;
 	public bool tine1Collision;
@@ -18,6 +19,8 @@ public class Alpha : MonoBehaviour {
 	public Texture2D texture;
 	public Color color;
 	public Color originalColor;
+	public float drawingSizeX;
+	public float drawingSizeZ;
 	public int[,] coordinates;
 	public int raked;
 	public bool isRakedEnough;
@@ -30,8 +33,12 @@ public class Alpha : MonoBehaviour {
 		tine2 = GameObject.FindGameObjectWithTag("Tine 2");
 		tine3 = GameObject.FindGameObjectWithTag("Tine 3");
 		tine4 = GameObject.FindGameObjectWithTag("Tine 4");
+		gravel = GameObject.FindGameObjectWithTag ("Gravel");
 
 		GetComponent<Renderer>().material.mainTexture = texture;
+
+		drawingSizeX = Mathf.Ceil(drawingSizeX * rake.GetComponent<Transform>().localScale.x / gravel.GetComponent<Transform>().localScale.x);
+		drawingSizeZ = Mathf.Ceil(drawingSizeZ * rake.GetComponent<Transform>().localScale.z / gravel.GetComponent<Transform>().localScale.z);
 
 		raked = 0;
 
@@ -47,89 +54,50 @@ public class Alpha : MonoBehaviour {
 
 		coordinates = new int[1024, 1024];
 
-		originalThird = (int)Mathf.Ceil(texture.width / 3);
+		originalThird = (int)Mathf.Ceil((float)texture.width / 3.0f);
 
 		tine1Collision = false;
 		tine2Collision = false;
 		tine3Collision = false;
 		tine4Collision = false;
 
+		Debug.Log (tine1.GetComponent<Transform> ().position.x + ", " + tine1.GetComponent<Transform> ().position.z);
+		Debug.Log (tine2.GetComponent<Transform> ().position.x + ", " + tine2.GetComponent<Transform> ().position.z);
+		Debug.Log (tine3.GetComponent<Transform> ().position.x + ", " + tine3.GetComponent<Transform> ().position.z);
+		Debug.Log (tine4.GetComponent<Transform> ().position.x + ", " + tine4.GetComponent<Transform> ().position.z);
+
 		isRakedEnough = false;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		tine1Position.x = Mathf.Ceil((tine1.GetComponent<Transform>().position.x + 5) * 102.4f);
-		tine1Position.z = Mathf.Ceil((tine1.GetComponent<Transform>().position.z + 5) * 102.4f);
+		tine1Position.x = Mathf.Ceil((tine1.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+		tine1Position.z = Mathf.Ceil((tine1.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 
-		tine2Position.x = Mathf.Ceil((tine2.GetComponent<Transform>().position.x + 5) * 102.4f);
-		tine2Position.z = Mathf.Ceil((tine2.GetComponent<Transform>().position.z + 5) * 102.4f);
+		tine2Position.x = Mathf.Ceil((tine2.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+		tine2Position.z = Mathf.Ceil((tine2.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 
-		tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x + 5) * 102.4f);
-		tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z + 5) * 102.4f);
+		tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+		tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 
-		tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x + 5) * 102.4f);
-		tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z + 5) * 102.4f);
+		tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+		tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 
 		if (Vector3.Dot(Vector3.up, transform.up) > 0) {
 			if (tine1Collision == true) {
-				for (int x = ((int)tine1Position.x - 5); x <= ((int)tine1Position.x + 5); x++) {
-					for (int z = ((int)tine1Position.z - 5); z <= ((int)tine1Position.z + 5); z++) {
-						if (coordinates [x, z] == 1) {
-							break;
-						} 
-
-						else {
-							texture.SetPixel(x, z, color);
-							coordinates [x, z] = 1;
-						}
-					}
-				}
+				draw(tine1Position.x, tine1Position.z);
 			}
 
 			if (tine2Collision == true) {
-				for (int x = ((int)tine2Position.x - 5); x <= ((int)tine2Position.x + 5); x++) {
-					for (int z = ((int)tine2Position.z - 5); z <= ((int)tine2Position.z + 5); z++) {
-						if (coordinates [x, z] == 1) {
-							break;
-						} 
-
-						else {
-							texture.SetPixel(x, z, color);
-							coordinates [x, z] = 1;
-						}
-					}
-				}
+				draw(tine2Position.x, tine2Position.z);
 			}
 
 			if (tine3Collision == true) {
-				for (int x = ((int)tine3Position.x - 5); x <= ((int)tine3Position.x + 5); x++) {
-					for (int z = ((int)tine3Position.z - 5); z <= ((int)tine3Position.z + 5); z++) {
-						if (coordinates [x, z] == 1) {
-							break;
-						} 
-
-						else {
-							texture.SetPixel(x, z, color);
-							coordinates [x, z] = 1;
-						}
-					}
-				}
+				draw(tine3Position.x, tine3Position.z);
 			}
 
 			if (tine4Collision == true) {
-				for (int x = ((int)tine4Position.x - 5); x <= ((int)tine4Position.x + 5); x++) {
-					for (int z = ((int)tine4Position.z - 5); z <= ((int)tine4Position.z + 5); z++) {
-						if (coordinates [x, z] == 1) {
-							break;
-						} 
-
-						else {
-							texture.SetPixel(x, z, color);
-							coordinates [x, z] = 1;
-						}
-					}
-				}
+				draw(tine4Position.x, tine4Position.z);
 			}
 		}
 
@@ -154,8 +122,15 @@ public class Alpha : MonoBehaviour {
 			clearPitSection2();
 		}
 
-		if (Input.GetKeyDown (KeyCode.Alpha3)) {
+		if (Input.GetKeyDown(KeyCode.Alpha3)) {
 			clearPitSection3();
+		}
+
+		if (Input.GetKeyDown (KeyCode.L)) {
+			Debug.Log(tine1Position.x + ", " + tine1Position.z);
+			Debug.Log(tine2Position.x + ", " + tine2Position.z);
+			Debug.Log(tine3Position.x + ", " + tine3Position.z);
+			Debug.Log(tine4Position.x + ", " + tine4Position.z);
 		}
 
 		texture.Apply();
@@ -194,6 +169,21 @@ public class Alpha : MonoBehaviour {
 
 		if (col.transform.name == "Tine 4") {
 			tine4Collision = false;
+		}
+	}
+
+	void draw(float tineXPosition, float tineZPosition) {
+		for (int x = ((int)tineXPosition - (int)drawingSizeX); x <= ((int)tineXPosition + (int)drawingSizeX); x++) {
+			for (int z = ((int)tineZPosition - (int)drawingSizeZ); z <= ((int)tineZPosition + (int)drawingSizeZ); z++) {
+				if (coordinates [x, z] == 1) {
+					break;
+				} 
+
+				else {
+					texture.SetPixel(x, z, color);
+					coordinates [x, z] = 1;
+				}
+			}
 		}
 	}
 

@@ -61,11 +61,6 @@ public class Alpha : MonoBehaviour {
 		tine3Collision = false;
 		tine4Collision = false;
 
-		Debug.Log (tine1.GetComponent<Transform> ().position.x + ", " + tine1.GetComponent<Transform> ().position.z);
-		Debug.Log (tine2.GetComponent<Transform> ().position.x + ", " + tine2.GetComponent<Transform> ().position.z);
-		Debug.Log (tine3.GetComponent<Transform> ().position.x + ", " + tine3.GetComponent<Transform> ().position.z);
-		Debug.Log (tine4.GetComponent<Transform> ().position.x + ", " + tine4.GetComponent<Transform> ().position.z);
-
 		isRakedEnough = false;
 	}
 
@@ -175,12 +170,16 @@ public class Alpha : MonoBehaviour {
 	void draw(float tineXPosition, float tineZPosition) {
 		for (int x = ((int)tineXPosition - (int)drawingSizeX); x <= ((int)tineXPosition + (int)drawingSizeX); x++) {
 			for (int z = ((int)tineZPosition - (int)drawingSizeZ); z <= ((int)tineZPosition + (int)drawingSizeZ); z++) {
+				if (x < 0 || x > 1023 || z < 0 || z > 1023) {
+					break;
+				} 
+
 				if (coordinates [x, z] == 1) {
 					break;
 				} 
 
 				else {
-					texture.SetPixel(x, z, color);
+					texture.SetPixel (x, z, color);
 					coordinates [x, z] = 1;
 				}
 			}

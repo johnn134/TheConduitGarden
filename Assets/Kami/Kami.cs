@@ -182,6 +182,11 @@ public class Kami : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, wanderLoc.y, transform.position.z), Time.deltaTime / 2);
 
         leavingY += .01f;
+
+        if (transform.position.y > 20f)
+        {
+            kamiManager.RequestToRemove(gameObject);
+        }
     }
 
     /*void HelpTut()

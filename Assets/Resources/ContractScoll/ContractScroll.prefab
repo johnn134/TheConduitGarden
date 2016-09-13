@@ -138,6 +138,8 @@ GameObject:
   - 4: {fileID: 4000010214544820}
   - 135: {fileID: 135000011718867474}
   - 114: {fileID: 114000011980763208}
+  - 54: {fileID: 54000010325704164}
+  - 114: {fileID: 114000013970464826}
   m_Layer: 0
   m_Name: DragPoint
   m_TagString: Untagged
@@ -348,8 +350,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013542833802}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.714, y: 2.582, z: 2.498}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.08488679, y: 1.938, z: 0.647}
+  m_LocalScale: {x: 0.5034317, y: 0.5034317, z: 0.5034317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000014221695864}
@@ -713,7 +715,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 77978351da76d8945b4730f37f68be0a, type: 2}
+  - {fileID: 2100000, guid: 44b7b6d5a3b38704690c9f6d4b75529d, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -828,6 +830,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011606094490}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54000010325704164
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012410025486}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &114000011980763208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -840,6 +857,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+--- !u!114 &114000013970464826
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012410025486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d60fe6ae1884e4fa2cc57308f64765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 6
+  movable: 0
+  isParent: 1
+  IVDManager: {fileID: 0}
 --- !u!114 &114000014065321038
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -851,8 +884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c00713cc4ff5e4ab5feea4d27b425f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contractLevel: 
-  isActive: 0
+  contractLevel: MainGarden
+  isActive: 1
 --- !u!135 &135000011718867474
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -860,7 +893,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012410025486}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.1

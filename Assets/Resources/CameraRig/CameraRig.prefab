@@ -110,7 +110,9 @@ GameObject:
   - 4: {fileID: 4000010474227832}
   - 20: {fileID: 20000013381900520}
   - 124: {fileID: 124000013721122938}
-  - 114: {fileID: 114000013178486324}
+  - 135: {fileID: 135000011159294914}
+  - 114: {fileID: 114000013362885700}
+  - 114: {fileID: 114000014029315924}
   m_Layer: 0
   m_Name: Camera (eye)
   m_TagString: MainCamera
@@ -541,7 +543,7 @@ MonoBehaviour:
   w: 0
   w_perif: 0
   IVDManager: {fileID: 0}
---- !u!114 &114000013178486324
+--- !u!114 &114000013362885700
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -604,6 +606,17 @@ MonoBehaviour:
   griping: 0
   point: {fileID: 0}
   pointer: {fileID: 0}
+--- !u!114 &114000014029315924
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013287288758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96b7c9a9c8e3b0743bb4a2b848807679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000014180224874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -628,3 +641,15 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013287288758}
   m_Enabled: 1
+--- !u!135 &135000011159294914
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013287288758}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Center: {x: 0, y: 0, z: 0}

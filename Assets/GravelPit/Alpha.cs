@@ -66,17 +66,7 @@ public class Alpha : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		tine1Position.x = Mathf.Ceil((tine1.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
-		tine1Position.z = Mathf.Ceil((tine1.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
-
-		tine2Position.x = Mathf.Ceil((tine2.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
-		tine2Position.z = Mathf.Ceil((tine2.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
-
-		tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
-		tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
-
-		tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
-		tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+		calculateTinePositions();
 
 		if (Vector3.Dot(Vector3.up, transform.up) > 0) {
 			if (tine1Collision == true) {
@@ -164,6 +154,50 @@ public class Alpha : MonoBehaviour {
 
 		if (col.transform.name == "Tine 4") {
 			tine4Collision = false;
+		}
+	}
+
+	void calculateTinePositions() {
+		if (gravel.GetComponent<Transform>().position.x > 0) {
+			tine1Position.x = Mathf.Ceil((tine1.GetComponent<Transform>().position.x - gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine2Position.x = Mathf.Ceil((tine2.GetComponent<Transform>().position.x - gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x - gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x - gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+		}
+
+		if (gravel.GetComponent<Transform>().position.x < 0) {
+			tine1Position.x = Mathf.Ceil((tine1.GetComponent<Transform>().position.x + gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine2Position.x = Mathf.Ceil((tine2.GetComponent<Transform>().position.x + gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x + gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x + gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+		}
+
+		if (gravel.GetComponent<Transform>().position.x == 0) {
+			tine1Position.x = Mathf.Ceil((tine1.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine2Position.x = Mathf.Ceil((tine2.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+			tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
+		}
+
+		if (gravel.GetComponent<Transform> ().position.z > 0) {
+			tine1Position.z = Mathf.Ceil((tine1.GetComponent<Transform>().position.z - gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine2Position.z = Mathf.Ceil((tine2.GetComponent<Transform>().position.z - gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z - gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z - gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+		}
+
+		if (gravel.GetComponent<Transform> ().position.z < 0) {
+			tine1Position.z = Mathf.Ceil((tine1.GetComponent<Transform>().position.z + gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine2Position.z = Mathf.Ceil((tine2.GetComponent<Transform>().position.z + gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z + gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z + gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+		}
+
+		if (gravel.GetComponent<Transform> ().position.z == 0) {
+			tine1Position.z = Mathf.Ceil((tine1.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine2Position.z = Mathf.Ceil((tine2.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
+			tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 		}
 	}
 

@@ -20,6 +20,7 @@ public class ContractScroll : MonoBehaviour {
 	const float CLOSED_Y_POS = 0.9f;
 	const float SCROLL_OPEN_SPEED = 2f;
 	const float SCROLL_CLOSE_SPEED = 5.0f;
+    
 
 	// Use this for initialization
 	void Start () {
@@ -83,8 +84,8 @@ public class ContractScroll : MonoBehaviour {
 
 			if(isActive == false) { //closed the scroll
                                     //Accept the contract and move to the next level
-                Debug.Log("Change level");
-				/*** To-Do: Implement level changing ***/
+
+                loadLevel();
 			}
 		}
 	}
@@ -119,7 +120,7 @@ public class ContractScroll : MonoBehaviour {
 	 * loads the contract's associated level
 	 */
 	void loadLevel() {
-		if(contractLevel != null) {
+		if(!contractLevel.Equals("")) {
 			SceneManager.LoadScene(contractLevel);
 		}
 	}

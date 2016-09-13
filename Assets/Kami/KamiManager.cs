@@ -76,4 +76,16 @@ public class KamiManager : MonoBehaviour {
             }
         }
     }
+
+    public void MakeKamiEnd()
+    {
+        foreach (GameObject kami in allKami)
+        {
+            if ((int)kami.GetComponent<Kami>().state != 4)
+            {
+                kami.GetComponent<Kami>().state = Kami.State.Ending;
+                break;
+            }
+        }
+    }
 }

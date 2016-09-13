@@ -43,14 +43,14 @@ public class GetInputVR : MonoBehaviour
         }
     }
 
-    /*void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (holding && other.gameObject.Equals(holding.gameObject))
         {
             holding.transform.parent = null;
             holding = null;
         }
-    }*/
+    }
 
     EVRButtonId[] buttonIds = new EVRButtonId[] {
         EVRButtonId.k_EButton_ApplicationMenu,

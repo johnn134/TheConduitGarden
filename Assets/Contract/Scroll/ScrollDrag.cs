@@ -16,10 +16,31 @@ public class ScrollDrag : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	/*void Update () {
 		if(grabbed)
 			dragScroll(target);
-	}
+	}*/
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.name.StartsWith("Controller"))
+        {
+            GetInputVR controller = other.GetComponent<GetInputVR>();
+
+            if (controller.griping)
+                dragScroll(controller.gameObject);
+            else
+                dropScroll();
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.name.StartsWith("Controller"))
+        {
+            dropScroll();
+        }
+    }
 
 	/*
 	 * Assigns the scroll to be grabbed by the player,

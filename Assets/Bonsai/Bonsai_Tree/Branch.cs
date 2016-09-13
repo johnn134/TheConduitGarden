@@ -182,6 +182,7 @@ public class Branch : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
+                Debug.Log("snippeda");
 		if(other.transform.parent != null) {
 			if(other.transform.parent.GetComponent<Insecticide>() != null) {	//Insecticide Spray Collision
 				if(isInfested) {
@@ -190,6 +191,7 @@ public class Branch : MonoBehaviour {
 				}
 			}
 			else if(other.gameObject.name.Equals("ShearZone")) {
+                Debug.Log("snippedb");
 				if(canSnip) {
 					Destroy(this.gameObject);
 				}

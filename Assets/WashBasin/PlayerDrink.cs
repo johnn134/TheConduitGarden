@@ -3,7 +3,9 @@ using System.Collections;
 
 public class PlayerDrink : MonoBehaviour {
 
-	int player_periph;
+    HyperCreature hyperC;
+
+    int player_periph;
 
 	float drinkStartTime;
 
@@ -13,6 +15,7 @@ public class PlayerDrink : MonoBehaviour {
 
 	void Awake() {
 		isEffected = false;
+        hyperC = Object.FindObjectOfType<HyperCreature>();
 	}
 
 	// Use this for initialization
@@ -24,6 +27,7 @@ public class PlayerDrink : MonoBehaviour {
 	void Update () {
 		if(isEffected) {
 			if(Time.time > drinkStartTime + VISION_DURATION) {
+                Debug.Log("Ending Drink");
 				removeDrinkEffect();
 				isEffected = false;
 			}
@@ -43,17 +47,18 @@ public class PlayerDrink : MonoBehaviour {
 	}
 
 	public void registerDrink() {
+        Debug.Log("Starting Drink");
 		addDrinkEffect();
 		drinkStartTime = Time.time;
 		isEffected = true;
 	}
 
 	void addDrinkEffect() {
-		player_periph = GetComponent<HyperCreature>().w_perif;
-		GetComponent<HyperCreature>().w_perif = 7;
+		player_periph = hyperC.w_perif;
+        hyperC.w_perif = 3;
 	}
 
 	void removeDrinkEffect() {
-		GetComponent<HyperCreature>().w_perif = player_periph;
+        hyperC.w_perif = player_periph;
 	}
 }

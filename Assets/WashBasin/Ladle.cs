@@ -61,6 +61,7 @@ public class Ladle : MonoBehaviour {
 	public void touchingPlayer(GameObject other) {
 		player = other;
 		nearPlayer = true;
+        Debug.Log("Touching Player");
 	}
 
 	public void leavingPlayer() {

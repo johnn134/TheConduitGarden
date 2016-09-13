@@ -95,22 +95,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1000012410025486, guid: 049ebfe1b538a7941ac3a35b8f025721,
     type: 2}
   m_PrefabInternal: {fileID: 2096153932}
---- !u!114 &6068028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 6068027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14d60fe6ae1884e4fa2cc57308f64765, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  w: 0
-  w_depth: 6
-  movable: 0
-  isParent: 1
-  IVDManager: {fileID: 0}
 --- !u!54 &6068031
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -126,6 +110,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &6068032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 6068027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d60fe6ae1884e4fa2cc57308f64765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 6
+  movable: 0
+  isParent: 1
+  IVDManager: {fileID: 0}
 --- !u!1 &166862066
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +334,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!21 &1007139195
+--- !u!21 &1039898936
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -497,12 +497,12 @@ Prefab:
         type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1882639212}
+      objectReference: {fileID: 1902681969}
     - target: {fileID: 23000014152788214, guid: 996d0d43425f4b14690828a0b85a6ecb,
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1007139195}
+      objectReference: {fileID: 1039898936}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 996d0d43425f4b14690828a0b85a6ecb, type: 2}
   m_IsPrefabParent: 0
@@ -548,7 +548,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef9cb3dabe9c05345a96e6f784454193, type: 2}
   m_IsPrefabParent: 0
---- !u!43 &1882639212
+--- !u!43 &1902681969
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -732,6 +732,16 @@ Prefab:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114000014065321038, guid: 049ebfe1b538a7941ac3a35b8f025721,
+        type: 2}
+      propertyPath: isActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23000013307301070, guid: 049ebfe1b538a7941ac3a35b8f025721,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 44b7b6d5a3b38704690c9f6d4b75529d, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 049ebfe1b538a7941ac3a35b8f025721, type: 2}
   m_IsPrefabParent: 0

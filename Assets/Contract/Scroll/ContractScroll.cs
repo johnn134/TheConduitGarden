@@ -81,9 +81,9 @@ public class ContractScroll : MonoBehaviour {
 		if(child.localPosition == childEnd) {
 			isScrolling = false;
 
-			if(isActive == false) {	//closed the scroll
-				//Accept the contract and move to the next level
-
+			if(isActive == false) { //closed the scroll
+                                    //Accept the contract and move to the next level
+                Debug.Log("Change level");
 				/*** To-Do: Implement level changing ***/
 			}
 		}

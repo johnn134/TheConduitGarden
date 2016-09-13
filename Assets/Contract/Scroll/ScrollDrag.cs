@@ -16,10 +16,10 @@ public class ScrollDrag : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	/*void Update () {
+	void Update () {
 		if(grabbed)
 			dragScroll(target);
-	}*/
+	}
 
     void OnTriggerStay(Collider other)
     {
@@ -28,8 +28,11 @@ public class ScrollDrag : MonoBehaviour {
             GetInputVR controller = other.GetComponent<GetInputVR>();
 
             if (controller.griping)
-                dragScroll(controller.gameObject);
-            else
+            {
+                if(!grabbed)
+                    grabScroll(controller.gameObject);
+            }
+            else if(grabbed)
                 dropScroll();
         }
     }
@@ -38,7 +41,8 @@ public class ScrollDrag : MonoBehaviour {
     {
         if (other.gameObject.name.StartsWith("Controller"))
         {
-            dropScroll();
+            if(grabbed)
+                dropScroll();
         }
     }
 
@@ -48,14 +52,14 @@ public class ScrollDrag : MonoBehaviour {
 	 * Inactive scrolls should remain closed and locked
 	 */
 	public bool grabScroll(GameObject newTarget) {
-		if(transform.parent.GetComponent<ContractScroll>().isActive) {
+		//if(transform.parent.GetComponent<ContractScroll>().isActive) {
 			grabbed = true;
 
 			target = newTarget;
 
 			return true;
-		}
-		return false;
+		//}
+		//return false;
 	}
 
 	/*
@@ -83,15 +87,15 @@ public class ScrollDrag : MonoBehaviour {
 			//reposition the visual of the bottom of the scroll object
 			visualBottom.position = new Vector3(visualBottom.position.x, 
 				Mathf.Clamp(otherPos.y + offset, 
-					visualTopPos.y + LOWER_LIMIT, 
-					visualTopPos.y + UPPER_LIMIT), 
+					visualTopPos.y + LOWER_LIMIT * transform.parent.lossyScale.y, 
+					visualTopPos.y + UPPER_LIMIT * transform.parent.lossyScale.y), 
 				visualBottom.position.z);
 			
 			//reposition this point
 			transform.position = new Vector3(transform.position.x, 
 				Mathf.Clamp(otherPos.y, 
-					visualTopPos.y + LOWER_LIMIT - offset, 
-					visualTopPos.y + UPPER_LIMIT - offset), 
+					visualTopPos.y + LOWER_LIMIT * transform.parent.lossyScale.y - offset, 
+					visualTopPos.y + UPPER_LIMIT * transform.parent.lossyScale.y - offset), 
 				transform.position.z);
 		}								 
 	}

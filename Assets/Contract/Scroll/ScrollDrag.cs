@@ -21,20 +21,45 @@ public class ScrollDrag : MonoBehaviour {
 			dragScroll(target);
 	}
 
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.name.StartsWith("Controller"))
+        {
+            GetInputVR controller = other.GetComponent<GetInputVR>();
+
+            if (controller.griping)
+            {
+                if(!grabbed)
+                    grabScroll(controller.gameObject);
+            }
+            else if(grabbed)
+                dropScroll();
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.name.StartsWith("Controller"))
+        {
+            if(grabbed)
+                dropScroll();
+        }
+    }
+
 	/*
 	 * Assigns the scroll to be grabbed by the player,
 	 * if the scroll is currently active
 	 * Inactive scrolls should remain closed and locked
 	 */
 	public bool grabScroll(GameObject newTarget) {
-		if(transform.parent.GetComponent<ContractScroll>().isActive) {
+		//if(transform.parent.GetComponent<ContractScroll>().isActive) {
 			grabbed = true;
 
 			target = newTarget;
 
 			return true;
-		}
-		return false;
+		//}
+		//return false;
 	}
 
 	/*
@@ -62,15 +87,15 @@ public class ScrollDrag : MonoBehaviour {
 			//reposition the visual of the bottom of the scroll object
 			visualBottom.position = new Vector3(visualBottom.position.x, 
 				Mathf.Clamp(otherPos.y + offset, 
-					visualTopPos.y + LOWER_LIMIT, 
-					visualTopPos.y + UPPER_LIMIT), 
+					visualTopPos.y + LOWER_LIMIT * transform.parent.lossyScale.y, 
+					visualTopPos.y + UPPER_LIMIT * transform.parent.lossyScale.y), 
 				visualBottom.position.z);
 			
 			//reposition this point
 			transform.position = new Vector3(transform.position.x, 
 				Mathf.Clamp(otherPos.y, 
-					visualTopPos.y + LOWER_LIMIT - offset, 
-					visualTopPos.y + UPPER_LIMIT - offset), 
+					visualTopPos.y + LOWER_LIMIT * transform.parent.lossyScale.y - offset, 
+					visualTopPos.y + UPPER_LIMIT * transform.parent.lossyScale.y - offset), 
 				transform.position.z);
 		}								 
 	}

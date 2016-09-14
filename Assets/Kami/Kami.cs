@@ -42,7 +42,22 @@ public class Kami : MonoBehaviour {
     public Vector3 wanderArea1;                 //point 1 of the area of possible wander locations
     public Vector3 wanderArea2;                 //point 2 of the area of possible wander locations
 
+    Renderer _cachedRenderer;						//The renderer for this object
+
+    ParticleSystem _cachedParticleSystem;           //the particle system on this object
+
+    Light _cachedLight;                             //the light on this object
+
     KamiManager kamiManager;                    //reference to the kami manager
+
+    void Awake()
+    {
+        _cachedRenderer = GetComponent<Renderer>();
+
+        _cachedParticleSystem = GetComponent<ParticleSystem>();
+
+        _cachedLight = GetComponent<Light>();
+    }
 
     void Start()
     {
@@ -79,6 +94,13 @@ public class Kami : MonoBehaviour {
         {
             BehaveEnding();
         }
+    }
+
+    void FixedUpdate()
+    {
+        _cachedLight.color = _cachedRenderer.material.color;
+
+        _cachedParticleSystem.startColor = _cachedRenderer.material.color;
     }
 
     //the happy behavior of a kami, wander to the wander locations

@@ -20,13 +20,14 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010196313084}
   - 33: {fileID: 33000010635106472}
-  - 135: {fileID: 135000014122127202}
   - 23: {fileID: 23000013328462262}
   - 96: {fileID: 96000013867874770}
   - 114: {fileID: 114000010344667172}
   - 114: {fileID: 114000011522687400}
-  - 198: {fileID: 198000012821595006}
-  - 199: {fileID: 199000011910043840}
+  - 122: {fileID: 122000013742246286}
+  - 198: {fileID: 198000013198326550}
+  - 199: {fileID: 199000010769574294}
+  - 108: {fileID: 108000011131183792}
   m_Layer: 0
   m_Name: Kami
   m_TagString: Untagged
@@ -41,7 +42,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013586612154}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.8383846, y: 0.8518876, z: -0.8227929}
+  m_LocalPosition: {x: -1.5021055, y: 2.882, z: 0.17116654}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -53,7 +54,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013586612154}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
@@ -89,7 +90,7 @@ TrailRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013586612154}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_MotionVectors: 1
@@ -133,6 +134,40 @@ TrailRenderer:
       rgba: 853016831
   m_MinVertexDistance: 0.05
   m_Autodestruct: 0
+--- !u!108 &108000011131183792
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013586612154}
+  m_Enabled: 1
+  serializedVersion: 7
+  m_Type: 2
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Intensity: 8
+  m_Range: 0.17
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 1
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Lightmapping: 4
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!114 &114000010344667172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -166,24 +201,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  w: 0
+  w: 2
   w_depth: 0
   dullCoef: 1
   isParent: 1
-  staticRenderMode: 0
---- !u!135 &135000014122127202
-SphereCollider:
+  staticRenderMode: 1
+--- !u!122 &122000013742246286
+Halo:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013586612154}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!198 &198000012821595006
+  m_Enabled: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278190335
+  m_Size: 0.08
+--- !u!198 &198000013198326550
 ParticleSystem:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -231,13 +265,13 @@ ParticleSystem:
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  moveWithTransform: 1
+  moveWithTransform: 0
   scalingMode: 1
   InitialModule:
     serializedVersion: 2
     enabled: 1
     startLifetime:
-      scalar: 2.05
+      scalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -272,7 +306,7 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     startSpeed:
-      scalar: 0.32
+      scalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -608,15 +642,15 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     randomizeRotationDirection: 0
-    gravityModifier: 0
-    maxNumParticles: 100
+    gravityModifier: 0.02
+    maxNumParticles: 1000
     size3D: 0
     rotation3D: 0
   ShapeModule:
     serializedVersion: 2
     enabled: 1
     type: 0
-    radius: 0.23378837
+    radius: 0.48
     angle: 25
     length: 5
     boxX: 1
@@ -637,7 +671,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 10
+      scalar: 20
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -901,16 +935,16 @@ ParticleSystem:
       minMaxState: 0
     separateAxes: 0
   ColorModule:
-    enabled: 0
+    enabled: 1
     gradient:
       serializedVersion: 2
       maxGradient:
         key0:
           serializedVersion: 2
-          rgba: 4294967295
+          rgba: 4278190335
         key1:
           serializedVersion: 2
-          rgba: 4294967295
+          rgba: 255
         key2:
           serializedVersion: 2
           rgba: 0
@@ -937,7 +971,7 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 0
+        atime0: 37394
         atime1: 65535
         atime2: 0
         atime3: 0
@@ -1936,7 +1970,7 @@ ParticleSystem:
     subEmitterCollision1: {fileID: 0}
     subEmitterDeath: {fileID: 0}
     subEmitterDeath1: {fileID: 0}
---- !u!199 &199000011910043840
+--- !u!199 &199000010769574294
 ParticleSystemRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

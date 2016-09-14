@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Valve.VR;
 
 public class Kami : MonoBehaviour {
     public enum Type
@@ -39,10 +40,27 @@ public class Kami : MonoBehaviour {
     Vector3 wanderLoc;                          //the current target location the kami is going to
 
     public Vector3 standbyLoc;                  //the place where kami should wait *Not currently used*
-    public Vector3 wanderArea1;                 //point 1 of the area of possible wander locations
-    public Vector3 wanderArea2;                 //point 2 of the area of possible wander locations
+
+    Renderer _cachedRenderer;						//The renderer for this object
+
+    ParticleSystem _cachedParticleSystem;           //the particle system on this object
+
+    Light _cachedLight;                             //the light on this object
+
+    SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
 
     KamiManager kamiManager;                    //reference to the kami manager
+
+    void Awake()
+    {
+        _cachedRenderer = GetComponent<Renderer>();
+
+        _cachedParticleSystem = GetComponent<ParticleSystem>();
+
+        _cachedLight = GetComponent<Light>();
+
+        controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
+    }
 
     void Start()
     {
@@ -53,14 +71,13 @@ public class Kami : MonoBehaviour {
         kamiManager = Object.FindObjectOfType<KamiManager>();
 
         //get targets depending on type
-        //NOTE: good format is to always have the type shrine at index 0 and the main tool for that shrine at index 1
+        //NOTE: good format is to always have the type shrine at index 0
         if (type == Type.Fish)
         {
-            targets.Add(GameObject.Find("ShrineFish/Sphere"));
-            targets.Add(GameObject.Find("ToolFoodContainer"));
-            targets.Add(GameObject.Find("Reservoir/Water"));
-            targets.Add(GameObject.Find("FishPool/Water"));
+            targets.Add(GameObject.Find("ShrineFish/Visual/TopSphere"));
         }
+
+        //StartCoroutine(ColorTrans());
     }
 
     void Update()
@@ -71,6 +88,13 @@ public class Kami : MonoBehaviour {
                 LandOnTarget();
             else
                 BehaveHappy();
+
+            if(Random.Range(0,500) == 1)
+                if (myHyper.SlideW(Random.Range(-1, 2)))
+                {
+                    myHyper.WMove();
+                    //StartCoroutine(ColorTrans());
+                }
         }
         else if(state == State.Flee)
         {
@@ -80,6 +104,72 @@ public class Kami : MonoBehaviour {
         {
             BehaveEnding();
         }
+    }
+
+    /*void LateUpdate()
+    {
+        for (int i = 0; i < controllerManager.indices.Length; i++)
+        {
+            if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
+            {
+                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
+                {
+                    StartCoroutine(ColorTrans());
+                }
+            }
+        }
+    }*/
+
+    void FixedUpdate()
+    {
+        if (_cachedRenderer.material.color.a < .5f)
+            _cachedLight.color = Color.black;
+        else
+            _cachedLight.color = _cachedRenderer.material.color;
+
+        _cachedParticleSystem.startColor = _cachedRenderer.material.color;
+    }
+
+    //smoothly change the color of this object, rmove once 4D shader is implemented
+    IEnumerator ColorTrans()
+    {
+        Color targetColor;
+
+        //deturmine the target color based on w point
+        if (myHyper.w == 0)
+            targetColor = Color.red;
+        else if (myHyper.w == 1)
+            targetColor = new Color(1, .45f, 0);
+        else if (myHyper.w == 2)
+            targetColor = Color.yellow;
+        else if (myHyper.w == 3)
+            targetColor = Color.green;
+        else if (myHyper.w == 4)
+            targetColor = Color.cyan;
+        else if (myHyper.w == 5)
+            targetColor = Color.blue;
+        else
+            targetColor = Color.magenta;
+
+        for (float i = 0.0f; i <= 1.0f; i += .1f)
+        {
+
+            _cachedParticleSystem.startColor = Color.Lerp(_cachedParticleSystem.startColor, targetColor, .1f);
+
+            if (myHyper.w != player.w)
+                _cachedLight.color = Color.Lerp(_cachedLight.color, Color.black, .1f);
+            else
+                _cachedLight.color = Color.Lerp(_cachedLight.color, targetColor, .1f);
+
+            yield return null;
+        }
+
+        if (myHyper.w != player.w)
+            _cachedLight.color = Color.black;
+        else
+            _cachedLight.color = _cachedRenderer.material.color;
+
+        _cachedParticleSystem.startColor = _cachedRenderer.material.color;
     }
 
     //the happy behavior of a kami, wander to the wander locations
@@ -102,9 +192,9 @@ public class Kami : MonoBehaviour {
         if (transform.position.Equals(wanderLoc) || Random.Range(0, 20) == 1)
         {
             if (Random.Range(0, 50) == 1)
-                target = targets[Random.Range(0, targets.Count - 1)];
+                target = targets[Random.Range(0, targets.Count)];
             else
-                wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
+                wanderLoc = new Vector3(Random.Range(kamiManager.wanderArea1.x, kamiManager.wanderArea2.x), Random.Range(kamiManager.wanderArea1.y, kamiManager.wanderArea2.y), Random.Range(kamiManager.wanderArea1.z, kamiManager.wanderArea2.z));
         }
     }
 

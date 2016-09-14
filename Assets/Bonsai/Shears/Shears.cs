@@ -4,6 +4,7 @@ using System.Collections;
 public class Shears : MonoBehaviour {
 
 	bool startedSnip;
+    int counter = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -16,8 +17,12 @@ public class Shears : MonoBehaviour {
 	void Update () {
 		//Check for turning off collisions for snipping
 		if(startedSnip) {
-			transform.GetChild(1).GetComponent<BoxCollider>().enabled = false;
-			startedSnip = false;
+            counter++;
+            if (counter >= 2)
+            {
+                transform.GetChild(1).GetComponent<BoxCollider>().enabled = false;
+                startedSnip = false;
+            }
 		}
 
 		//Check for input
@@ -27,7 +32,10 @@ public class Shears : MonoBehaviour {
 	}
 
 	public void snip() {
+        Debug.Log("snip");
 		transform.GetChild(1).GetComponent<BoxCollider>().enabled = true;
-		startedSnip = true;
+        Debug.Log("Shearzone is " + transform.GetChild(1).GetComponent<BoxCollider>().enabled);
+        counter = 0;
+        startedSnip = true;
 	}
 }

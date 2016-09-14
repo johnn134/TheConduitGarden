@@ -18,20 +18,31 @@ public class Kami : MonoBehaviour {
         Ending
     }
 
-    public GameObject target;
-    public Type type;
-    public State state;
-    public GameObject holding;
-    public List<GameObject> targets;
-    public HyperCreature player;
-    public bool helping;
-    HyperObject myHyper;
-    public Vector3 standbyLoc;
-    Vector3 wanderLoc;
-    public int id;
-    public Vector3 wanderArea1;
-    public Vector3 wanderArea2;
-    KamiManager kamiManager;
+    public Type type;                           //the type of objects the kami responds to
+    public State state;                         //the state that dictates how the kami acts
+
+    public GameObject target;                   //The object the kami it trying to land on
+    public GameObject holding;                  //the object the kami is holding
+
+    public List<GameObject> targets;            //list of possible targets the kami can land on
+
+    public HyperCreature player;                //the hyper creature in the scene
+
+    public bool helping;                        //is the kami currently helping *Not currently used*
+
+    HyperObject myHyper;                        //reference to the hyper code on this kami
+
+    public int id;                              //unique id number for this kami
+
+    float leavingY = -.5f;                       //the y that the kami should be at for the ending behavior
+
+    Vector3 wanderLoc;                          //the current target location the kami is going to
+
+    public Vector3 standbyLoc;                  //the place where kami should wait *Not currently used*
+    public Vector3 wanderArea1;                 //point 1 of the area of possible wander locations
+    public Vector3 wanderArea2;                 //point 2 of the area of possible wander locations
+
+    KamiManager kamiManager;                    //reference to the kami manager
 
     void Start()
     {
@@ -41,6 +52,8 @@ public class Kami : MonoBehaviour {
         wanderLoc = new Vector3(Random.Range(-6, 7), 3, Random.Range(-6, 7));
         kamiManager = Object.FindObjectOfType<KamiManager>();
 
+        //get targets depending on type
+        //NOTE: good format is to always have the type shrine at index 0 and the main tool for that shrine at index 1
         if (type == Type.Fish)
         {
             targets.Add(GameObject.Find("ShrineFish/Sphere"));
@@ -62,6 +75,10 @@ public class Kami : MonoBehaviour {
         else if(state == State.Flee)
         {
             Flee();
+        }
+        else if(state == State.Ending)
+        {
+            BehaveEnding();
         }
     }
 
@@ -88,12 +105,6 @@ public class Kami : MonoBehaviour {
                 target = targets[Random.Range(0, targets.Count - 1)];
             else
                 wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
-
-            /*while (wanderLoc.x < (wanderArea2.x - wanderArea1.x) / 4 - wanderArea2.x && wanderLoc.x > (wanderArea2.x - wanderArea1.x) / 4 + wanderArea1.x &&
-                wanderLoc.z < (wanderArea2.z - wanderArea1.z) / 4 - wanderArea2.z && wanderLoc.z > (wanderArea2.z - wanderArea1.z) / 4 + wanderArea1.z)
-            {
-                wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
-            }*/
         }
     }
 
@@ -154,6 +165,28 @@ public class Kami : MonoBehaviour {
         //change target
         if (Random.Range(0, 800) == 1)
             target = null;
+    }
+
+    void BehaveEnding()
+    {
+        wanderLoc = new Vector3(player.transform.Find("Camera (eye)").position.x, leavingY, player.transform.Find("Camera (eye)").position.z);
+
+        if (Vector3.Distance(transform.position, wanderLoc) > 1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, wanderLoc, Time.deltaTime * 2);
+        }
+        else
+            transform.RotateAround(wanderLoc, Vector3.up, Time.deltaTime * 200);
+
+        if (transform.position.y != wanderLoc.y)
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, wanderLoc.y, transform.position.z), Time.deltaTime / 2);
+
+        leavingY += .01f;
+
+        if (transform.position.y > 20f)
+        {
+            kamiManager.RequestToRemove(gameObject);
+        }
     }
 
     /*void HelpTut()

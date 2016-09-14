@@ -144,15 +144,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37006b002792a004785714fa7a6fc13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   type: 0
   state: 0
+  target: {fileID: 0}
   holding: {fileID: 0}
   targets: []
   player: {fileID: 0}
   helping: 0
-  standbyLoc: {x: 0.5, y: 1.7, z: -2.4}
   id: 0
+  standbyLoc: {x: 0.5, y: 1.7, z: -2.4}
   wanderArea1: {x: -1.9, y: 0.5, z: -1.5}
   wanderArea2: {x: 2, y: 2, z: 1.6}
 --- !u!114 &114000011522687400
@@ -170,7 +170,7 @@ MonoBehaviour:
   w_depth: 0
   dullCoef: 1
   isParent: 1
-  vanishWhenTransparent: 0
+  staticRenderMode: 0
 --- !u!135 &135000014122127202
 SphereCollider:
   m_ObjectHideFlags: 1

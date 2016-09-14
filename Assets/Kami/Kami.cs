@@ -53,11 +53,10 @@ public class Kami : MonoBehaviour {
         kamiManager = Object.FindObjectOfType<KamiManager>();
 
         //get targets depending on type
-        //NOTE: good format is to always have the type shrine at index 0 and the main tool for that shrine at index 1
+        //NOTE: good format is to always have the type shrine at index 0
         if (type == Type.Fish)
         {
             targets.Add(GameObject.Find("ShrineFish/Sphere"));
-            targets.Add(GameObject.Find("ToolFoodContainer"));
             targets.Add(GameObject.Find("Reservoir/Water"));
             targets.Add(GameObject.Find("FishPool/Water"));
         }

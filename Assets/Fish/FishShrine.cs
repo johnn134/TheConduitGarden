@@ -108,7 +108,7 @@ public class FishShrine : MonoBehaviour {
             points >= (maxPoints/3)*2 && stage == 1)
         {
             stage++;
-            kamiManager.MakeKami(transform.position, transform.rotation, 0);
+            kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, 0);
         }
 
         if (points < maxPoints / 3 && stage == 1 ||
@@ -124,7 +124,7 @@ public class FishShrine : MonoBehaviour {
             CancelInvoke();
             var em = particleObj.emission;
             em.rate = 5;
-            kamiManager.MakeKami(transform.position, transform.rotation, 0);
+            kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, 0);
             InvokeRepeating("MakeKami", kamiManager.kamiComeRate, kamiManager.kamiComeRate);
             //GetComponent<HyperObject>().dullCoef = .1f;
         }
@@ -167,7 +167,7 @@ public class FishShrine : MonoBehaviour {
 
     void MakeKami()
     {
-        kamiManager.MakeKami(transform.position, transform.rotation, 0);
+        kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, 0);
     }
 
     void ScareKami()

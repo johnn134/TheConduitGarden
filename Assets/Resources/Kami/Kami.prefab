@@ -153,8 +153,8 @@ MonoBehaviour:
   helping: 0
   id: 0
   standbyLoc: {x: 0.5, y: 1.7, z: -2.4}
-  wanderArea1: {x: -1.9, y: 0.5, z: -1.5}
-  wanderArea2: {x: 2, y: 2, z: 1.6}
+  wanderArea1: {x: 4.6, y: 2.6, z: -6.2}
+  wanderArea2: {x: -8.5, y: 5.3, z: 2.6}
 --- !u!114 &114000011522687400
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -75,6 +75,8 @@ public class Kami : MonoBehaviour {
             targets.Add(GameObject.Find("Reservoir/Water"));
             targets.Add(GameObject.Find("FishPool/Water"));
         }
+
+        StartCoroutine(ColorTrans());
     }
 
     void Update()
@@ -85,6 +87,13 @@ public class Kami : MonoBehaviour {
                 LandOnTarget();
             else
                 BehaveHappy();
+
+            if(Random.Range(0,500) == 1)
+                if (myHyper.SlideW(Random.Range(-1, 2)))
+                {
+                    myHyper.WMove();
+                    StartCoroutine(ColorTrans());
+                }
         }
         else if(state == State.Flee)
         {
@@ -96,9 +105,51 @@ public class Kami : MonoBehaviour {
         }
     }
 
-    void FixedUpdate()
+    /*void FixedUpdate()
     {
         if (_cachedRenderer.material.color.a < .5f)
+            _cachedLight.color = Color.black;
+        else
+            _cachedLight.color = _cachedRenderer.material.color;
+
+        _cachedParticleSystem.startColor = _cachedRenderer.material.color;
+    }*/
+
+    //smoothly change the color of this object, rmove once 4D shader is implemented
+    IEnumerator ColorTrans()
+    {
+        Color targetColor;
+
+        //deturmine the target color based on w point
+        if (myHyper.w == 0)
+            targetColor = Color.red;
+        else if (myHyper.w == 1)
+            targetColor = new Color(1, .45f, 0);
+        else if (myHyper.w == 2)
+            targetColor = Color.yellow;
+        else if (myHyper.w == 3)
+            targetColor = Color.green;
+        else if (myHyper.w == 4)
+            targetColor = Color.cyan;
+        else if (myHyper.w == 5)
+            targetColor = Color.blue;
+        else
+            targetColor = Color.magenta;
+
+        for (float i = 0.0f; i <= 1.0f; i += .1f)
+        {
+
+            _cachedParticleSystem.startColor = Color.Lerp(_cachedParticleSystem.startColor, targetColor, .1f);
+
+            if (myHyper.w != player.w)
+                _cachedLight.color = Color.Lerp(_cachedLight.color, Color.black, .1f);
+            else
+                _cachedLight.color = Color.Lerp(_cachedLight.color, targetColor, .1f);
+
+            yield return null;
+        }
+
+        if (myHyper.w != player.w)
             _cachedLight.color = Color.black;
         else
             _cachedLight.color = _cachedRenderer.material.color;

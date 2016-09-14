@@ -167,7 +167,7 @@ public class FishShrine : MonoBehaviour {
 
     void MakeKami()
     {
-        kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, 0);
+        kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7));
     }
 
     void ScareKami()

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Valve.VR;
 
 public class Kami : MonoBehaviour {
     public enum Type
@@ -48,6 +49,8 @@ public class Kami : MonoBehaviour {
 
     Light _cachedLight;                             //the light on this object
 
+    SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
+
     KamiManager kamiManager;                    //reference to the kami manager
 
     void Awake()
@@ -57,6 +60,8 @@ public class Kami : MonoBehaviour {
         _cachedParticleSystem = GetComponent<ParticleSystem>();
 
         _cachedLight = GetComponent<Light>();
+
+        controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
     }
 
     void Start()
@@ -71,12 +76,10 @@ public class Kami : MonoBehaviour {
         //NOTE: good format is to always have the type shrine at index 0
         if (type == Type.Fish)
         {
-            targets.Add(GameObject.Find("ShrineFish/Sphere"));
-            targets.Add(GameObject.Find("Reservoir/Water"));
-            targets.Add(GameObject.Find("FishPool/Water"));
+            targets.Add(GameObject.Find("ShrineFish/Visual/TopSphere"));
         }
 
-        StartCoroutine(ColorTrans());
+        //StartCoroutine(ColorTrans());
     }
 
     void Update()
@@ -92,7 +95,7 @@ public class Kami : MonoBehaviour {
                 if (myHyper.SlideW(Random.Range(-1, 2)))
                 {
                     myHyper.WMove();
-                    StartCoroutine(ColorTrans());
+                    //StartCoroutine(ColorTrans());
                 }
         }
         else if(state == State.Flee)
@@ -105,7 +108,21 @@ public class Kami : MonoBehaviour {
         }
     }
 
-    /*void FixedUpdate()
+    /*void LateUpdate()
+    {
+        for (int i = 0; i < controllerManager.indices.Length; i++)
+        {
+            if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
+            {
+                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
+                {
+                    StartCoroutine(ColorTrans());
+                }
+            }
+        }
+    }*/
+
+    void FixedUpdate()
     {
         if (_cachedRenderer.material.color.a < .5f)
             _cachedLight.color = Color.black;
@@ -113,7 +130,7 @@ public class Kami : MonoBehaviour {
             _cachedLight.color = _cachedRenderer.material.color;
 
         _cachedParticleSystem.startColor = _cachedRenderer.material.color;
-    }*/
+    }
 
     //smoothly change the color of this object, rmove once 4D shader is implemented
     IEnumerator ColorTrans()
@@ -177,7 +194,7 @@ public class Kami : MonoBehaviour {
         if (transform.position.Equals(wanderLoc) || Random.Range(0, 20) == 1)
         {
             if (Random.Range(0, 50) == 1)
-                target = targets[Random.Range(0, targets.Count - 1)];
+                target = targets[Random.Range(0, targets.Count)];
             else
                 wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
         }

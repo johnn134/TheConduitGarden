@@ -98,7 +98,10 @@ public class Kami : MonoBehaviour {
 
     void FixedUpdate()
     {
-        _cachedLight.color = _cachedRenderer.material.color;
+        if (_cachedRenderer.material.color.a < .5f)
+            _cachedLight.color = Color.black;
+        else
+            _cachedLight.color = _cachedRenderer.material.color;
 
         _cachedParticleSystem.startColor = _cachedRenderer.material.color;
     }

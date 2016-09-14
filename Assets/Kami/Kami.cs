@@ -40,8 +40,6 @@ public class Kami : MonoBehaviour {
     Vector3 wanderLoc;                          //the current target location the kami is going to
 
     public Vector3 standbyLoc;                  //the place where kami should wait *Not currently used*
-    public Vector3 wanderArea1;                 //point 1 of the area of possible wander locations
-    public Vector3 wanderArea2;                 //point 2 of the area of possible wander locations
 
     Renderer _cachedRenderer;						//The renderer for this object
 
@@ -196,7 +194,7 @@ public class Kami : MonoBehaviour {
             if (Random.Range(0, 50) == 1)
                 target = targets[Random.Range(0, targets.Count)];
             else
-                wanderLoc = new Vector3(Random.Range(wanderArea1.x, wanderArea2.x), Random.Range(wanderArea1.y, wanderArea2.y), Random.Range(wanderArea1.z, wanderArea2.z));
+                wanderLoc = new Vector3(Random.Range(kamiManager.wanderArea1.x, kamiManager.wanderArea2.x), Random.Range(kamiManager.wanderArea1.y, kamiManager.wanderArea2.y), Random.Range(kamiManager.wanderArea1.z, kamiManager.wanderArea2.z));
         }
     }
 

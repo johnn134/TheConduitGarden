@@ -19,6 +19,9 @@ public class KamiManager : MonoBehaviour {
     public int kamiComeRate = 60;
     public int kamiLeaveRate = 60;
 
+    public Vector3 wanderArea1;                 //point 1 of the area of possible wander locations
+    public Vector3 wanderArea2;                 //point 2 of the area of possible wander locations
+
     FishShrine fishShrine;
 
     void Start () {

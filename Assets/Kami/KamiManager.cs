@@ -91,4 +91,16 @@ public class KamiManager : MonoBehaviour {
             }
         }
     }
+
+    public int NumberOfHappyKami()
+    {
+        int numHappy = 0;
+        foreach (GameObject kami in allKami)
+        {
+            if ((int)kami.GetComponent<Kami>().state == 0)
+                numHappy++;
+        }
+
+        return numHappy;
+    }
 }

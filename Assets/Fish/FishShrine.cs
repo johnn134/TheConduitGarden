@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class FishShrine : MonoBehaviour {
 
     int stage = 0;                                              //how many thirds of the way the shrine is to activation
+    int numKamiNeed = 0;                                        //how many kami should be in the scene
+    int numKamiSpawnCalls = 0;                                  //how many kami are in the process of bein spawned in
 
     public int[] onWs = new int[] {0, 0, 0, 0, 0, 0, 0};        //the number of fish required on each w point to activate the shrine
 
@@ -79,29 +81,6 @@ public class FishShrine : MonoBehaviour {
         if(points > oldPoints)
             particleObj.Emit(20);
 
-        /*if (points > 0 && !activated)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child.GetComponent<HyperObject>())
-                {
-                    child.GetComponent<HyperObject>().dullCoef = (maxPoints / points) / 2;
-                    child.GetComponent<HyperObject>().WMove();
-                }
-            }
-        }
-        else if (points == 0)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child.GetComponent<HyperObject>())
-                {
-                    child.GetComponent<HyperObject>().dullCoef = maxPoints;
-                    child.GetComponent<HyperObject>().WMove();
-                }
-            }
-        }*/
-
         UpdateLights(pointMatrix);
 
         if(points >= maxPoints/3 && stage == 0 ||
@@ -137,14 +116,6 @@ public class FishShrine : MonoBehaviour {
             InvokeRepeating("ScareKami", kamiManager.kamiLeaveRate, kamiManager.kamiLeaveRate);
             var em = particleObj.emission;
             em.rate = 0;
-            /*foreach (Transform child in transform)
-            {
-                if (child.GetComponent<HyperObject>())
-                {
-                    child.GetComponent<HyperObject>().dullCoef = (maxPoints / points) / 2;
-                    child.GetComponent<HyperObject>().WMove(GameObject.Find("CameraRig").GetComponent<HyperCreature>().w);
-                }
-            }*/
         }
     }
 

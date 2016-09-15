@@ -91,15 +91,15 @@ public class Fish : MonoBehaviour {
                 else if (state == State.Hunting)
                     BehaveHunting();
             }
+        }
 
-            //check if w has changed
-            if (myHyper.w != curW)
-            {
-                //dont alert for the first time since the fish starts out not knowing its w
-                if (curW != -1)
-                    fishManager.alertMove(gameObject, myHyper.w);
-                curW = myHyper.w;
-            }
+        //check if w has changed
+        if (myHyper.w != curW)
+        {
+            //dont alert for the first time since the fish starts out not knowing its w
+            if (curW != -1)
+                fishManager.alertMove(gameObject, myHyper.w);
+            curW = myHyper.w;
         }
     }
 

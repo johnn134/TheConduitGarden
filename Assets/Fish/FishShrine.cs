@@ -89,25 +89,39 @@ public class FishShrine : MonoBehaviour {
             points >= (maxPoints/3)*2 && stage == 1)
         {
             stage++;
-            Invoke("MakeKami", 10);
+            Invoke("MakeKami", kamiManager.kamiArriveTime);
         }
 
         if (points < maxPoints / 3 && stage == 1 ||
             points < (maxPoints / 3) * 2 && stage == 2)
         {
             stage--;
-            ScareKami();
+
+            //check if there are kami to scare away
+            if(kamiManager.NumberOfHappyKami(0) > 0)
+                ScareKami();
+            else
+            {
+                //cancel all invoked make kami scrips and restart the ones that would not have been scared away
+                CancelInvoke();
+
+                for(int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
+                    Invoke("MakeKami", kamiManager.kamiArriveTime);
+            }
         }
 
         if (points >= maxPoints && !activated)
         {
             activated = true;
             CancelInvoke();
+            for (int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
             var em = particleObj.emission;
             em.rate = 5;
             player.w_perif++;
+            player.WMoveAllHyperObjects();
             //kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7));
-            InvokeRepeating("MakeKami", 10, kamiManager.kamiComeRate);
+            InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
             //GetComponent<HyperObject>().dullCoef = .1f;
         }
 
@@ -115,9 +129,9 @@ public class FishShrine : MonoBehaviour {
         {
             activated = false;
             CancelInvoke();
-            ScareKami();
             player.w_perif--;
-            InvokeRepeating("ScareKami", kamiManager.kamiLeaveRate, kamiManager.kamiLeaveRate);
+            player.WMoveAllHyperObjects();
+            InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
             var em = particleObj.emission;
             em.rate = 0;
         }
@@ -147,12 +161,26 @@ public class FishShrine : MonoBehaviour {
 
     void ScareKami()
     {
-        kamiManager.MakeKamiFlee(0);
+        //check if there are kami to scare away
+        if (kamiManager.NumberOfHappyKami(0) > stage)
+            kamiManager.MakeKamiFlee(0);
+        else
+        {
+            //cancel all invoked make kami scrips and restart the ones that would not have been scared away
+            CancelInvoke();
+
+            for (int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
+        }
     }
 
-    public void CheckKami()
+    /*public void CheckKami()
     {
         if (kamiManager.NumberOfHappyKami(0) == stage || kamiManager.NumberOfHappyKami(0) == 0)
+        {
             CancelInvoke();
-    }
+            for (int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
+        }
+    }*/
 }

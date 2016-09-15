@@ -10,14 +10,15 @@ public class KamiManager : MonoBehaviour {
     //max number of kami allowed in the world
     public int maxKami = 30;
 
-    //number of kami in the world
-    public int numKami = 0;
+    //number of kami in the world of each type
+    int[] numKami = new int[] { 0, 0, 0 };
 
     //current Kami index to set the id of new kami
     int curIndex = 0;
 
     public int kamiComeRate = 60;
     public int kamiLeaveRate = 60;
+    public int kamiArriveTime = 10;
 
     public Vector3 wanderArea1;                 //point 1 of the area of possible wander locations
     public Vector3 wanderArea2;                 //point 2 of the area of possible wander locations
@@ -35,14 +36,14 @@ public class KamiManager : MonoBehaviour {
         GameObject nObj;
 
         //check to make sure the w point the fish is being added on isnt full
-        if (numKami < maxKami)
+        if (numKami[newType] < maxKami)
         {
 			nObj = (GameObject)Instantiate(Resources.Load("Kami/Kami"), nPosition, nRotation);
             nObj.GetComponent<HyperObject>().setW(nW);
             nObj.GetComponent<HyperObject>().WMove();//change to Slide(0) once 4d shader is implemented
             nObj.GetComponent<Kami>().type = (Kami.Type)newType;
             allKami.Add(nObj);
-            numKami += 1;
+            numKami[newType] += 1;
             nObj.GetComponent<Kami>().id = curIndex;
             curIndex++;
 
@@ -56,11 +57,11 @@ public class KamiManager : MonoBehaviour {
     {
         if (allKami.Remove(rObj))
         {
-            numKami -= 1;
+            numKami[(int)rObj.GetComponent<Kami>().type] -= 1;
 
             //tell shrines to check number of kami so that they lose the ones the player should have
-            if (rObj.GetComponent<Kami>().type == Kami.Type.Fish)
-                fishShrine.CheckKami();
+            //if (rObj.GetComponent<Kami>().type == Kami.Type.Fish)
+            //    fishShrine.CheckKami();
 
             Destroy(rObj);
 
@@ -70,11 +71,11 @@ public class KamiManager : MonoBehaviour {
             return false;
     }
 
-    public void MakeKamiFlee()
+    public void MakeKamiFlee(int kamiType)
     {
         foreach(GameObject kami in allKami)
         {
-            if((int)kami.GetComponent<Kami>().state != 2)
+            if((int)kami.GetComponent<Kami>().state != 2 && (int)kami.GetComponent<Kami>().type == kamiType)
             {
                 kami.GetComponent<Kami>().state = Kami.State.Flee;
                 break;
@@ -94,12 +95,12 @@ public class KamiManager : MonoBehaviour {
         }
     }
 
-    public int NumberOfHappyKami()
+    public int NumberOfHappyKami(int kamiType)
     {
         int numHappy = 0;
         foreach (GameObject kami in allKami)
         {
-            if ((int)kami.GetComponent<Kami>().state == 0)
+            if ((int)kami.GetComponent<Kami>().state == 0 && (int)kami.GetComponent<Kami>().type == kamiType)
                 numHappy++;
         }
 

@@ -14,6 +14,14 @@ public class HyperCreature : MonoBehaviour {
         IVDManager = Object.FindObjectOfType<FourthDManager>();
     }
 
+    public void WMoveAllHyperObjects()
+    {
+        var allHyper = Object.FindObjectsOfType<HyperObject>();
+
+        foreach (HyperObject hyperObj in allHyper)
+            hyperObj.WMove();
+    }
+
 	//public function for other objects to call to tell the creature to move along the w axis
 	public void WMove(int deltaW){
 		if((deltaW > 0 && w != 6) || (deltaW < 0 && w != 0)){

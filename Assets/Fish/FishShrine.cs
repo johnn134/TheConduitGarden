@@ -142,17 +142,17 @@ public class FishShrine : MonoBehaviour {
 
     void MakeKami()
     {
-        kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7));
+        kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7), 0);
     }
 
     void ScareKami()
     {
-        kamiManager.MakeKamiFlee();
+        kamiManager.MakeKamiFlee(0);
     }
 
     public void CheckKami()
     {
-        if (kamiManager.numKami == stage || kamiManager.numKami == 0)
+        if (kamiManager.NumberOfHappyKami(0) == stage || kamiManager.NumberOfHappyKami(0) == 0)
             CancelInvoke();
     }
 }

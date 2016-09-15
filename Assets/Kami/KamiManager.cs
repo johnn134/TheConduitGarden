@@ -30,7 +30,7 @@ public class KamiManager : MonoBehaviour {
     }
 
     //a object has requested to make a fish (or food if isFood is true) at position with rotation, return true if successful
-    public bool MakeKami(Vector3 nPosition, Quaternion nRotation, int nW)
+    public bool MakeKami(Vector3 nPosition, Quaternion nRotation, int nW, int newType)
     {
         GameObject nObj;
 
@@ -40,6 +40,7 @@ public class KamiManager : MonoBehaviour {
 			nObj = (GameObject)Instantiate(Resources.Load("Kami/Kami"), nPosition, nRotation);
             nObj.GetComponent<HyperObject>().setW(nW);
             nObj.GetComponent<HyperObject>().WMove();//change to Slide(0) once 4d shader is implemented
+            nObj.GetComponent<Kami>().type = (Kami.Type)newType;
             allKami.Add(nObj);
             numKami += 1;
             nObj.GetComponent<Kami>().id = curIndex;
@@ -57,6 +58,7 @@ public class KamiManager : MonoBehaviour {
         {
             numKami -= 1;
 
+            //tell shrines to check number of kami so that they lose the ones the player should have
             if (rObj.GetComponent<Kami>().type == Kami.Type.Fish)
                 fishShrine.CheckKami();
 

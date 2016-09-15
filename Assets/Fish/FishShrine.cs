@@ -18,6 +18,7 @@ public class FishShrine : MonoBehaviour {
     FishManager fishManager;                                    //reference to the fish manager
     KamiManager kamiManager;                                    //reference to the kami manager
     ParticleSystem particleObj;                                 //the particle emmiter on this shrine
+    HyperCreature player;                                       //reference to the hyper creature
 
     //Chached light transforms
     Transform[] lights = new Transform[] { null, null, null, null, null, null, null };
@@ -25,6 +26,7 @@ public class FishShrine : MonoBehaviour {
     void Start() {
         fishManager = Object.FindObjectOfType<FishManager>();
         kamiManager = Object.FindObjectOfType<KamiManager>();
+        player = Object.FindObjectOfType<HyperCreature>();
 
         particleObj = GameObject.Find("ShrineFish/Particles").GetComponent<ParticleSystem>();
 
@@ -87,7 +89,7 @@ public class FishShrine : MonoBehaviour {
             points >= (maxPoints/3)*2 && stage == 1)
         {
             stage++;
-            kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0,7));
+            Invoke("MakeKami", 10);
         }
 
         if (points < maxPoints / 3 && stage == 1 ||
@@ -103,8 +105,9 @@ public class FishShrine : MonoBehaviour {
             CancelInvoke();
             var em = particleObj.emission;
             em.rate = 5;
-            kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7));
-            InvokeRepeating("MakeKami", kamiManager.kamiComeRate, kamiManager.kamiComeRate);
+            player.w_perif++;
+            //kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7));
+            InvokeRepeating("MakeKami", 10, kamiManager.kamiComeRate);
             //GetComponent<HyperObject>().dullCoef = .1f;
         }
 
@@ -113,6 +116,7 @@ public class FishShrine : MonoBehaviour {
             activated = false;
             CancelInvoke();
             ScareKami();
+            player.w_perif--;
             InvokeRepeating("ScareKami", kamiManager.kamiLeaveRate, kamiManager.kamiLeaveRate);
             var em = particleObj.emission;
             em.rate = 0;

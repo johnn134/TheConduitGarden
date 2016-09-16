@@ -186,7 +186,7 @@ public class Leaf : MonoBehaviour {
 		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.position, manager);
 		if(!a || !b) {
 			zoneExtension = true;
-			Debug.Log(gameObject.name + " extends past zone");
+			//Debug.Log(gameObject.name + " extends past zone");
 			if(manager.GetComponent<BonsaiManager>() != null)
 				manager.GetComponent<BonsaiManager>().registerZoneExtension();
 		}

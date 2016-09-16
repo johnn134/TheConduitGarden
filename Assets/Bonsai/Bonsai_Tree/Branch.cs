@@ -160,9 +160,9 @@ public class Branch : MonoBehaviour {
 							}
 						}
 					}
-					else {
+					/*else {
 						Debug.Log("Tree Growth has ended");
-					}
+					}*/
 
 					break;
 			}
@@ -182,16 +182,16 @@ public class Branch : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-                Debug.Log("snippeda");
+                //Debug.Log("snippeda");
 		if(other.transform.parent != null) {
 			if(other.transform.parent.GetComponent<Insecticide>() != null) {	//Insecticide Spray Collision
 				if(isInfested) {
-					Debug.Log("Spray has removed the infestation");
+					//Debug.Log("Spray has removed the infestation");
 					killInfestation();
 				}
 			}
 			else if(other.gameObject.name.Equals("ShearZone")) {
-                Debug.Log("snippedb");
+                //Debug.Log("snippedb");
 				if(canSnip) {
 					Destroy(this.gameObject);
 				}
@@ -213,8 +213,8 @@ public class Branch : MonoBehaviour {
 			growthStep = 0;
 			growthCounter = 0;
 
-			if(depth == 0)
-				Debug.Log("Tree growth has started");
+			//if(depth == 0)
+			//	Debug.Log("Tree growth has started");
 		}
 	}
 
@@ -403,7 +403,7 @@ public class Branch : MonoBehaviour {
 				}
 
 				if(attempts >= MAX_PLACEMENT_ATTEMPTS) {
-					Debug.Log("Failed to find a spot for new leaves");
+					Debug.Log("Failed to find a spot for new leaves"); //DELETE IN FINAL BUILD
 					break;
 				}
 
@@ -461,7 +461,7 @@ public class Branch : MonoBehaviour {
 				}
 
 				if(attempts >= MAX_PLACEMENT_ATTEMPTS) {
-					Debug.Log("Failed to find a spot for new branches");
+					Debug.Log("Failed to find a spot for new branches"); //DELETE IN FINAL BUILD
 					break;
 				}
 
@@ -704,7 +704,7 @@ public class Branch : MonoBehaviour {
 		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(2).position, manager);
 		if(!a || !b) {
 			zoneExtension = true;
-			Debug.Log(gameObject.name + " extends past zone");
+			//Debug.Log(gameObject.name + " extends past zone");
 			if(manager.GetComponent<BonsaiManager>() != null)
 				manager.GetComponent<BonsaiManager>().registerZoneExtension();
 		}

@@ -243,9 +243,70 @@ Prefab:
       propertyPath: m_Name
       value: Bonsai_Tree_Tokyo_v1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010011743172, guid: f0447557d14a42f41b69d69f1b255b52, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f0447557d14a42f41b69d69f1b255b52, type: 2}
   m_IsPrefabParent: 0
+--- !u!21 &497688822
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Sprites/Default
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: PixelSnap
+      second: 0
+    m_Colors:
+    - first:
+        name: _Color
+      second: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1 &844616357
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 844616358}
+  m_Layer: 0
+  m_Name: PreLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &844616358
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 844616357}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.447481, y: -1.2070255, z: 0.9757411}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
 --- !u!1001 &872361983
 Prefab:
   m_ObjectHideFlags: 0
@@ -294,12 +355,12 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1330229920}
+      objectReference: {fileID: 497688822}
     - target: {fileID: 33000010347011656, guid: 996d0d43425f4b14690828a0b85a6ecb,
         type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1478502773}
+      objectReference: {fileID: 1432411416}
     - target: {fileID: 114000010052350630, guid: 996d0d43425f4b14690828a0b85a6ecb,
         type: 2}
       propertyPath: vertices.Array.data[0].x
@@ -434,35 +495,6 @@ MonoBehaviour:
   _ears: {fileID: 1539206662}
   wireframe: 0
   flip: {fileID: 0}
---- !u!21 &1330229920
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Sprites/Default
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-    - first:
-        name: _MainTex
-      second:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - first:
-        name: PixelSnap
-      second: 0
-    m_Colors:
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1352163912 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000010011743172, guid: f0447557d14a42f41b69d69f1b255b52,
@@ -478,7 +510,7 @@ Prefab:
     - target: {fileID: 114000010754008852, guid: 2d348f50e6d1c434d9d16a2e1af87a94,
         type: 2}
       propertyPath: trees.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000012547521954, guid: 2d348f50e6d1c434d9d16a2e1af87a94, type: 2}
       propertyPath: m_LocalPosition.x
@@ -527,6 +559,10 @@ Prefab:
       propertyPath: trees.Array.data[1]
       value: 
       objectReference: {fileID: 1352163912}
+    - target: {fileID: 1000013063135474, guid: 2d348f50e6d1c434d9d16a2e1af87a94, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d348f50e6d1c434d9d16a2e1af87a94, type: 2}
   m_IsPrefabParent: 0
@@ -574,10 +610,14 @@ Prefab:
       propertyPath: growthCycleTime
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010011743172, guid: f0447557d14a42f41b69d69f1b255b52, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f0447557d14a42f41b69d69f1b255b52, type: 2}
   m_IsPrefabParent: 0
---- !u!43 &1478502773
+--- !u!43 &1432411416
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}

@@ -12,19 +12,10 @@ public class HyperColliderManager : MonoBehaviour {
     public bool isParent = false;           		//is this object the parent?
     //NOTE: Enable even if no children OR if has both HyperObject and HyperColliderManager DO NOT enable this as parent and enable on the other
 
-    SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
-
-    public FourthDManager IVDManager;       		//the 4D manager
-
 	HyperCreature hypPlayer;						//Reference to the player
 
 	void Awake(){
-		//locate the 4Dmanager
-		IVDManager = Object.FindObjectOfType<FourthDManager>();
-
-		controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
-
-		hypPlayer = Object.FindObjectOfType<HyperCreature>();
+        hypPlayer = HyperCreature.instance;
 	}
 
     void Start()

@@ -20,6 +20,8 @@ public class SteamVR_ControllerManager : MonoBehaviour
 	uint leftIndex = OpenVR.k_unTrackedDeviceIndexInvalid;
 	uint rightIndex = OpenVR.k_unTrackedDeviceIndexInvalid;
 
+    public static SteamVR_ControllerManager instance = null;
+
 	void Awake()
 	{
 		// Add left and right entries to the head of the list so we only have to operate on the list itself.
@@ -36,7 +38,13 @@ public class SteamVR_ControllerManager : MonoBehaviour
 			indices[2 + i] = OpenVR.k_unTrackedDeviceIndexInvalid;
 		}
 		this.objects = objects;
-	}
+
+        //declare as singleton
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
 
 	void OnEnable()
 	{

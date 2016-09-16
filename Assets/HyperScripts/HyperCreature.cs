@@ -6,12 +6,20 @@ public class HyperCreature : MonoBehaviour {
 	public int w = 0;                       //point on w axis
 	public int w_perif = 0;                 //the perifial view of the w axis
 
-    public FourthDManager IVDManager;       //the 4D manager
+    public static HyperCreature instance = null;
 
-    void Start()
+    void Awake()
     {
-        //locate the 4Dmanager
-        IVDManager = Object.FindObjectOfType<FourthDManager>();
+        Application.targetFrameRate = 60;
+
+        //declare as singleton
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+
+        //add this later for persistant creature
+        //DontDestroyOnLoad(gameObject);
     }
 
     public void WMoveAllHyperObjects()

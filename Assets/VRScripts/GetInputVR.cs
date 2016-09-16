@@ -187,22 +187,12 @@ public class GetInputVR : MonoBehaviour
             if (gameObject.tag.Equals("RightControl"))
             {
                 if (holding)
-                    if (holding.GetComponent<HyperObject>())
-                    {
-                        holding.GetComponent<HyperObject>().SlideW(1);
-                    }
-                    else
-                        holding.GetComponent<HyperColliderManager>().SlideW(1);
+                    holding.GetComponent<HyperColliderManager>().SlideW(1);
                 gameObject.transform.parent.GetComponent<HyperCreature>().WMove(1);
             }
             else {
                 if (holding)
-                    if (holding.GetComponent<HyperObject>())
-                    {
-                        holding.GetComponent<HyperObject>().SlideW(-1);
-                    }
-                    else
-                        holding.GetComponent<HyperColliderManager>().SlideW(-1);
+                    holding.GetComponent<HyperColliderManager>().SlideW(-1);
                 gameObject.transform.parent.GetComponent<HyperCreature>().WMove(-1);
             }
 

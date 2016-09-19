@@ -13,7 +13,7 @@ public class FishFood : MonoBehaviour {
 
 	void Start () {
         //locate the fish manager
-        fishManager = Object.FindObjectOfType<FishManager>();
+        fishManager = FishManager.instance;
 
         myHyper = GetComponent<HyperObject>();
 

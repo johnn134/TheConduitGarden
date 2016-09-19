@@ -24,9 +24,9 @@ public class FishShrine : MonoBehaviour {
     Transform[] lights = new Transform[] { null, null, null, null, null, null, null };
 
     void Start() {
-        fishManager = Object.FindObjectOfType<FishManager>();
+        fishManager = FishManager.instance;
         kamiManager = Object.FindObjectOfType<KamiManager>();
-        player = Object.FindObjectOfType<HyperCreature>();
+        player = HyperCreature.instance;
 
         particleObj = GameObject.Find("ShrineFish/Particles").GetComponent<ParticleSystem>();
 

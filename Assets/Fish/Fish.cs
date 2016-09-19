@@ -60,7 +60,7 @@ public class Fish : MonoBehaviour {
     void Start()
     {
         //locate the fish manager
-        fishManager = Object.FindObjectOfType<FishManager>();
+        fishManager = FishManager.instance;
 
         //set the wander location up to get a random point once the behavior starts
         wanderLoc = _cachedTransform.position;

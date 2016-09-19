@@ -56,3 +56,5 @@ MonoBehaviour:
   - Bonsai/BranchPrefab
   - Bonsai/BudPrefab
   - Bonsai/BugPrefab
+  - Fish/Fish
+  - Food/Food

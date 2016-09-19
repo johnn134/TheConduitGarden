@@ -14,8 +14,12 @@ public class HyperColliderManager : MonoBehaviour {
 
 	HyperCreature hypPlayer;						//Reference to the player
 
+    FourthDManager hyperManager;
+
 	void Awake(){
         hypPlayer = HyperCreature.instance;
+
+        hyperManager = FourthDManager.instance;
 	}
 
     void Start()
@@ -24,7 +28,13 @@ public class HyperColliderManager : MonoBehaviour {
         if (isParent)
             setW(w);
 
-        //SetCollisions();
+        SetCollisions();
+        hyperManager.AddToList(gameObject);
+    }
+
+    void OnDestroy()
+    {
+        hyperManager.RemoveFromList(gameObject);
     }
 
     public void setW(int newW)
@@ -128,27 +138,25 @@ public class HyperColliderManager : MonoBehaviour {
     //setup collisions for this object
     public void SetCollisions()
     {
-        HyperColliderManager[] hyperObjects; //all hyper objects in the world
+        //HyperColliderManager[] hyperObjects; //all hyper objects in the world
 
         //hyperObjects = GameObject.FindGameObjectsWithTag("HyperColliderManager");
-        hyperObjects = Object.FindObjectsOfType<HyperColliderManager>();
+        //hyperObjects = Object.FindObjectsOfType<HyperColliderManager>();
 
-        if (GetComponent<Collider>())
+        foreach (var hypObj in hyperManager.GetList())
         {
-            foreach (var hypObj in hyperObjects)
+            if (hypObj)
             {
-                if (hypObj)
+                if (!CanCollide(hypObj))
                 {
-                    if (!CanCollide(hypObj.gameObject))
-                    {
-                        Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.gameObject.GetComponent<Collider>(), true);
-                    }
-                    else
-                    {
-                        Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.gameObject.GetComponent<Collider>(), false);
-                    }
+                    Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.GetComponent<Collider>(), true);
+                }
+                else
+                {
+                    Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.GetComponent<Collider>(), false);
                 }
             }
+
         }
     }
 }

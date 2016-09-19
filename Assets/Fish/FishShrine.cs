@@ -25,7 +25,7 @@ public class FishShrine : MonoBehaviour {
 
     void Start() {
         fishManager = FishManager.instance;
-        kamiManager = Object.FindObjectOfType<KamiManager>();
+        kamiManager = KamiManager.instance;
         player = HyperCreature.instance;
 
         particleObj = GameObject.Find("ShrineFish/Particles").GetComponent<ParticleSystem>();

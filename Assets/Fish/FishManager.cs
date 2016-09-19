@@ -25,6 +25,17 @@ public class FishManager : MonoBehaviour {
     //the fish shrine in the world
     FishShrine fishShrine;
 
+    public static FishManager instance = null;
+
+    void Awake()
+    {
+        //declare as singleton
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
+
     void Start()
     {
         allFish = new List<GameObject>();

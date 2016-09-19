@@ -10,7 +10,7 @@ public class HyperCreature : MonoBehaviour {
 
     void Awake()
     {
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
 
         //declare as singleton
         if (instance == null)

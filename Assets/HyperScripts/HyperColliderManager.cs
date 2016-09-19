@@ -24,7 +24,7 @@ public class HyperColliderManager : MonoBehaviour {
         if (isParent)
             setW(w);
 
-        SetCollisions();
+        //SetCollisions();
     }
 
     public void setW(int newW)

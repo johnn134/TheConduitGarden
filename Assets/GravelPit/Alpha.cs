@@ -27,7 +27,7 @@ public class Alpha : MonoBehaviour {
 	private int originalThird;
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
 		rake = GameObject.FindGameObjectWithTag("Rake");
 		tine1 = GameObject.FindGameObjectWithTag("Tine 1");
 		tine2 = GameObject.FindGameObjectWithTag("Tine 2");
@@ -65,7 +65,7 @@ public class Alpha : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 		calculateTinePositions();
 
 		if (Vector3.Dot(Vector3.up, transform.up) > 0) {

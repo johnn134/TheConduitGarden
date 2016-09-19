@@ -13,6 +13,9 @@ TagManager:
   - Tine 3
   - Tine 4
   - Gravel
+  - Pit
+  - Pattern Node
+  - Drawn Node
   layers:
   - Default
   - TransparentFX

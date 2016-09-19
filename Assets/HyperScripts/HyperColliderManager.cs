@@ -12,19 +12,14 @@ public class HyperColliderManager : MonoBehaviour {
     public bool isParent = false;           		//is this object the parent?
     //NOTE: Enable even if no children OR if has both HyperObject and HyperColliderManager DO NOT enable this as parent and enable on the other
 
-    SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
-
-    public FourthDManager IVDManager;       		//the 4D manager
-
 	HyperCreature hypPlayer;						//Reference to the player
 
+    FourthDManager hyperManager;
+
 	void Awake(){
-		//locate the 4Dmanager
-		IVDManager = Object.FindObjectOfType<FourthDManager>();
+        hypPlayer = HyperCreature.instance;
 
-		controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
-
-		hypPlayer = Object.FindObjectOfType<HyperCreature>();
+        hyperManager = FourthDManager.instance;
 	}
 
     void Start()
@@ -34,6 +29,12 @@ public class HyperColliderManager : MonoBehaviour {
             setW(w);
 
         SetCollisions();
+        hyperManager.AddToList(gameObject);
+    }
+
+    void OnDestroy()
+    {
+        hyperManager.RemoveFromList(gameObject);
     }
 
     public void setW(int newW)
@@ -137,27 +138,25 @@ public class HyperColliderManager : MonoBehaviour {
     //setup collisions for this object
     public void SetCollisions()
     {
-        HyperColliderManager[] hyperObjects; //all hyper objects in the world
+        //HyperColliderManager[] hyperObjects; //all hyper objects in the world
 
         //hyperObjects = GameObject.FindGameObjectsWithTag("HyperColliderManager");
-        hyperObjects = Object.FindObjectsOfType<HyperColliderManager>();
+        //hyperObjects = Object.FindObjectsOfType<HyperColliderManager>();
 
-        if (GetComponent<Collider>())
+        foreach (var hypObj in hyperManager.GetList())
         {
-            foreach (var hypObj in hyperObjects)
+            if (hypObj)
             {
-                if (hypObj)
+                if (!CanCollide(hypObj))
                 {
-                    if (!CanCollide(hypObj.gameObject))
-                    {
-                        Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.gameObject.GetComponent<Collider>(), true);
-                    }
-                    else
-                    {
-                        Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.gameObject.GetComponent<Collider>(), false);
-                    }
+                    Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.GetComponent<Collider>(), true);
+                }
+                else
+                {
+                    Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.GetComponent<Collider>(), false);
                 }
             }
+
         }
     }
 }

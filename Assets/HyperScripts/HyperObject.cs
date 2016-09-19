@@ -15,8 +15,6 @@ public class HyperObject : MonoBehaviour {
 
     public bool staticRenderMode = false;      //enable if alpha should be 0 at all times if not visible from the player's w point
 
-    FourthDManager IVDManager;                      //the 4D manager
-
     SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
 
 	Renderer _cachedRenderer;						//The renderer for this object
@@ -26,14 +24,11 @@ public class HyperObject : MonoBehaviour {
     const int TRANSPARENT_QUEUE_ORDER = 3000;
 
 	void Awake(){
-		//locate the 4Dmanager
-		IVDManager = Object.FindObjectOfType<FourthDManager>();
-
-		controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
+		controllerManager = SteamVR_ControllerManager.instance;
 
 		_cachedRenderer = GetComponent<Renderer>();
 
-		hypPlayer = Object.FindObjectOfType<HyperCreature>();
+        hypPlayer = HyperCreature.instance;
     }
 
     void Start()

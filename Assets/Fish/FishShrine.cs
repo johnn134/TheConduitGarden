@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class FishShrine : MonoBehaviour {
 
     int stage = 0;                                              //how many thirds of the way the shrine is to activation
+    int numKamiNeed = 0;                                        //how many kami should be in the scene
+    int numKamiSpawnCalls = 0;                                  //how many kami are in the process of bein spawned in
 
     public int[] onWs = new int[] {0, 0, 0, 0, 0, 0, 0};        //the number of fish required on each w point to activate the shrine
 
@@ -16,13 +18,15 @@ public class FishShrine : MonoBehaviour {
     FishManager fishManager;                                    //reference to the fish manager
     KamiManager kamiManager;                                    //reference to the kami manager
     ParticleSystem particleObj;                                 //the particle emmiter on this shrine
+    HyperCreature player;                                       //reference to the hyper creature
 
     //Chached light transforms
     Transform[] lights = new Transform[] { null, null, null, null, null, null, null };
 
     void Start() {
-        fishManager = Object.FindObjectOfType<FishManager>();
+        fishManager = FishManager.instance;
         kamiManager = Object.FindObjectOfType<KamiManager>();
+        player = HyperCreature.instance;
 
         particleObj = GameObject.Find("ShrineFish/Particles").GetComponent<ParticleSystem>();
 
@@ -79,53 +83,45 @@ public class FishShrine : MonoBehaviour {
         if(points > oldPoints)
             particleObj.Emit(20);
 
-        /*if (points > 0 && !activated)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child.GetComponent<HyperObject>())
-                {
-                    child.GetComponent<HyperObject>().dullCoef = (maxPoints / points) / 2;
-                    child.GetComponent<HyperObject>().WMove();
-                }
-            }
-        }
-        else if (points == 0)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child.GetComponent<HyperObject>())
-                {
-                    child.GetComponent<HyperObject>().dullCoef = maxPoints;
-                    child.GetComponent<HyperObject>().WMove();
-                }
-            }
-        }*/
-
         UpdateLights(pointMatrix);
 
         if(points >= maxPoints/3 && stage == 0 ||
             points >= (maxPoints/3)*2 && stage == 1)
         {
             stage++;
-            kamiManager.MakeKami(transform.position, transform.rotation, 0);
+            Invoke("MakeKami", kamiManager.kamiArriveTime);
         }
 
         if (points < maxPoints / 3 && stage == 1 ||
             points < (maxPoints / 3) * 2 && stage == 2)
         {
             stage--;
-            ScareKami();
+
+            //check if there are kami to scare away
+            if(kamiManager.NumberOfHappyKami(0) > 0)
+                ScareKami();
+            else
+            {
+                //cancel all invoked make kami scrips and restart the ones that would not have been scared away
+                CancelInvoke();
+
+                for(int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
+                    Invoke("MakeKami", kamiManager.kamiArriveTime);
+            }
         }
 
         if (points >= maxPoints && !activated)
         {
             activated = true;
             CancelInvoke();
+            for (int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
             var em = particleObj.emission;
             em.rate = 5;
-            kamiManager.MakeKami(transform.position, transform.rotation, 0);
-            InvokeRepeating("MakeKami", kamiManager.kamiComeRate, kamiManager.kamiComeRate);
+            player.w_perif++;
+            player.WMoveAllHyperObjects();
+            //kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7));
+            InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
             //GetComponent<HyperObject>().dullCoef = .1f;
         }
 
@@ -133,18 +129,11 @@ public class FishShrine : MonoBehaviour {
         {
             activated = false;
             CancelInvoke();
-            ScareKami();
-            InvokeRepeating("ScareKami", kamiManager.kamiLeaveRate, kamiManager.kamiLeaveRate);
+            player.w_perif--;
+            player.WMoveAllHyperObjects();
+            InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
             var em = particleObj.emission;
             em.rate = 0;
-            /*foreach (Transform child in transform)
-            {
-                if (child.GetComponent<HyperObject>())
-                {
-                    child.GetComponent<HyperObject>().dullCoef = (maxPoints / points) / 2;
-                    child.GetComponent<HyperObject>().WMove(GameObject.Find("CameraRig").GetComponent<HyperCreature>().w);
-                }
-            }*/
         }
     }
 
@@ -167,17 +156,31 @@ public class FishShrine : MonoBehaviour {
 
     void MakeKami()
     {
-        kamiManager.MakeKami(transform.position, transform.rotation, 0);
+        kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7), 0);
     }
 
     void ScareKami()
     {
-        kamiManager.MakeKamiFlee();
+        //check if there are kami to scare away
+        if (kamiManager.NumberOfHappyKami(0) > stage)
+            kamiManager.MakeKamiFlee(0);
+        else
+        {
+            //cancel all invoked make kami scrips and restart the ones that would not have been scared away
+            CancelInvoke();
+
+            for (int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
+        }
     }
 
-    public void CheckKami()
+    /*public void CheckKami()
     {
-        if (kamiManager.numKami == stage || kamiManager.numKami == 0)
+        if (kamiManager.NumberOfHappyKami(0) == stage || kamiManager.NumberOfHappyKami(0) == 0)
+        {
             CancelInvoke();
-    }
+            for (int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
+        }
+    }*/
 }

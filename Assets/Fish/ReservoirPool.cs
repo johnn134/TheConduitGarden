@@ -8,7 +8,7 @@ public class ReservoirPool : MonoBehaviour {
 
 	void Start () {
         //find the fish manager
-        fishManager = Object.FindObjectOfType<FishManager>();
+        fishManager = FishManager.instance;
 
         Invoke("SpawnFish", spawnTime);
     }

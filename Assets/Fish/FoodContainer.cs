@@ -13,7 +13,7 @@ public class FoodContainer : MonoBehaviour {
         //find the opening to the container
         opening = GameObject.Find("ToolFoodContainer/Opening");
 
-        fishManager = Object.FindObjectOfType<FishManager>();
+        fishManager = FishManager.instance;
     }
 
     void Update()

@@ -118,6 +118,13 @@ public class KamiManager : MonoBehaviour {
         return numHappy;
     }
 
+	public void MakeKamiSad() {
+		foreach (GameObject kami in allKami)
+		{
+			kami.GetComponent<Kami>().state = Kami.State.Sad;
+		}
+	}
+
 	public int getNumberOfKami() {
 		return allKami.Count;
 	}

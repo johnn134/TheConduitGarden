@@ -44,7 +44,6 @@ public class TintBox : MonoBehaviour {
 	 * Update the plane color to the player's w position
 	 */
 	public void updateChildVisual(Transform obj) {
-		Debug.Log("updating " + obj.name);
 		Color temp = Color.white;
 
 		switch(HyperCreature.instance.w) {

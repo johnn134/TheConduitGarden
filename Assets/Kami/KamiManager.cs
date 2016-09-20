@@ -25,6 +25,17 @@ public class KamiManager : MonoBehaviour {
 
     FishShrine fishShrine;
 
+    public static KamiManager instance = null;
+
+    void Awake()
+    {
+        //declare as singleton
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
+
     void Start () {
 	    allKami = new List<GameObject>();
         fishShrine = Object.FindObjectOfType<FishShrine>();

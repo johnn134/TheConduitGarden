@@ -59,16 +59,16 @@ public class Kami : MonoBehaviour {
 
         _cachedLight = GetComponent<Light>();
 
-        controllerManager = Object.FindObjectOfType<SteamVR_ControllerManager>();
+        controllerManager = SteamVR_ControllerManager.instance;
     }
 
     void Start()
     {
-        player = Object.FindObjectOfType<HyperCreature>();
+        player = HyperCreature.instance;
         targets = new List<GameObject>();
         myHyper = GetComponent<HyperObject>();
         wanderLoc = new Vector3(Random.Range(-6, 7), 3, Random.Range(-6, 7));
-        kamiManager = Object.FindObjectOfType<KamiManager>();
+        kamiManager = KamiManager.instance;
 
         //get targets depending on type
         //NOTE: good format is to always have the type shrine at index 0
@@ -77,7 +77,7 @@ public class Kami : MonoBehaviour {
             targets.Add(GameObject.Find("ShrineFish/Visual/TopSphere"));
         }
 
-        //StartCoroutine(ColorTrans());
+        StartCoroutine(ColorTrans());
     }
 
     void Update()
@@ -93,7 +93,7 @@ public class Kami : MonoBehaviour {
                 if (myHyper.SlideW(Random.Range(-1, 2)))
                 {
                     myHyper.WMove();
-                    //StartCoroutine(ColorTrans());
+                    StartCoroutine(ColorTrans());
                 }
         }
         else if(state == State.Flee)
@@ -106,7 +106,7 @@ public class Kami : MonoBehaviour {
         }
     }
 
-    /*void LateUpdate()
+    void LateUpdate()
     {
         for (int i = 0; i < controllerManager.indices.Length; i++)
         {
@@ -118,9 +118,9 @@ public class Kami : MonoBehaviour {
                 }
             }
         }
-    }*/
+    }
 
-    void FixedUpdate()
+    /*void FixedUpdate()
     {
         if (_cachedRenderer.material.color.a < .5f)
             _cachedLight.color = Color.black;
@@ -128,7 +128,7 @@ public class Kami : MonoBehaviour {
             _cachedLight.color = _cachedRenderer.material.color;
 
         _cachedParticleSystem.startColor = _cachedRenderer.material.color;
-    }
+    }*/
 
     //smoothly change the color of this object, rmove once 4D shader is implemented
     IEnumerator ColorTrans()
@@ -150,6 +150,8 @@ public class Kami : MonoBehaviour {
             targetColor = Color.blue;
         else
             targetColor = Color.magenta;
+
+        targetColor.a = _cachedRenderer.material.color.a;
 
         for (float i = 0.0f; i <= 1.0f; i += .1f)
         {
@@ -191,7 +193,7 @@ public class Kami : MonoBehaviour {
         //change locaiton randomly or if reached the target locaiton
         if (transform.position.Equals(wanderLoc) || Random.Range(0, 20) == 1)
         {
-            if (Random.Range(0, 50) == 1)
+            if (Random.Range(0, 100) == 1)
                 target = targets[Random.Range(0, targets.Count)];
             else
                 wanderLoc = new Vector3(Random.Range(kamiManager.wanderArea1.x, kamiManager.wanderArea2.x), Random.Range(kamiManager.wanderArea1.y, kamiManager.wanderArea2.y), Random.Range(kamiManager.wanderArea1.z, kamiManager.wanderArea2.z));
@@ -278,116 +280,4 @@ public class Kami : MonoBehaviour {
             kamiManager.RequestToRemove(gameObject);
         }
     }
-
-    /*void HelpTut()
-    {
-        //help the player learn how to care for fish
-        if (helping)
-        {
-            if (!holding && !transform.position.Equals(targets[2].transform.position)) //Step 1: move to reservoir to look for a fish
-            {
-                Debug.Log("STEP 1");
-                transform.position = Vector3.MoveTowards(transform.position, targets[2].transform.position, Time.deltaTime / 4);
-            }
-            else if (!holding && myHyper.w != targets[2].GetComponent<HyperObject>().w)//Step 2: move to the w of the reservoir
-            {
-                Debug.Log("STEP 2");
-                myHyper.w = targets[2].GetComponent<HyperObject>().w;
-                myHyper.WMove(player.w);
-            }
-            else if (!holding && myHyper.w == player.w)//Step 3: grab a fish once the player matches the w
-            {
-                Debug.Log("STEP 3");
-                holding = GameObject.Find("Fish(Clone)");
-            }
-            else if (holding && !transform.position.Equals(targets[3].transform.position))//Step 4: move the fish over the fish pool
-            {
-                Debug.Log("STEP 4");
-                transform.position = Vector3.MoveTowards(transform.position, targets[3].transform.position, Time.deltaTime / 4);
-                holding.transform.position = transform.position;
-                holding.transform.rotation = transform.rotation;
-                holding.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-                holding.GetComponent<HyperColliderManager>().movable = false;
-            }
-            else if (holding && myHyper.w != targets[3].GetComponent<HyperObject>().w)//Step 5: change to fish pool w
-            {
-                Debug.Log("STEP 5");
-                myHyper.w = targets[3].GetComponent<HyperObject>().w;
-                myHyper.WMove(player.w);
-                holding.GetComponent<HyperColliderManager>().setW(myHyper.w);
-                holding.GetComponent<HyperColliderManager>().WMove(player.w);
-                holding.GetComponent<HyperColliderManager>().SetCollisions();
-            }
-            else if (holding && myHyper.w != player.w)//Step 6: wait for player to match w
-            {
-                Debug.Log("STEP 6");
-                holding.transform.position = transform.position;
-                holding.transform.rotation = transform.rotation;
-                holding.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-                holding.GetComponent<HyperColliderManager>().movable = false;
-            }
-            else if (holding && myHyper.w == player.w)//Step 7: release the fish and stop helping
-            {
-                Debug.Log("STEP 7");
-                holding.GetComponent<HyperColliderManager>().movable = true;
-                helping = false;
-            }
-        }
-        else if (!transform.position.Equals(standbyLoc))
-        {
-            transform.position = Vector3.MoveTowards(transform.position, standbyLoc, Time.deltaTime);
-        }
-    }*/
-
-    /*void Update () {
-        //temp key input to test helping the player
-        if (Input.GetKey(KeyCode.Alpha1))
-        {
-            GetComponent<HyperObject>().w = 0;
-            GetComponent<HyperObject>().WMove(0);
-        }
-        if (Input.GetKey(KeyCode.Alpha2))
-        {
-            GetComponent<HyperObject>().w = 1;
-            GetComponent<HyperObject>().WMove(1);
-        }
-        if (Input.GetKey(KeyCode.Alpha3))
-        {
-            GetComponent<HyperObject>().w = 2;
-            GetComponent<HyperObject>().WMove(2);
-        }
-        if (Input.GetKey(KeyCode.Alpha4))
-        {
-            GetComponent<HyperObject>().w = 3;
-            GetComponent<HyperObject>().WMove(3);
-        }
-        if (Input.GetKey(KeyCode.Alpha5))
-        {
-            GetComponent<HyperObject>().w = 4;
-            GetComponent<HyperObject>().WMove(4);
-        }
-        if (Input.GetKey(KeyCode.Alpha6))
-        {
-            GetComponent<HyperObject>().w = 5;
-            GetComponent<HyperObject>().WMove(5);
-        }
-        if (Input.GetKey(KeyCode.Alpha7))
-        {
-            GetComponent<HyperObject>().w = 6;
-            GetComponent<HyperObject>().WMove(6);
-        }
-
-        if (target)
-        {
-            if (Vector3.Distance(transform.position, target.transform.position) > .5)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * 2); 
-            }
-            else
-                transform.RotateAround(target.transform.position, Vector3.up, Time.deltaTime * 100);
-
-            if (transform.position.y != target.transform.position.y + .3f)
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, target.transform.position.y + .3f, transform.position.z), Time.deltaTime /2);
-        }
-    }*/
 }

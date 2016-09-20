@@ -25,15 +25,21 @@ public class Alpha : MonoBehaviour {
 	public int raked;
 	public bool isRakedEnough;
 	private int originalThird;
+    GravelShrine gravelShrine;
+    HyperCreature player;
+    HyperObject myHyper;
 
 	// Use this for initialization
 	void Start () {
+        player = HyperCreature.instance;
+        myHyper = GetComponent<HyperObject>();
 		rake = GameObject.FindGameObjectWithTag("Rake");
 		tine1 = GameObject.FindGameObjectWithTag("Tine 1");
 		tine2 = GameObject.FindGameObjectWithTag("Tine 2");
 		tine3 = GameObject.FindGameObjectWithTag("Tine 3");
 		tine4 = GameObject.FindGameObjectWithTag("Tine 4");
 		gravel = GameObject.FindGameObjectWithTag ("Gravel");
+        gravelShrine = Object.FindObjectOfType<GravelShrine>();
 
 		GetComponent<Renderer>().material.mainTexture = texture;
 
@@ -42,10 +48,10 @@ public class Alpha : MonoBehaviour {
 
 		raked = 0;
 
-		color.r = 0.2f;
-		color.g = 0.2f;
-		color.b = 0.2f;
-		color.a = 1.0f;
+		//color.r = 0.2f;
+		//color.g = 0.2f;
+		//color.b = 0.2f;
+		//color.a = 1.0f;
 
 		originalColor.r = 0.0f;
 		originalColor.g = 0.0f;
@@ -66,60 +72,117 @@ public class Alpha : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		calculateTinePositions();
+        if (player.w == myHyper.w) //&& rake.transform.parent)
+        {
+            if (tine1Collision || tine2Collision || tine3Collision || tine4Collision)
+            {
+                calculateTinePositions();
 
-		if (Vector3.Dot(Vector3.up, transform.up) > 0) {
-			if (tine1Collision == true) {
-				draw(tine1Position.x, tine1Position.z);
-			}
+                if (Vector3.Dot(Vector3.up, transform.up) > 0)
+                {
+                    if (tine1Collision == true)
+                    {
+                        draw(tine1Position.x, tine1Position.z);
+                    }
 
-			if (tine2Collision == true) {
-				draw(tine2Position.x, tine2Position.z);
-			}
+                    if (tine2Collision == true)
+                    {
+                        draw(tine2Position.x, tine2Position.z);
+                    }
 
-			if (tine3Collision == true) {
-				draw(tine3Position.x, tine3Position.z);
-			}
+                    if (tine3Collision == true)
+                    {
+                        draw(tine3Position.x, tine3Position.z);
+                    }
 
-			if (tine4Collision == true) {
-				draw(tine4Position.x, tine4Position.z);
-			}
-		}
+                    if (tine4Collision == true)
+                    {
+                        draw(tine4Position.x, tine4Position.z);
+                    }
+                }
 
-		foreach (int coordinate in coordinates) {
-			if (coordinate == 1) {
-				raked++;
-			}
-		}
+                CalculateAmountRaked();
+            }
 
-		if (raked == (originalThird * texture.height)) {
-			isRakedEnough = true;
-			Debug.Log("Raked enough.");
-		}
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                Debug.Log(tine1Position.x + ", " + tine1Position.z);
+                Debug.Log(tine2Position.x + ", " + tine2Position.z);
+                Debug.Log(tine3Position.x + ", " + tine3Position.z);
+                Debug.Log(tine4Position.x + ", " + tine4Position.z);
+            }
 
-		raked = 0;
+            //raked = 0;
+        }
 
-		if (Input.GetKeyDown(KeyCode.Alpha1)) {
-			clearPitSection1();
-		}
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                clearPitSection1();
+                raked = 0;
+                foreach (int coordinate in coordinates)
+                {
+                    if (coordinate == 1)
+                    {
+                        raked++;
+                    }
+                }
+                CalculateAmountRaked();
+            }
 
-		if (Input.GetKeyDown(KeyCode.Alpha2)) {
-			clearPitSection2();
-		}
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                clearPitSection2();
+                raked = 0;
+                foreach (int coordinate in coordinates)
+                {
+                    if (coordinate == 1)
+                    {
+                        raked++;
+                    }
+                }
+                CalculateAmountRaked();
+            }
 
-		if (Input.GetKeyDown(KeyCode.Alpha3)) {
-			clearPitSection3();
-		}
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                clearPitSection3();
+                raked = 0;
+                foreach (int coordinate in coordinates)
+                {
+                    if (coordinate == 1)
+                    {
+                        raked++;
+                    }
+                }
+                CalculateAmountRaked();
+            }
 
-		if (Input.GetKeyDown (KeyCode.L)) {
-			Debug.Log(tine1Position.x + ", " + tine1Position.z);
-			Debug.Log(tine2Position.x + ", " + tine2Position.z);
-			Debug.Log(tine3Position.x + ", " + tine3Position.z);
-			Debug.Log(tine4Position.x + ", " + tine4Position.z);
-		}
-
-		texture.Apply();
+        texture.Apply();
 	}
+
+    void CalculateAmountRaked()
+    {
+        /*foreach (int coordinate in coordinates)
+        {
+            if (coordinate == 1)
+            {
+                raked++;
+            }
+        }*/
+
+        if (raked >= (originalThird * texture.height) && !isRakedEnough)
+        {
+            isRakedEnough = true;
+            Debug.Log("Raked enough.");
+            gravelShrine.processPits();
+        }
+        else if (raked < (originalThird * texture.height) && isRakedEnough)
+        {
+            isRakedEnough = false;
+            Debug.Log("Not Raked enough.");
+            gravelShrine.processPits();
+        }
+    }
 
 	void OnTriggerEnter(Collider col) {
 		if (col.gameObject.name == "Tine 1") {
@@ -164,15 +227,13 @@ public class Alpha : MonoBehaviour {
 			tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x - gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
 			tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x - gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
 		}
-
-		if (gravel.GetComponent<Transform>().position.x < 0) {
+		else if (gravel.GetComponent<Transform>().position.x < 0) {
 			tine1Position.x = Mathf.Ceil((tine1.GetComponent<Transform>().position.x + gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
 			tine2Position.x = Mathf.Ceil((tine2.GetComponent<Transform>().position.x + gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
 			tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x + gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
 			tine4Position.x = Mathf.Ceil((tine4.GetComponent<Transform>().position.x + gravel.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
 		}
-
-		if (gravel.GetComponent<Transform>().position.x == 0) {
+		else if (gravel.GetComponent<Transform>().position.x == 0) {
 			tine1Position.x = Mathf.Ceil((tine1.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
 			tine2Position.x = Mathf.Ceil((tine2.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
 			tine3Position.x = Mathf.Ceil((tine3.GetComponent<Transform>().position.x + (5.0f * gravel.GetComponent<Transform>().localScale.x)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.x)));
@@ -185,15 +246,13 @@ public class Alpha : MonoBehaviour {
 			tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z - gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 			tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z - gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 		}
-
-		if (gravel.GetComponent<Transform> ().position.z < 0) {
+		else if (gravel.GetComponent<Transform> ().position.z < 0) {
 			tine1Position.z = Mathf.Ceil((tine1.GetComponent<Transform>().position.z + gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 			tine2Position.z = Mathf.Ceil((tine2.GetComponent<Transform>().position.z + gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 			tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z + gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 			tine4Position.z = Mathf.Ceil((tine4.GetComponent<Transform>().position.z + gravel.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 		}
-
-		if (gravel.GetComponent<Transform> ().position.z == 0) {
+		else if (gravel.GetComponent<Transform> ().position.z == 0) {
 			tine1Position.z = Mathf.Ceil((tine1.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 			tine2Position.z = Mathf.Ceil((tine2.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
 			tine3Position.z = Mathf.Ceil((tine3.GetComponent<Transform>().position.z + (5.0f * gravel.GetComponent<Transform>().localScale.z)) * ((float)texture.width / (10.0f * gravel.GetComponent<Transform>().localScale.z)));
@@ -215,6 +274,7 @@ public class Alpha : MonoBehaviour {
 				else {
 					texture.SetPixel(x, z, color);
 					coordinates [x, z] = 1;
+                    raked++;
 				}
 			}
 		}

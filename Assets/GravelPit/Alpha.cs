@@ -25,6 +25,7 @@ public class Alpha : MonoBehaviour {
 	public int raked;
 	public bool isRakedEnough;
 	private int originalThird;
+    GravelShrine gravelShrine;
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +35,7 @@ public class Alpha : MonoBehaviour {
 		tine3 = GameObject.FindGameObjectWithTag("Tine 3");
 		tine4 = GameObject.FindGameObjectWithTag("Tine 4");
 		gravel = GameObject.FindGameObjectWithTag ("Gravel");
+        gravelShrine = Object.FindObjectOfType<GravelShrine>();
 
 		GetComponent<Renderer>().material.mainTexture = texture;
 
@@ -92,10 +94,17 @@ public class Alpha : MonoBehaviour {
 			}
 		}
 
-		if (raked == (originalThird * texture.height)) {
+		if (raked >= (originalThird * texture.height) && !isRakedEnough) {
 			isRakedEnough = true;
 			Debug.Log("Raked enough.");
+            gravelShrine.processPits();
 		}
+        else if (raked < (originalThird * texture.height) && isRakedEnough)
+        {
+            isRakedEnough = false;
+            Debug.Log("Not Raked enough.");
+            gravelShrine.processPits();
+        }
 
 		raked = 0;
 

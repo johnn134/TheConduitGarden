@@ -22,6 +22,7 @@ GameObject:
   - 33: {fileID: 33000011044676346}
   - 65: {fileID: 65000012925086478}
   - 23: {fileID: 23000011913068036}
+  - 114: {fileID: 114000014271271182}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -40,6 +41,7 @@ GameObject:
   - 33: {fileID: 33000011535370460}
   - 65: {fileID: 65000013986435628}
   - 23: {fileID: 23000011364424966}
+  - 114: {fileID: 114000012003218654}
   m_Layer: 0
   m_Name: Railing_Post_Middle
   m_TagString: Untagged
@@ -58,6 +60,7 @@ GameObject:
   - 33: {fileID: 33000014252396106}
   - 65: {fileID: 65000013624365896}
   - 23: {fileID: 23000012825894282}
+  - 114: {fileID: 114000010506704692}
   m_Layer: 0
   m_Name: Railing_Post_Left
   m_TagString: Untagged
@@ -76,6 +79,7 @@ GameObject:
   - 33: {fileID: 33000013911911328}
   - 65: {fileID: 65000010780817540}
   - 23: {fileID: 23000010037629994}
+  - 114: {fileID: 114000012448900236}
   m_Layer: 0
   m_Name: Railing_Handle
   m_TagString: Untagged
@@ -94,6 +98,7 @@ GameObject:
   - 33: {fileID: 33000012546201872}
   - 65: {fileID: 65000011711109952}
   - 23: {fileID: 23000010052598026}
+  - 114: {fileID: 114000010060150650}
   m_Layer: 0
   m_Name: Hedge
   m_TagString: Untagged
@@ -112,6 +117,7 @@ GameObject:
   - 33: {fileID: 33000012850603586}
   - 65: {fileID: 65000013683422680}
   - 23: {fileID: 23000010947220394}
+  - 114: {fileID: 114000011296122304}
   m_Layer: 0
   m_Name: Railing_Post_Right
   m_TagString: Untagged
@@ -519,3 +525,99 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114000010060150650
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013003845188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0
+--- !u!114 &114000010506704692
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012634754872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0
+--- !u!114 &114000011296122304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013018499840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0
+--- !u!114 &114000012003218654
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012352864652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0
+--- !u!114 &114000012448900236
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012975184214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0
+--- !u!114 &114000014271271182
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010942438582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0

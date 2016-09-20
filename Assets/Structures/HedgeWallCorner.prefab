@@ -22,6 +22,7 @@ GameObject:
   - 33: {fileID: 33000013416667428}
   - 65: {fileID: 65000012108054838}
   - 23: {fileID: 23000012120156278}
+  - 114: {fileID: 114000013575337062}
   m_Layer: 0
   m_Name: Hedge (1)
   m_TagString: Untagged
@@ -55,6 +56,7 @@ GameObject:
   - 33: {fileID: 33000010356094616}
   - 65: {fileID: 65000010684874724}
   - 23: {fileID: 23000012801612562}
+  - 114: {fileID: 114000011597570084}
   m_Layer: 0
   m_Name: Hedge
   m_TagString: Untagged
@@ -73,6 +75,7 @@ GameObject:
   - 33: {fileID: 33000013350254170}
   - 65: {fileID: 65000012655193364}
   - 23: {fileID: 23000011500894498}
+  - 114: {fileID: 114000013394146052}
   m_Layer: 0
   m_Name: Railing_Post
   m_TagString: Untagged
@@ -91,6 +94,7 @@ GameObject:
   - 33: {fileID: 33000013924406782}
   - 65: {fileID: 65000012038597148}
   - 23: {fileID: 23000010213686634}
+  - 114: {fileID: 114000012300742040}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -359,3 +363,67 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114000011597570084
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010771390258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0
+--- !u!114 &114000012300742040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012973376922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0
+--- !u!114 &114000013394146052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011492402180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0
+--- !u!114 &114000013575337062
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010333545504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e097c0fc5de5ca41ba363e4876fb1d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  w: 0
+  w_depth: 7
+  dullCoef: 1
+  isParent: 1
+  staticRenderMode: 0

@@ -117,4 +117,8 @@ public class KamiManager : MonoBehaviour {
 
         return numHappy;
     }
+
+	public int getNumberOfKami() {
+		return allKami.Count;
+	}
 }

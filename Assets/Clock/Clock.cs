@@ -4,8 +4,6 @@ using System.Collections;
 
 public class Clock : MonoBehaviour {
 
-	public GameObject kamimanager;
-
 	public float gameMinutes;
 	public float gameSeconds;
 
@@ -15,8 +13,6 @@ public class Clock : MonoBehaviour {
 	public bool isActive = false;
 
 	bool isEnding;
-
-	const float KAMI_FLEE_TIME = 10.0f;
 
 	const string HOME_LEVEL = "Home";
 
@@ -44,23 +40,39 @@ public class Clock : MonoBehaviour {
 				}
 			}
 			else {
-				if(Time.time > startTime + gameDuration + KAMI_FLEE_TIME) {
+				if(KamiManager.instance.getNumberOfKami() <= 0) {
 					endLevel();
 				}
 			}
 		}
 	}
 
+	/*
+	 * Sets the clock to start counting and moving
+	 */
 	public void startClock() {
 		startTime = Time.time;
 		isActive = true;
 	}
 
+	/*
+	 * Begin the level ending sequence and update highscore if necessary
+	 */
 	void startLevelEnd() {
 		isEnding = true;
-		kamimanager.GetComponent<KamiManager>().MakeKamiEnd();
+
+		//Save Kami Count
+		if(PlayerPrefs.GetInt("KamiHighscore") < KamiManager.instance.getNumberOfKami()) {
+			PlayerPrefs.SetInt("KamiHighscore", KamiManager.instance.getNumberOfKami());
+		}
+
+		//Start Kami End Sequence
+		KamiManager.instance.MakeKamiEnd();
 	}
 
+	/*
+	 * Return to the home level
+	 */
 	void endLevel() {
 		isActive = false;
 

@@ -10,6 +10,8 @@ public class BonsaiShrine : MonoBehaviour {
 
 	public GameObject[] trees;
 
+    Transform shears;
+
 	public CONTRACTLEVEL levelRequirement = CONTRACTLEVEL.NONE;
 
 	int activationStage = 0;
@@ -73,6 +75,8 @@ public class BonsaiShrine : MonoBehaviour {
 
         particleObj = GameObject.Find("BonsaiShrine/Particles").GetComponent<ParticleSystem>();
 
+        shears = GameObject.Find("Shears").transform;
+
         var em = particleObj.emission;
         em.rate = 0;
     }
@@ -85,6 +89,11 @@ public class BonsaiShrine : MonoBehaviour {
 			else
 				activateBoundLines();
 		}
+
+        if (shears.parent && !linesActivated)
+            activateBoundLines();
+        else if (!shears.parent && linesActivated)
+            deactivateBoundLines();
 	}
 
 	void FixedUpdate() {

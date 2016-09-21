@@ -78,7 +78,7 @@ GameObject:
   - 136: {fileID: 136000010409101136}
   - 114: {fileID: 114000010689235358}
   - 95: {fileID: 95000011793235410}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Fish
   m_TagString: HyperObject
   m_Icon: {fileID: 0}

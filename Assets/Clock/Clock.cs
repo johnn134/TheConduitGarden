@@ -16,9 +16,12 @@ public class Clock : MonoBehaviour {
 
 	const string HOME_LEVEL = "Home";
 
+    HyperCreature player;
+
 	void Awake() {
 		isEnding = false;
 		gameDuration = (gameMinutes * 60.0f) + gameSeconds;
+        player = HyperCreature.instance;
 	}
 
 	// Use this for initialization
@@ -40,8 +43,8 @@ public class Clock : MonoBehaviour {
 				}
 			}
 			else {
-				if(KamiManager.instance.getNumberOfKami() <= 0) {
-					endLevel();
+				if(player.FadeToBlack()) {
+                    endLevel();
 				}
 			}
 		}

@@ -22,6 +22,20 @@ public class HyperCreature : MonoBehaviour {
         //DontDestroyOnLoad(gameObject);
     }
 
+    public bool FadeToBlack()
+    {
+        if(Camera.main.farClipPlane > 0)
+        {
+            if (Camera.main.farClipPlane > 5.0F)
+                Camera.main.farClipPlane -= .1f;
+            else
+                Camera.main.farClipPlane -= .005f;
+            return false;
+        }
+        return true;
+
+    }
+
     public void WMoveAllHyperObjects()
     {
         var allHyper = Object.FindObjectsOfType<HyperObject>();

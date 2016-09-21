@@ -43,7 +43,9 @@ public class BonsaiShrine : MonoBehaviour {
 
     HyperCreature player;
 
-	public enum CONTRACTLEVEL {
+    ParticleSystem particleObj;
+
+    public enum CONTRACTLEVEL {
 		NONE, TOKYO
 	};
 
@@ -68,7 +70,12 @@ public class BonsaiShrine : MonoBehaviour {
         kamiManager = KamiManager.instance;
 
         player = HyperCreature.instance;
-	}
+
+        particleObj = GameObject.Find("BonsaiShrine/Particles").GetComponent<ParticleSystem>();
+
+        var em = particleObj.emission;
+        em.rate = 0;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -366,7 +373,7 @@ public class BonsaiShrine : MonoBehaviour {
 
         if (newStage > oldStage)
         {
-            //particleObj.Emit(20);
+            particleObj.Emit(20);
 
             for(int i = 0; i < newStage - oldStage; i++)
                 Invoke("MakeKami", kamiManager.kamiArriveTime);
@@ -383,8 +390,8 @@ public class BonsaiShrine : MonoBehaviour {
             CancelInvoke();
             for (int i = 0; i < activationStage - kamiManager.NumberOfHappyKami(1); i++)
                 Invoke("MakeKami", kamiManager.kamiArriveTime);
-            //var em = particleObj.emission;
-            //em.rate = 5;
+            var em = particleObj.emission;
+            em.rate = 5;
             player.w_perif++;
             player.WMoveAllHyperObjects();
             InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
@@ -396,8 +403,8 @@ public class BonsaiShrine : MonoBehaviour {
             player.w_perif--;
             player.WMoveAllHyperObjects();
             InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
-            //var em = particleObj.emission;
-            //em.rate = 0;
+            var em = particleObj.emission;
+            em.rate = 0;
         }
     }
 

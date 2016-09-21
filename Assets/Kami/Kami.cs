@@ -25,7 +25,7 @@ public class Kami : MonoBehaviour {
     public GameObject target;                   //The object the kami it trying to land on
     public GameObject holding;                  //the object the kami is holding
 
-    public List<GameObject> targets;            //list of possible targets the kami can land on
+    //public List<GameObject> targets;            //list of possible targets the kami can land on
 
     public HyperCreature player;                //the hyper creature in the scene
 
@@ -65,17 +65,17 @@ public class Kami : MonoBehaviour {
     void Start()
     {
         player = HyperCreature.instance;
-        targets = new List<GameObject>();
+        //targets = new List<GameObject>();
         myHyper = GetComponent<HyperObject>();
         wanderLoc = new Vector3(Random.Range(-6, 7), 3, Random.Range(-6, 7));
         kamiManager = KamiManager.instance;
 
         //get targets depending on type
         //NOTE: good format is to always have the type shrine at index 0
-        if (type == Type.Fish)
+        /*if (type == Type.Fish)
         {
             targets.Add(GameObject.Find("ShrineFish/Visual/TopSphere"));
-        }
+        }*/
 
         StartCoroutine(ColorTrans());
     }
@@ -84,9 +84,9 @@ public class Kami : MonoBehaviour {
     {
         if(state == State.Happy)
         {
-            if (target)
+            /*if (target)
                 LandOnTarget();
-            else
+            else*/
                 BehaveHappy();
 
             if(Random.Range(0,500) == 1)
@@ -193,9 +193,9 @@ public class Kami : MonoBehaviour {
         //change locaiton randomly or if reached the target locaiton
         if (transform.position.Equals(wanderLoc) || Random.Range(0, 20) == 1)
         {
-            if (Random.Range(0, 100) == 1)
+            /*if (Random.Range(0, 100) == 1)
                 target = targets[Random.Range(0, targets.Count)];
-            else
+            else*/
                 wanderLoc = new Vector3(Random.Range(kamiManager.wanderArea1.x, kamiManager.wanderArea2.x), Random.Range(kamiManager.wanderArea1.y, kamiManager.wanderArea2.y), Random.Range(kamiManager.wanderArea1.z, kamiManager.wanderArea2.z));
         }
     }

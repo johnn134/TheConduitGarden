@@ -8,18 +8,28 @@ public class PoolWater : MonoBehaviour {
     public float hungrySpeed = .1f;                 //the speed of the fish in this pool when hungry
     public float huntingSpeed = 1f;                 //the speed of the fish in this pool when hunting
 
+    /*void Update()
+    {
+        Debug.DrawLine(new Vector3(transform.position.x - (transform.lossyScale.z / 2) + gap,
+                                   transform.position.y - (transform.lossyScale.y / 2) + gap,
+                                   transform.position.z - (transform.lossyScale.x / 2) + gap), 
+                       new Vector3(transform.position.x + (transform.lossyScale.z / 2) - gap,
+                                   transform.position.y + (transform.lossyScale.y / 2) - gap,
+                                   transform.position.z + (transform.lossyScale.x / 2) - gap));
+    }*/
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name.StartsWith("Fish"))
         {
             Fish enteringFish = other.gameObject.GetComponent<Fish>();
 
-            enteringFish.wanderArea1 = new Vector3(transform.parent.transform.position.x - (transform.lossyScale.z / 2) + gap, 
-                                                                            transform.parent.transform.position.y + gap, 
-                                                                            transform.parent.transform.position.z - (transform.lossyScale.x / 2) + gap);
-            enteringFish.wanderArea2 = new Vector3(transform.parent.transform.position.x + (transform.lossyScale.z / 2) - gap,
-                                                                            transform.parent.transform.position.y + (transform.lossyScale.y) - gap,
-                                                                            transform.parent.transform.position.z + (transform.lossyScale.x / 2) - gap);
+            enteringFish.wanderArea1 = new Vector3(transform.position.x - (transform.lossyScale.z / 2) + gap,
+                                   transform.position.y - (transform.lossyScale.y / 2) + gap,
+                                   transform.position.z - (transform.lossyScale.x / 2) + gap);
+            enteringFish.wanderArea2 = new Vector3(transform.position.x + (transform.lossyScale.z / 2) - gap,
+                                   transform.position.y + (transform.lossyScale.y / 2) - gap,
+                                   transform.position.z + (transform.lossyScale.x / 2) - gap);
 
             //set the speed for the entering fish based on this pool's speed values
             enteringFish.happySpeed = happySpeed;

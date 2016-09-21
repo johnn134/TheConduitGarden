@@ -10,15 +10,17 @@ public class BonsaiShrine : MonoBehaviour {
 
 	public GameObject[] trees;
 
+    Transform shears;
+
 	public CONTRACTLEVEL levelRequirement = CONTRACTLEVEL.NONE;
 
-	int activationStage;
+	int activationStage = 0;
 
 	int[] issues;
 
 	float checkTime;
 
-	bool activated;
+	bool activated = false;
 	bool linesActivated;
 
 	const int MIN_LEAVES = 4;
@@ -39,7 +41,13 @@ public class BonsaiShrine : MonoBehaviour {
 	const float TOKYO_REQ_BASE_RADIUS = 0.025f;
 	const float TOKYO_REQ_BASE_OFFSET = 0.05f;
 
-	public enum CONTRACTLEVEL {
+    KamiManager kamiManager;
+
+    HyperCreature player;
+
+    ParticleSystem particleObj;
+
+    public enum CONTRACTLEVEL {
 		NONE, TOKYO
 	};
 
@@ -61,8 +69,17 @@ public class BonsaiShrine : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        kamiManager = KamiManager.instance;
+
+        player = HyperCreature.instance;
+
+        particleObj = GameObject.Find("BonsaiShrine/Particles").GetComponent<ParticleSystem>();
+
+        shears = GameObject.Find("Shears").transform;
+
+        var em = particleObj.emission;
+        em.rate = 0;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -72,6 +89,11 @@ public class BonsaiShrine : MonoBehaviour {
 			else
 				activateBoundLines();
 		}
+
+        if (shears.parent && !linesActivated)
+            activateBoundLines();
+        else if (!shears.parent && linesActivated)
+            deactivateBoundLines();
 	}
 
 	void FixedUpdate() {
@@ -337,6 +359,7 @@ public class BonsaiShrine : MonoBehaviour {
 	 */
 	void setActivationStage(int newStage) {
 		activateLights(newStage);
+        checkIfActivated(newStage);
 	}
 
 	/*
@@ -353,10 +376,71 @@ public class BonsaiShrine : MonoBehaviour {
 		LevelFourLights.GetComponent<Renderer>().material.color = lightLevel >= 4 ? active : inactive;
 	}
 
-	/*
+    void checkIfActivated(int newStage){
+        int oldStage = activationStage;
+        activationStage = newStage;
+
+        if (newStage > oldStage)
+        {
+            particleObj.Emit(20);
+
+            for(int i = 0; i < newStage - oldStage; i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
+        }
+        else if(newStage < oldStage)
+        {
+            for (int i = 0; i < oldStage - newStage; i++)
+                ScareKami();
+        }
+
+        if (newStage == 4 && !activated)
+        {
+            activated = true;
+            CancelInvoke();
+            for (int i = 0; i < activationStage - kamiManager.NumberOfHappyKami(1); i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
+            var em = particleObj.emission;
+            em.rate = 5;
+            player.w_perif++;
+            player.WMoveAllHyperObjects();
+            InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
+        }
+        else if (newStage != 4 && activated)
+        {
+            activated = false;
+            CancelInvoke();
+            player.w_perif--;
+            player.WMoveAllHyperObjects();
+            InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
+            var em = particleObj.emission;
+            em.rate = 0;
+        }
+    }
+
+    void MakeKami()
+    {
+        kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7), 1);
+    }
+
+    void ScareKami()
+    {
+        //check if there are kami to scare away
+        if (kamiManager.NumberOfHappyKami(1) > activationStage)
+            kamiManager.MakeKamiFlee(1);
+        else
+        {
+            //cancel all invoked make kami scrips and restart the ones that would not have been scared away
+            CancelInvoke();
+
+            for (int i = 0; i < activationStage - kamiManager.NumberOfHappyKami(1); i++)
+                Invoke("MakeKami", kamiManager.kamiArriveTime);
+        }
+    }
+
+    /*
 	 * Wrapper for checking the progress of the bonsai trees in the contract level
 	 */
-	bool checkContractProgress() {
+    bool checkContractProgress() {
 		switch(levelRequirement) {
 			case CONTRACTLEVEL.NONE:
 				return true;

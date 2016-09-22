@@ -184,6 +184,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &33544427
@@ -271,6 +272,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &45470584
@@ -390,6 +392,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &47815141
@@ -397,7 +400,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1550272451}
     m_Modifications:
     - target: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
       propertyPath: m_LocalPosition.x
@@ -405,7 +408,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -1.2070255
+      value: -1.1820256
       objectReference: {fileID: 0}
     - target: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
       propertyPath: m_LocalPosition.z
@@ -413,15 +416,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
       propertyPath: m_LocalRotation.w
@@ -429,12 +432,17 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
       propertyPath: m_RootOrder
-      value: 21
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114000011488882148, guid: 8b6087e6399b61e4ab6eee6486529b62,
         type: 2}
       propertyPath: fadeInSpeed
       value: 0.0005
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011488882148, guid: 8b6087e6399b61e4ab6eee6486529b62,
+        type: 2}
+      propertyPath: initialWPerif
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8b6087e6399b61e4ab6eee6486529b62, type: 2}
@@ -463,6 +471,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &55639066 stripped
@@ -484,6 +493,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &67513589 stripped
@@ -657,6 +667,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &72621486
@@ -978,6 +989,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &95278708 stripped
@@ -999,6 +1011,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &98200545 stripped
@@ -1096,6 +1109,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &114238800
@@ -1174,6 +1188,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &120584876
@@ -1367,6 +1382,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &149576479 stripped
@@ -1629,6 +1645,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &209441311
@@ -1658,7 +1675,6 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1080494407}
-  - {fileID: 1442633445}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!1001 &224693292
@@ -1869,6 +1885,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &238172855
@@ -1957,6 +1974,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &281313908
@@ -2102,6 +2120,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &301562230 stripped
@@ -2194,6 +2213,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &327159980
@@ -2377,6 +2397,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &350567526
@@ -2512,6 +2533,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &355610506
@@ -2599,6 +2621,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &362486068
@@ -2711,6 +2734,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &393922788
@@ -2901,6 +2925,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &399111910
@@ -3089,6 +3114,7 @@ MonoBehaviour:
   w: 3
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &426912503 stripped
@@ -3393,6 +3419,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &433796373
@@ -3462,6 +3489,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &443011712
@@ -3588,6 +3616,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &451045708
@@ -3762,6 +3791,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &459652731
@@ -3929,6 +3959,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &493998575
@@ -4041,6 +4072,7 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &494117636
@@ -4146,6 +4178,7 @@ MonoBehaviour:
   w: 3
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 1
 --- !u!114 &500616020
@@ -4263,6 +4296,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &505328718
@@ -4417,6 +4451,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &523410456
@@ -4583,6 +4618,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &529758056 stripped
@@ -4604,6 +4640,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &534885987
@@ -4687,6 +4724,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &549925811
@@ -4781,6 +4819,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &552432451 stripped
@@ -4807,6 +4846,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &555925026
@@ -4942,6 +4982,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &571371725 stripped
@@ -4966,6 +5007,7 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &572794174
@@ -5049,6 +5091,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &580274318 stripped
@@ -5070,6 +5113,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &582968671 stripped
@@ -5101,6 +5145,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &588674691
@@ -5228,6 +5273,7 @@ MonoBehaviour:
   w: 2
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &589334878
@@ -5281,6 +5327,7 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 0
   staticRenderMode: 1
 --- !u!114 &589334881
@@ -5597,6 +5644,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &625253586 stripped
@@ -5623,6 +5671,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &635331734 stripped
@@ -5644,6 +5693,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &635864613
@@ -5775,6 +5825,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &647452577
@@ -5875,6 +5926,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &659055889
@@ -5934,6 +5986,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &663550747
@@ -6123,6 +6176,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &694842841 stripped
@@ -6144,6 +6198,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &699086132 stripped
@@ -6168,6 +6223,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &699156339
@@ -6405,6 +6461,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &733820449
@@ -6721,6 +6778,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!33 &749400953
@@ -6824,136 +6882,9 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
---- !u!43 &758463208
-Mesh:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  serializedVersion: 8
-  m_SubMeshes:
-  - serializedVersion: 2
-    firstByte: 0
-    indexCount: 24
-    topology: 0
-    firstVertex: 0
-    vertexCount: 8
-    localAABB:
-      m_Center: {x: 0, y: 0.01, z: 0}
-      m_Extent: {x: 1.15, y: 0, z: 0.9}
-  m_Shapes:
-    vertices: []
-    shapes: []
-    channels: []
-    fullWeights: []
-  m_BindPose: []
-  m_BoneNameHashes: 
-  m_RootBoneNameHash: 0
-  m_MeshCompression: 0
-  m_IsReadable: 1
-  m_KeepVertices: 1
-  m_KeepIndices: 1
-  m_IndexBuffer: 000004000100010004000500010005000200020005000600020006000300030006000700030007000000000007000400
-  m_Skin: []
-  m_VertexData:
-    m_CurrentChannels: 13
-    m_VertexCount: 8
-    m_Channels:
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 3
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 12
-      format: 0
-      dimension: 4
-    - stream: 0
-      offset: 28
-      format: 0
-      dimension: 2
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    m_DataSize: 288
-    _typelessdata: 0000803f0ad7233c0000403f000000000000803f0000803f0000803f00000000000000000000803f0ad7233c000040bf000000000000803f0000803f0000803f0000803f00000000000080bf0ad7233c000040bf000000000000803f0000803f0000803f0000000000000000000080bf0ad7233c0000403f000000000000803f0000803f0000803f0000803f000000003333933f0ad7233c6666663f000000000000803f0000803f00000000000000000000803f3333933f0ad7233c666666bf000000000000803f0000803f000000000000803f0000803f333393bf0ad7233c666666bf000000000000803f0000803f00000000000000000000803f333393bf0ad7233c6666663f000000000000803f0000803f000000000000803f0000803f
-  m_CompressedMesh:
-    m_Vertices:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_UV:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Normals:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Tangents:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Weights:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_NormalSigns:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_TangentSigns:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_FloatColors:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_BoneIndices:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Triangles:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_UVInfo: 0
-  m_LocalAABB:
-    m_Center: {x: 0, y: 0.01, z: 0}
-    m_Extent: {x: 1.15, y: 0, z: 0.9}
-  m_MeshUsageFlags: 0
-  m_BakedConvexCollisionMesh: 
-  m_BakedTriangleCollisionMesh: 
-  m_MeshOptimized: 0
 --- !u!1001 &764277348
 Prefab:
   m_ObjectHideFlags: 0
@@ -7191,6 +7122,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &801316595
@@ -7255,6 +7187,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &801316599
@@ -7423,6 +7356,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &826154932 stripped
@@ -7447,6 +7381,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &826611879
@@ -7502,6 +7437,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &828112984
@@ -7617,6 +7553,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &833639147
@@ -7664,6 +7601,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &833639150
@@ -7764,6 +7702,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &835692925
@@ -7833,6 +7772,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &840621598 stripped
@@ -7854,6 +7794,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &844066050
@@ -7994,6 +7935,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &852115096
@@ -8247,6 +8189,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &864618176
@@ -8389,6 +8332,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &872307455
@@ -8554,6 +8498,7 @@ MonoBehaviour:
   w: 4
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &890166344 stripped
@@ -8590,6 +8535,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &920815445
@@ -8837,6 +8783,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &951679952
@@ -8937,6 +8884,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &961426770
@@ -9063,6 +9011,7 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &963633823
@@ -9219,6 +9168,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &974256986
@@ -9397,6 +9347,7 @@ MonoBehaviour:
   w: 1
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 0
   staticRenderMode: 1
 --- !u!114 &988621251
@@ -9628,6 +9579,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1012637645 stripped
@@ -9680,6 +9632,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1017430401
@@ -9742,6 +9695,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1029707102
@@ -9858,6 +9812,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1041440105 stripped
@@ -9889,6 +9844,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1066885077 stripped
@@ -9913,6 +9869,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1075837947
@@ -10017,10 +9974,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1080494405}
-  m_LocalRotation: {x: 0.4048238, y: 0.26021668, z: -0.12134092, w: 0.86814827}
+  m_LocalRotation: {x: -0.29880264, y: 0.64087206, z: -0.29880264, w: -0.64087206}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 49.994003, y: 33.524002, z: 0}
+  m_LocalEulerAnglesHint: {x: 49.994003, y: 270, z: 0}
   m_Children: []
   m_Father: {fileID: 209441312}
   m_RootOrder: 0
@@ -10048,6 +10005,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1105894054 stripped
@@ -10069,6 +10027,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1105920292 stripped
@@ -11993,6 +11952,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1131190546 stripped
@@ -12014,6 +11974,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1152997284 stripped
@@ -12035,6 +11996,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1154930351 stripped
@@ -12056,6 +12018,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1159338760
@@ -12120,6 +12083,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1159338764
@@ -12189,6 +12153,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1180317236
@@ -12348,6 +12313,7 @@ MonoBehaviour:
   w: 3
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1186412809 stripped
@@ -12458,6 +12424,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1191959505
@@ -12522,6 +12489,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1191959509
@@ -12660,6 +12628,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1198695171
@@ -12834,6 +12803,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1206812196 stripped
@@ -12855,6 +12825,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1226910627 stripped
@@ -12876,6 +12847,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1227423075 stripped
@@ -12900,6 +12872,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1236624693 stripped
@@ -12921,6 +12894,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1243828693
@@ -13069,6 +13043,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1270684873
@@ -13231,6 +13206,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1273501881
@@ -13319,6 +13295,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1300735599 stripped
@@ -13340,6 +13317,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1309762263 stripped
@@ -13361,6 +13339,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1322838327
@@ -13572,6 +13551,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1331000702 stripped
@@ -13745,6 +13725,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1365351320
@@ -13943,6 +13924,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1376584407 stripped
@@ -13972,6 +13954,7 @@ MonoBehaviour:
   w: 3
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1393190140
@@ -14025,6 +14008,7 @@ MonoBehaviour:
   w: 5
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 0
   staticRenderMode: 1
 --- !u!114 &1393190143
@@ -14129,6 +14113,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1399384668 stripped
@@ -14150,6 +14135,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1402180237 stripped
@@ -14219,6 +14205,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1403008927
@@ -14380,6 +14367,7 @@ MonoBehaviour:
   w: 3
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1410007664
@@ -14427,6 +14415,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 2
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1410007667
@@ -14516,6 +14505,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1414400057 stripped
@@ -14537,6 +14527,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1423773671
@@ -14700,6 +14691,7 @@ MonoBehaviour:
   w: 2
   w_depth: 2
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1432839366
@@ -14897,69 +14889,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1442633443
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1442633445}
-  - 108: {fileID: 1442633444}
-  m_Layer: 0
-  m_Name: Secondary_Directional_Light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!108 &1442633444
-Light:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1442633443}
-  m_Enabled: 1
-  serializedVersion: 7
-  m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.4
-  m_Range: 10
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &1442633445
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1442633443}
-  m_LocalRotation: {x: -0.09369334, y: 0.9055975, z: -0.27306628, w: -0.31072423}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 33.549, y: 218.14299, z: 0}
-  m_Children: []
-  m_Father: {fileID: 209441312}
-  m_RootOrder: 1
 --- !u!1001 &1442712967
 Prefab:
   m_ObjectHideFlags: 0
@@ -15081,6 +15010,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1448188035
@@ -15140,6 +15070,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1451635889 stripped
@@ -15161,8 +15092,38 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
+--- !u!21 &1453733022
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Sprites/Default
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: PixelSnap
+      second: 0
+    m_Colors:
+    - first:
+        name: _Color
+      second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1458682342
 GameObject:
   m_ObjectHideFlags: 0
@@ -15346,6 +15307,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1483989000
@@ -15433,6 +15395,7 @@ MonoBehaviour:
   w: 6
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 0
   staticRenderMode: 1
 --- !u!114 &1495096488
@@ -15688,6 +15651,7 @@ MonoBehaviour:
   w: 2
   w_depth: 2
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 0
   staticRenderMode: 0
 --- !u!23 &1499485322
@@ -15745,6 +15709,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1505681035
@@ -15855,6 +15820,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1528957011 stripped
@@ -15876,6 +15842,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1531197347 stripped
@@ -15900,6 +15867,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1532493621 stripped
@@ -15921,6 +15889,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1534026646
@@ -16033,6 +16002,7 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1535937488
@@ -16207,6 +16177,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1542245613 stripped
@@ -16228,6 +16199,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1542473989
@@ -16277,6 +16249,7 @@ MonoBehaviour:
   w: 3
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!114 &1542473992
@@ -16366,6 +16339,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1549447076 stripped
@@ -16387,6 +16361,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1550272450
@@ -16420,6 +16395,7 @@ Transform:
   - {fileID: 67513589}
   - {fileID: 1798189778}
   - {fileID: 428252436}
+  - {fileID: 2147358999}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!1001 &1563817081
@@ -16510,6 +16486,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1569789683 stripped
@@ -16531,37 +16508,9 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
---- !u!21 &1571396770
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Sprites/Default
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-    - first:
-        name: _MainTex
-      second:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - first:
-        name: PixelSnap
-      second: 0
-    m_Colors:
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &1599357475
 Prefab:
   m_ObjectHideFlags: 0
@@ -16643,6 +16592,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1607973285 stripped
@@ -16664,6 +16614,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1615211195 stripped
@@ -16685,6 +16636,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1616307987 stripped
@@ -16706,6 +16658,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1622424826 stripped
@@ -16727,6 +16680,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1623207017
@@ -16852,6 +16806,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1631174250
@@ -17031,6 +16986,7 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1640590774
@@ -17126,6 +17082,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1.25
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1647011096
@@ -17185,6 +17142,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1647286329
@@ -17397,6 +17355,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1661433240
@@ -17495,6 +17454,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1672844414 stripped
@@ -17545,15 +17505,20 @@ Prefab:
         type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 758463208}
+      objectReference: {fileID: 2050971207}
     - target: {fileID: 23000014152788214, guid: 996d0d43425f4b14690828a0b85a6ecb,
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1571396770}
+      objectReference: {fileID: 1453733022}
     - target: {fileID: 1000011238424012, guid: 996d0d43425f4b14690828a0b85a6ecb, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012886257006, guid: 996d0d43425f4b14690828a0b85a6ecb,
+        type: 2}
+      propertyPath: w_perif
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 996d0d43425f4b14690828a0b85a6ecb, type: 2}
@@ -17577,6 +17542,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1704377202
@@ -17637,6 +17603,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1710079617 stripped
@@ -17658,6 +17625,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!4 &1712114758 stripped
@@ -17684,6 +17652,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1751357994
@@ -17752,6 +17721,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1790518364 stripped
@@ -17773,6 +17743,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1793176804
@@ -18331,6 +18302,7 @@ MonoBehaviour:
   w: 0
   w_depth: 2
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1879291709 stripped
@@ -18352,6 +18324,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1884294589
@@ -18536,6 +18509,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1894248247 stripped
@@ -18557,6 +18531,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1894817791 stripped
@@ -18578,6 +18553,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1911276640
@@ -18653,6 +18629,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1918568374
@@ -18805,6 +18782,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1923978843
@@ -18874,6 +18852,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1931029141
@@ -19001,6 +18980,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &1932498695
@@ -19126,6 +19106,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1944726249
@@ -19177,6 +19158,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1949741786
@@ -19345,6 +19327,7 @@ MonoBehaviour:
   w: 4
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &1961919569 stripped
@@ -19366,6 +19349,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &1965896973
@@ -19591,6 +19575,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &2011087499
@@ -19784,6 +19769,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &2025557637 stripped
@@ -19805,6 +19791,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &2028487202
@@ -19895,6 +19882,7 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &2030989671
@@ -20021,6 +20009,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!23 &2031883566
@@ -20103,8 +20092,137 @@ MonoBehaviour:
   w: 6
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
+--- !u!43 &2050971207
+Mesh:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  serializedVersion: 8
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 24
+    topology: 0
+    firstVertex: 0
+    vertexCount: 8
+    localAABB:
+      m_Center: {x: 0, y: 0.01, z: 0}
+      m_Extent: {x: 1.15, y: 0, z: 0.9}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexBuffer: 000004000100010004000500010005000200020005000600020006000300030006000700030007000000000007000400
+  m_Skin: []
+  m_VertexData:
+    m_CurrentChannels: 13
+    m_VertexCount: 8
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 12
+      format: 0
+      dimension: 4
+    - stream: 0
+      offset: 28
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 288
+    _typelessdata: 0000803f0ad7233c0000403f000000000000803f0000803f0000803f00000000000000000000803f0ad7233c000040bf000000000000803f0000803f0000803f0000803f00000000000080bf0ad7233c000040bf000000000000803f0000803f0000803f0000000000000000000080bf0ad7233c0000403f000000000000803f0000803f0000803f0000803f000000003333933f0ad7233c6666663f000000000000803f0000803f00000000000000000000803f3333933f0ad7233c666666bf000000000000803f0000803f000000000000803f0000803f333393bf0ad7233c666666bf000000000000803f0000803f00000000000000000000803f333393bf0ad7233c6666663f000000000000803f0000803f000000000000803f0000803f
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: 0, y: 0.01, z: 0}
+    m_Extent: {x: 1.15, y: 0, z: 0.9}
+  m_MeshUsageFlags: 0
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  m_MeshOptimized: 0
 --- !u!1001 &2063825051
 Prefab:
   m_ObjectHideFlags: 0
@@ -20585,6 +20703,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1 &2100919527 stripped
@@ -20714,6 +20833,7 @@ MonoBehaviour:
   w: 0
   w_depth: 7
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 0
 --- !u!1001 &2119433128
@@ -21049,3 +21169,8 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 423f961ea28aac842aac8ccfc8b80035, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &2147358999 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62,
+    type: 2}
+  m_PrefabInternal: {fileID: 47815141}

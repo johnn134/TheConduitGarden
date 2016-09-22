@@ -36,8 +36,6 @@
 				LIGHTING_COORDS(0,1)
 				float4 tex : TEXCOORD1;
 				float3 col : COLOR;
-				float4 posWorld : TEXCOORD2;
-				float3 normalDir : TEXCOORD3;
 			};
 			
 			vertexOutput vert (vertexInput input)
@@ -47,10 +45,13 @@
 				float4x4 modelMatrix = unity_ObjectToWorld;
 				float4x4 modelMatrixInverse = unity_WorldToObject;
 
-				o.posWorld = mul(modelMatrix, input.vertex);
-				o.normalDir = normalize(mul(float4(input.normal, 0.0), modelMatrixInverse).xyz);
+				float3 normalDirection = normalize(mul(float4(input.normal, 0.0), modelMatrixInverse).xyz);
+				float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
+
+				float lambertWeight = max(0.1, dot(normalDirection, lightDirection));
+
 				o.pos = mul(UNITY_MATRIX_MVP, input.vertex);
-				o.col = _Color;
+				o.col = _Color * lambertWeight * 1.0;
 				o.tex = input.texcoord;
 
 				TRANSFER_VERTEX_TO_FRAGMENT(o);
@@ -60,32 +61,7 @@
 			
 			float4 frag (vertexOutput input) : COLOR
 			{
-				float3 lightDirection;
-				float attenuation;
-
-				float3 normalDirection = normalize(input.normalDir);
-				float4 textureColor = tex2D(_MainTex, input.tex.xy);
-				float3 fragmentColor = _Color.rgb;
-
-				if(_WorldSpaceLightPos0.w == 0.0)
-				{
-					attenuation = 1.0;
-					lightDirection = normalize(_WorldSpaceLightPos0.xyz);
-				}
-				else
-				{
-					float3 vertexToLightSource = _WorldSpaceLightPos0.xyz - input.posWorld.xyz;
-					float distance = length(vertexToLightSource);
-					attenuation = 1.0 / distance;
-					lightDirection = normalize(vertexToLightSource);
-				}
-
-				if(attenuation * dot(normalDirection, lightDirection) <= 0)
-				{
-					fragmentColor = _Color.rgb * 0.25;
-				}
-
-				return textureColor * float4(fragmentColor, 1.0) * LIGHT_ATTENUATION(input);
+				return tex2D(_MainTex, input.tex.xy) * float4(input.col, 1.0) * LIGHT_ATTENUATION(input);
 			}
 			ENDCG
 		}

@@ -10,10 +10,12 @@ public class HyperObject : MonoBehaviour {
 
     public float dullCoef = 1.0f;                   //how much to dull the color of the object by
 
+	public Texture texture;
+
     public bool isParent = false;                   //is this object the parent?
     //NOTE: Enable even if no children and if has both HyperObject and HyperColliderManager enable this as parent and not the other
 
-    public bool staticRenderMode = false;      //enable if alpha should be 0 at all times if not visible from the player's w point
+    public bool staticRenderMode = false;      		//whether the shader on this object can change
 
     SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
 
@@ -21,7 +23,7 @@ public class HyperObject : MonoBehaviour {
 
 	HyperCreature hypPlayer;						//Reference to the player
 
-    const int TRANSPARENT_QUEUE_ORDER = 3000;
+	#region Callbacks
 
 	void Awake(){
 		controllerManager = SteamVR_ControllerManager.instance;
@@ -53,56 +55,45 @@ public class HyperObject : MonoBehaviour {
         }
     }
 
+	#endregion
+	#region Movement Functions
+
     //the player has moved to a new w point, remove once 4D shader is implemented
     public void WMove()
     {
-		int newW = hypPlayer.w;
-        if (isVisibleSolid(newW))
-        {//this object is on the player's w point or is wide enough to be seen and touched
-            StartCoroutine(ColorTrans(newW, 1.0f));
+		int playerW = hypPlayer.w;
+
+		if (isVisibleSolid(playerW)) {//this object is on the player's w point or is wide enough to be seen and touched
+			StartCoroutine(ColorTrans(playerW, 1.0f));
         }
-		else{
-            float targA = PeripheralAlpha(newW);
-            /*if (vanishWhenTransparent)
-                targA = 0.0f;*/
+		else {
+			float targA = PeripheralAlpha(playerW);
 
             if (!staticRenderMode)
             {
-                _cachedRenderer.material.SetFloat("_Mode", 2);
-                _cachedRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                _cachedRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                _cachedRenderer.material.SetInt("_ZWrite", 0);
-                _cachedRenderer.material.DisableKeyword("_ALPHATEST_ON");
-                _cachedRenderer.material.EnableKeyword("_ALPHABLEND_ON");
-                _cachedRenderer.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                _cachedRenderer.material.renderQueue = 3000;
+				setTransparentShader();
             }
 
             //if got -1 for target alpha then already proper alpha so skip the color lerp
             if (targA != -1.0f)
             {
-                _cachedRenderer.material.SetFloat("_Mode", 2);
-
                 //fade out if not on player's w point
                 if (w_depth > 0)
                 {
-                    if (w > newW)
+					if (w > playerW)
                         StartCoroutine(ColorTrans(w, targA));
                     else
                         StartCoroutine(ColorTrans(w + w_depth, targA));
                 }
                 else
                 {
-                    if (w < newW)
+					if (w < playerW)
                         StartCoroutine(ColorTrans(w, targA));
                     else
                         StartCoroutine(ColorTrans(w + w_depth, targA));
                 }
             }
         }
-
-        //GetComponent<MeshRenderer>().material.SetFloat("_WPos", (float)w);
-        //GetComponent<MeshRenderer>().material.renderQueue = TRANSPARENT_QUEUE_ORDER + getNewOrder(newW);
     }
 
     public void setW(int newW)
@@ -133,151 +124,6 @@ public class HyperObject : MonoBehaviour {
                 else if (child.childCount > 0)
                     recurseChildrenSetW(child, newW);
             }
-        }
-    }
-
-    int getNewOrder(int creatureW)
-    {
-        int controllerPos = creatureW;
-
-        if (controllerPos == 0)
-        {
-            return 7 - w;
-        }
-        else if (controllerPos == 1)
-        {
-            if (w == 1)
-                return 7;
-            else if (w == 0)
-                return 6;
-            else
-                return 7 - w;
-        }
-        else if (controllerPos == 2)
-        {
-            if (w == 2)
-                return 7;
-            else if (w == 1)
-                return 6;
-            else if (w == 3)
-                return 5;
-            else if (w == 0)
-                return 4;
-            else
-                return 7 - w;
-        }
-        else if (controllerPos == 3)
-        {
-            if (w == 3)
-                return 7;
-            else if (w == 2)
-                return 6;
-            else if (w == 4)
-                return 5;
-            else if (w == 1)
-                return 4;
-            else if (w == 5)
-                return 3;
-            else if (w == 0)
-                return 2;
-            else
-                return 1;
-        }
-        else if (controllerPos == 4)
-        {
-            if (w == 4)
-                return 7;
-            else if (w == 3)
-                return 6;
-            else if (w == 5)
-                return 5;
-            else if (w == 2)
-                return 4;
-            else if (w == 6)
-                return 3;
-            else
-                return 1 + w;
-        }
-        else if (controllerPos == 5)
-        {
-            if (w == 5)
-                return 7;
-            else if (w == 4)
-                return 6;
-            else if (w == 6)
-                return 5;
-            else
-                return 1 + w;
-        }
-        else if (controllerPos == 6)
-        {
-            return 1 + w;
-        }
-
-        return 0;
-    }
-
-    float PeripheralAlpha(int newW)
-    {
-        if (Mathf.Abs(newW - w) <= hypPlayer.w_perif * 2 || Mathf.Abs(newW - (w + w_depth)) <= hypPlayer.w_perif * 2)
-        {
-            if (_cachedRenderer.material.color.a == .2f)
-                return -1.0f;
-
-            return .2f;
-        }
-
-        if (_cachedRenderer.material.color.a == 0.0f)
-            return -1.0f;
-
-        return 0.0f;
-    }
-
-    //smoothly change the color of this object, rmove once 4D shader is implemented
-    IEnumerator ColorTrans(int newW, float targetA){
-        Color targetColor;
-		
-		//deturmine the target color based on w point
-		if(newW == 0)
-			targetColor = Color.red;
-		else if(newW == 1)
-			targetColor = new Color(1,.45f,0);
-		else if(newW == 2)
-			targetColor = Color.yellow;
-		else if(newW == 3)
-			targetColor = Color.green;
-		else if(newW == 4)
-			targetColor = Color.cyan;
-		else if(newW == 5)
-			targetColor = Color.blue;
-		else
-			targetColor = Color.magenta;
-            
-
-		targetColor.a = targetA;
-		targetColor.r /= dullCoef;
-		targetColor.g /= dullCoef;
-		targetColor.b /= dullCoef;
-		
-		for(float i = 0.0f; i <= 1.0f; i += .1f){
-            
-			_cachedRenderer.material.color = Color.Lerp(_cachedRenderer.material.color, targetColor, .2f);
-
-			yield return null;
-		}
-
-        _cachedRenderer.material.color = targetColor;
-
-        if(targetA == 1f && !staticRenderMode && isVisibleSolid(hypPlayer.w))
-        {
-            _cachedRenderer.material.SetFloat("_Mode", 0);
-            _cachedRenderer.material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            _cachedRenderer.material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            _cachedRenderer.material.SetInt("_ZWrite", 1);
-            _cachedRenderer.material.DisableKeyword("_ALPHATEST_ON");
-            _cachedRenderer.material.DisableKeyword("_ALPHABLEND_ON");
-            _cachedRenderer.material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            _cachedRenderer.material.renderQueue = -1;
         }
     }
 
@@ -312,7 +158,87 @@ public class HyperObject : MonoBehaviour {
         }
     }
 
-    //deturmine if this can be seen from the other w as a solid object, remove once 4D shader is implemented
+	#endregion
+	#region Utility Functions
+
+	//smoothly change the color of this object, rmove once 4D shader is implemented
+	IEnumerator ColorTrans(int newW, float targetA){
+		Color targetColor = Color.white;
+
+		//deturmine the target color based on w point
+		switch(newW) {
+			case 0:
+				targetColor = Color.red;
+				break;
+			case 1:
+				targetColor = new Color(1, .45f, 0);
+				break;
+			case 2:
+				targetColor = Color.yellow;
+				break;
+			case 3:
+				targetColor = Color.green;
+				break;
+			case 4:
+				targetColor = Color.cyan;
+				break;
+			case 5:
+				targetColor = Color.blue;
+				break;
+			case 6:
+				targetColor = Color.magenta;
+				break;
+		}
+
+		targetColor.a = targetA;
+		targetColor.r /= dullCoef;
+		targetColor.g /= dullCoef;
+		targetColor.b /= dullCoef;
+
+		for(float i = 0.0f; i <= 1.0f; i += .1f){
+
+			_cachedRenderer.material.SetColor("_Color", Color.Lerp(_cachedRenderer.material.GetColor("_Color"), targetColor, .2f));
+
+			yield return null;
+		}
+
+		_cachedRenderer.material.SetColor("_Color", targetColor);
+
+		if(targetA == 1.0f && !staticRenderMode && isVisibleSolid(hypPlayer.w))
+		{
+			setOpaqueShader();
+		}
+	}
+
+	/*
+	 * PeripheralAlpha
+	 * 
+	 * Determines the alpha of this object depending on its position
+	 * compared to the player's peripheral vision
+	 * 
+	 * If returning -1, skip the colortrans coroutine
+	 * .2 - within player's vision
+	 * 0 - not in player's vision
+	 * 
+	 * @param newW - player's w position
+	 * @return float - alpha of this object's material
+	 */
+	float PeripheralAlpha(int newW)
+	{
+		if (Mathf.Abs(newW - w) <= hypPlayer.w_perif * 2 || Mathf.Abs(newW - (w + w_depth)) <= hypPlayer.w_perif * 2) {	//This object is in the player's peripheral range
+			if (_cachedRenderer.material.color.a == .2f)
+				return -1.0f;
+
+			return .2f;
+		}
+
+		if (_cachedRenderer.material.color.a == 0.0f)
+			return -1.0f;
+
+		return 0.0f;
+	}
+
+    //determine if this can be seen from the other w as a solid object
     public bool isVisibleSolid(int otherW)
     {
         if (w_depth > 0)
@@ -332,4 +258,26 @@ public class HyperObject : MonoBehaviour {
         else
             return (w == otherW);
     }
+
+	/*
+	 * Swaps the shader on this object's material to the fourth dimension opaque shader
+	 */
+	void setOpaqueShader() {
+		Color temp = _cachedRenderer.material.GetColor("_Color");
+		_cachedRenderer.material.shader = Shader.Find("FourthDimension/FourthDimensionOpaqueShader");
+		_cachedRenderer.material.SetTexture("_MainTex", texture);
+		_cachedRenderer.material.SetColor("_Color", temp);
+	}
+
+	/*
+	 * Swaps the shader on this object's material to the fourth dimension transparent shader
+	 */
+	void setTransparentShader() {
+		Color temp = _cachedRenderer.material.GetColor("_Color");
+		_cachedRenderer.material.shader = Shader.Find("FourthDimension/FourthDimensionTransparentShader");
+		_cachedRenderer.material.SetTexture("_MainTex", texture);
+		_cachedRenderer.material.SetColor("_Color", temp);
+	}
+
+	#endregion
 }

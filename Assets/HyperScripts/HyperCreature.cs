@@ -8,9 +8,14 @@ public class HyperCreature : MonoBehaviour {
 
     public static HyperCreature instance = null;
 
+    UnityEngine.UI.Image fadeImage;
+
     void Awake()
     {
-        //Application.targetFrameRate = 60;
+        fadeImage = GameObject.Find("Canvas/Image").GetComponent<UnityEngine.UI.Image>();
+
+        var fadeMat = fadeImage.material;
+        fadeMat.color = Color.black;
 
         //declare as singleton
         if (instance == null)
@@ -22,18 +27,34 @@ public class HyperCreature : MonoBehaviour {
         //DontDestroyOnLoad(gameObject);
     }
 
-    public bool FadeToBlack()
+    public bool FadeOutTransitionStep(float speed)
     {
-        if(Camera.main.farClipPlane > 0)
+        if(fadeImage.material.color.a < 1f)
         {
-            if (Camera.main.farClipPlane > 5.0F)
-                Camera.main.farClipPlane -= .1f;
-            else
-                Camera.main.farClipPlane -= .005f;
+            var fadeMat = fadeImage.material;
+            fadeMat.color = new Color(fadeMat.color.r, fadeMat.color.g, fadeMat.color.b, fadeMat.color.a + speed);
             return false;
         }
         return true;
 
+    }
+
+    public bool FadeInTransitionStep(float speed)
+    {
+        if (fadeImage.material.color.a > 0f)
+        {
+            var fadeMat = fadeImage.material;
+            fadeMat.color = new Color(fadeMat.color.r, fadeMat.color.g, fadeMat.color.b, fadeMat.color.a - speed);
+            return false;
+        }
+        return true;
+
+    }
+
+    void OnDestroy()
+    {
+        var fadeMat = fadeImage.material;
+        fadeMat.color = new Color(fadeMat.color.r, fadeMat.color.g, fadeMat.color.b, 0f);
     }
 
     public void WMoveAllHyperObjects()

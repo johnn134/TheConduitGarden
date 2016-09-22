@@ -13,6 +13,7 @@ public class ContractScroll : MonoBehaviour {
 
 	bool isScrolling;
 	bool playerClosed;
+    bool startFade;
 
 	float scrollingStartTime;
 
@@ -20,13 +21,17 @@ public class ContractScroll : MonoBehaviour {
 	const float CLOSED_Y_POS = 0.9f;
 	const float SCROLL_OPEN_SPEED = 2f;
 	const float SCROLL_CLOSE_SPEED = 5.0f;
+
+    HyperCreature player;
     
 
 	// Use this for initialization
 	void Start () {
 		isScrolling = false;
 		playerClosed = false;
+        startFade = false;
 		openScroll(isActive);
+        player = HyperCreature.instance;
 	}
 	
 	// Update is called once per frame
@@ -41,6 +46,12 @@ public class ContractScroll : MonoBehaviour {
 		if(isScrolling) {
 			updateScroll();
 		}
+
+        if (startFade)
+        {
+            if (player.FadeOutTransitionStep(.1f))
+                loadLevel();
+        }
 	}
 
 	/*
@@ -84,8 +95,7 @@ public class ContractScroll : MonoBehaviour {
 
 			if(isActive == false) { //closed the scroll
                                     //Accept the contract and move to the next level
-
-                loadLevel();
+                startFade = true;
 			}
 		}
 	}

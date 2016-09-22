@@ -43,7 +43,7 @@ public class Clock : MonoBehaviour {
 				}
 			}
 			else {
-				if(player.FadeToBlack()) {
+				if(player.FadeOutTransitionStep(.001f)) {
                     endLevel();
 				}
 			}

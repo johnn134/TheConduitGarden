@@ -44,19 +44,6 @@
 			{
 				vertexOutput o;
 
-//				float4x4 modelMatrix = unity_ObjectToWorld;
-//				float4x4 modelMatrixInverse = unity_WorldToObject;
-//
-//				float3 normalDirection = normalize(mul(float4(input.normal, 0.0), modelMatrixInverse).xyz);
-//				float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
-//
-//				float3 lightReflection = _LightColor0.rgb; 
-//				float lambertWeight = max(0.1, dot(normalDirection, lightDirection));
-//
-//				o.pos = mul(UNITY_MATRIX_MVP, input.vertex);
-//				o.col = _Color * lightReflection * lambertWeight * 1.0;
-//				o.tex = input.texcoord;
-
 				float4x4 modelMatrix = unity_ObjectToWorld;
 				float4x4 modelMatrixInverse = unity_WorldToObject;
 
@@ -73,8 +60,6 @@
 			
 			float4 frag (vertexOutput input) : COLOR
 			{
-				//return tex2D(_MainTex, input.tex.xy) * float4(input.col, 1.0);
-
 				float3 lightDirection;
 				float attenuation;
 

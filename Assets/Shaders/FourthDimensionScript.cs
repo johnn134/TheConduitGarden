@@ -53,6 +53,7 @@ public class FourthDimensionScript : MonoBehaviour {
 
 	void setTransparentShader() {
 		mat.shader = Shader.Find("FourthDimension/FourthDimensionTransparentShader");
+		mat.SetTexture("_MainTex", texture);
 		updateColor(0.25f);
 	}
 

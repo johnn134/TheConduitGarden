@@ -24,7 +24,7 @@ public class HyperCreature : MonoBehaviour {
             Destroy(gameObject);
 
         //add this later for persistant creature
-        //DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     public bool FadeOutTransitionStep(float speed)

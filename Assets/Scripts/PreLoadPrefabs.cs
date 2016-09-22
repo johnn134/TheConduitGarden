@@ -9,6 +9,8 @@ public class PreLoadPrefabs : MonoBehaviour {
 
     public float fadeInSpeed = .005f;
 
+    public int initialWPerif = 0;
+
     void Awake()
     {
         foreach(string prefabPath in prefabPaths)
@@ -17,6 +19,7 @@ public class PreLoadPrefabs : MonoBehaviour {
         }
 
         player = HyperCreature.instance;
+        player.w_perif = initialWPerif;
     }
 
     void Update()

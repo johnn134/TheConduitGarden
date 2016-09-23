@@ -59,18 +59,6 @@ public class GetInputVR : MonoBehaviour
         }
     }
 
-    EVRButtonId[] buttonIds = new EVRButtonId[] {
-        EVRButtonId.k_EButton_ApplicationMenu,
-        EVRButtonId.k_EButton_Grip,
-        EVRButtonId.k_EButton_SteamVR_Touchpad,
-        EVRButtonId.k_EButton_SteamVR_Trigger
-    };
-
-    EVRButtonId[] axisIds = new EVRButtonId[] {
-        EVRButtonId.k_EButton_SteamVR_Touchpad,
-        EVRButtonId.k_EButton_SteamVR_Trigger
-    };
-
     public Transform point, pointer;
 
     int tUp, tDown, tLeft, tRight = -1;
@@ -207,38 +195,66 @@ public class GetInputVR : MonoBehaviour
             var axis = SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
             if (axis.y <= .1 && axis.y > -.1)
             {
-                player.w = 3;
-                callWMoveOnAllHyperScripts = true;
+                if(player.w - 1 == 3 || player.w + 1 == 3)
+                {
+                    player.w = 3;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.y <= .4 && axis.y > .1)
             {
-                player.w = 4;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 4 || player.w + 1 == 4)
+                {
+                    player.w = 4;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.y <= .7 && axis.y > .4)
             {
-                player.w = 5;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 5 || player.w + 1 == 5)
+                {
+                    player.w = 5;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.y <= 1.0 && axis.y > .7)
             {
-                player.w = 6;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 6 || player.w + 1 == 6)
+                {
+                    player.w = 6;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.y <= -.1 && axis.y > -.4)
             {
-                player.w = 2;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 2 || player.w + 1 == 2)
+                {
+                    player.w = 2;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.y <= -.4 && axis.y > -.7)
             {
-                player.w = 1;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 1 || player.w + 1 == 1)
+                {
+                    player.w = 1;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.y <= -.7 && axis.y > -1.0)
             {
-                player.w = 0;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 0 || player.w + 1 == 0)
+                {
+                    player.w = 0;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
         }
     }
@@ -250,38 +266,66 @@ public class GetInputVR : MonoBehaviour
             var axis = SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
             if (axis.x <= .1 && axis.x > -.1)
             {
-                player.w = 3;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 3 || player.w + 1 == 3)
+                {
+                    player.w = 3;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.x <= .4 && axis.x > .1)
             {
-                player.w = 4;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 4 || player.w + 1 == 4)
+                {
+                    player.w = 4;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.x <= .7 && axis.x > .4)
             {
-                player.w = 5;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 5 || player.w + 1 == 5)
+                {
+                    player.w = 5;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.x <= 1.0 && axis.x > .7)
             {
-                player.w = 6;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 6 || player.w + 1 == 6)
+                {
+                    player.w = 6;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.x <= -.1 && axis.x > -.4)
             {
-                player.w = 2;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 2 || player.w + 1 == 2)
+                {
+                    player.w = 2;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
             else if (axis.x <= -.4 && axis.x > -.7)
             {
-                player.w = 1;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 1 || player.w + 1 == 1)
+                {
+                    player.w = 1;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
-            else if (axis.x <= -.7 && axis.y > -1.0)
+            else if (axis.x <= -.7 && axis.x > -1.0)
             {
-                player.w = 0;
-                callWMoveOnAllHyperScripts = true;
+                if (player.w - 1 == 0 || player.w + 1 == 0)
+                {
+                    player.w = 0;
+                    callWMoveOnAllHyperScripts = true;
+                    SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
+                }
             }
         }
     }

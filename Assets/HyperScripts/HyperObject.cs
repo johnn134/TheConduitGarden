@@ -43,7 +43,18 @@ public class HyperObject : MonoBehaviour {
     //have the objects detect the vive controller inputs to move themselves
     void LateUpdate()
     {
-        for (int i = 0; i < controllerManager.indices.Length; i++)
+        if (controllerManager.left)
+        {
+            if (controllerManager.left.GetComponent<GetInputVR>().callWMoveOnAllHyperScripts)
+                WMove();
+        }
+
+        if (controllerManager.right)
+        {
+            if (controllerManager.right.GetComponent<GetInputVR>().callWMoveOnAllHyperScripts)
+                WMove();
+        }
+        /*for (int i = 0; i < controllerManager.indices.Length; i++)
         {
             if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
             {
@@ -52,7 +63,7 @@ public class HyperObject : MonoBehaviour {
                     WMove();
                 }
             }
-        }
+        }*/
     }
 
 	#endregion

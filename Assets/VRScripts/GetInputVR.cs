@@ -4,15 +4,25 @@ using Valve.VR;
 
 public class GetInputVR : MonoBehaviour
 {
+    public enum ControlType
+    {
+        Trigger,
+        VSlide,
+        HSlide,
+        Scroll
+    }
+
     public int myIndex = -1;
     public GameObject holding = null;
     public bool griping = false;
-    //public GameObject controlInfo = null;
+    public ControlType controlType;
+    HyperCreature player;
 
 
     void Start()
     {
         myIndex = (int)gameObject.GetComponent<SteamVR_TrackedObject>().index;
+        player = HyperCreature.instance;
     }
 
     void OnTriggerStay(Collider other)
@@ -66,44 +76,28 @@ public class GetInputVR : MonoBehaviour
 
     public Transform point, pointer;
 
-    bool tUp, tDown, tLeft, tRight = false;
+    int tUp, tDown, tLeft, tRight = -1;
     int stage = 0;
 
     void Update()
     {
-        /*if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetTouch(EVRButtonId.k_EButton_SteamVR_Touchpad) && tag.Equals("RightControl"))
+        switch ((int)controlType)
         {
-            var axis = SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
-
-            if (axis.y > .2 && (axis.x > -.2 && axis.x <= .2))
-                tUp = true;
-            if (axis.y < .2 && (axis.x >= -.2 && axis.x < .2))
-                tDown = true;
-            if (axis.x > .2 && (axis.y >= -.2 && axis.y < .2))
-                tRight = true;
-            if (axis.x < .2 && (axis.y > -.2 && axis.y <= .2))
-                tLeft = true;
-        }
-        else
-        {
-            stage = 0;
-            tUp = false;
-            tDown = false;
-            tLeft = false;
-            tRight = false;
+            case 0:
+                TriggerControl();
+                break;
+            case 1:
+                VerticalSliderControl();
+                break;
+            case 2:
+                HorizontalSliderControl();
+                break;
+            case 3:
+                ScrollControl();
+                break;
         }
 
-        if(stage == 0)
-        {
-            if (tUp || tDown || tLeft || tRight)
-                stage = 1;
-        }
-        else if(stage == 1)
-        {
-            
-        }
-
-        if (tUp && tDown && tLeft && tRight)
+        /*if (tUp && tDown && tLeft && tRight)
         {
             Debug.Log("ALL");
             stage = 0;
@@ -113,91 +107,9 @@ public class GetInputVR : MonoBehaviour
             tRight = false;
         }*/
 
-        /*if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetTouch(EVRButtonId.k_EButton_SteamVR_Touchpad) && tag.Equals("RightControl")){
-            var axis = SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
-            if(axis.y <= .1 && axis.y > -.1){
-                gameObject.transform.parent.GetComponent<HyperCreature>().w = 3;
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove();
-            }
-            else if(axis.y <= .4 && axis.y > .1){
-                gameObject.transform.parent.GetComponent<HyperCreature>().w = 4;
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove();
-            }
-            else if(axis.y <= .7 && axis.y > .4){
-                gameObject.transform.parent.GetComponent<HyperCreature>().w = 5;
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove();
-            }
-            else if(axis.y <= 1.0 && axis.y > .7){
-                gameObject.transform.parent.GetComponent<HyperCreature>().w = 6;
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove();
-            }
-            else if(axis.y <= -.1 && axis.y > -.4){
-                gameObject.transform.parent.GetComponent<HyperCreature>().w = 2;
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove();
-            }
-            else if(axis.y <= -.4 && axis.y > -.7){
-                gameObject.transform.parent.GetComponent<HyperCreature>().w = 1;
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove();
-            }
-            else if(axis.y <= -.7 && axis.y > -1.0){
-                gameObject.transform.parent.GetComponent<HyperCreature>().w = 0;
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove();
-            }
-        }*/
-
         /*if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad) && gameObject.tag.Equals("RightControl")){
             gameObject.transform.parent.transform.position = GameObject.Find("OriginBox").transform.position;
         }*/
-
-        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad))
-        {
-            if (holding)
-                InteractWithHolding(gameObject.tag);
-        }
-
-        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
-        {
-            //check the other controller if it has an object as the w movement affects that object too
-            GameObject otherControl;
-            if (tag.Equals("RightControl"))
-                otherControl = GameObject.FindGameObjectWithTag("LeftControl");
-            else
-                otherControl = GameObject.FindGameObjectWithTag("RightControl");
-
-            //make sure we found the other controller
-            if (otherControl)
-            {
-                if (otherControl.GetComponent<GetInputVR>().holding)
-                {
-                    if (gameObject.tag.Equals("RightControl"))
-                        otherControl.GetComponent<GetInputVR>().holding.GetComponent<HyperColliderManager>().SlideW(1);
-                    else
-                        otherControl.GetComponent<GetInputVR>().holding.GetComponent<HyperColliderManager>().SlideW(-1);
-                }
-                /*else{
-					if(holding){
-						otherControl.GetComponent<GetInputVR>().holding.GetComponent<HyperObject>().SlideW(1);
-					}
-				}*/
-            }
-            else
-                Debug.Log("CANNOT FIND OTHER CONTROLLER");
-
-            //check if the player is holding an object with this controller
-            if (gameObject.tag.Equals("RightControl"))
-            {
-                if (holding)
-                    holding.GetComponent<HyperColliderManager>().SlideW(1);
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove(1);
-            }
-            else {
-                if (holding)
-                    holding.GetComponent<HyperColliderManager>().SlideW(-1);
-                gameObject.transform.parent.GetComponent<HyperCreature>().WMove(-1);
-            }
-
-
-        }
 
         /*if (griping && other.gameObject.GetComponent<HyperColliderManager>().isVisibleSolid(gameObject.transform.parent.GetComponent<HyperCreature>().w) && (!holding || other.gameObject.Equals(holding.gameObject)) && other.gameObject.GetComponent<HyperColliderManager>().movable)
         {
@@ -320,6 +232,216 @@ public class GetInputVR : MonoBehaviour
                 break;
         }
     }*/
+
+    void ScrollControl()
+    {
+        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetTouch(EVRButtonId.k_EButton_SteamVR_Touchpad))
+        {
+            var axis = SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
+
+            if (axis.y > .2 && (axis.x > -.2 && axis.x <= .2))
+                tUp = stage;
+            if (axis.y < .2 && (axis.x >= -.2 && axis.x < .2))
+                tDown = stage;
+            if (axis.x > .2 && (axis.y >= -.2 && axis.y < .2))
+                tRight = stage;
+            if (axis.x < .2 && (axis.y > -.2 && axis.y <= .2))
+                tLeft = stage;
+        }
+        else
+        {
+            stage = 0;
+            tUp = -1;
+            tDown = -1;
+            tLeft = -1;
+            tRight = -1;
+        }
+
+        if (stage == 0)
+        {
+            if (tUp == 0 || tDown == 0 || tLeft == 0 || tRight == 0)
+                stage = 1;
+        }
+        else if (stage == 1)
+        {
+            if ((tUp == 1 && tLeft == 1) ||
+               (tUp == 1 && tRight == 1) ||
+               (tDown == 1 && tRight == 1) ||
+               (tDown == 1 && tLeft == 1))
+                stage = 2;
+            else if ((tUp == 1 && tLeft == -1 && tRight == -1 && tDown == -1) ||
+                    (tUp == -1 && tLeft == 1 && tRight == -1 && tDown == -1) ||
+                    (tUp == -1 && tLeft == -1 && tRight == 1 && tDown == -1) ||
+                    (tUp == -1 && tLeft == -1 && tRight == -1 && tDown == 1))
+                stage = 1;
+            else
+            {
+                stage = 0;
+                tUp = -1;
+                tDown = -1;
+                tLeft = -1;
+                tRight = -1;
+            }
+        }
+        else if (stage == 2)
+        {
+            if ((tUp == 1 && tRight == 2) || (tRight == 1 && tDown == 2) || (tDown == 1 && tLeft == 2) || (tLeft == 1 && tUp == 2))
+            {
+                player.WMove(1);
+                player.WMoveAllHyperObjects();
+            }
+            else if ((tUp == 2 && tRight == 1) || (tRight == 2 && tDown == 1) || (tDown == 2 && tLeft == 1) || (tLeft == 2 && tUp == 1))
+            {
+                player.WMove(-1);
+                player.WMoveAllHyperObjects();
+            }
+
+            stage = 0;
+            tUp = -1;
+            tDown = -1;
+            tLeft = -1;
+            tRight = -1;
+        }
+    }
+
+    void VerticalSliderControl()
+    {
+        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetTouch(EVRButtonId.k_EButton_SteamVR_Touchpad))
+        {
+            var axis = SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
+            if (axis.y <= .1 && axis.y > -.1)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 3;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.y <= .4 && axis.y > .1)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 4;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.y <= .7 && axis.y > .4)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 5;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.y <= 1.0 && axis.y > .7)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 6;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.y <= -.1 && axis.y > -.4)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 2;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.y <= -.4 && axis.y > -.7)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 1;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.y <= -.7 && axis.y > -1.0)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 0;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+        }
+    }
+
+    void HorizontalSliderControl()
+    {
+        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetTouch(EVRButtonId.k_EButton_SteamVR_Touchpad))
+        {
+            var axis = SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
+            if (axis.x <= .1 && axis.x > -.1)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 3;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.x <= .4 && axis.x > .1)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 4;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.x <= .7 && axis.x > .4)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 5;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.x <= 1.0 && axis.x > .7)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 6;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.x <= -.1 && axis.x > -.4)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 2;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.x <= -.4 && axis.x > -.7)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 1;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+            else if (axis.x <= -.7 && axis.y > -1.0)
+            {
+                gameObject.transform.parent.GetComponent<HyperCreature>().w = 0;
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMoveAllHyperObjects();
+            }
+        }
+    }
+
+    void TriggerControl()
+    {
+        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad))
+        {
+            if (holding)
+                InteractWithHolding(gameObject.tag);
+        }
+
+        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
+        {
+            //check the other controller if it has an object as the w movement affects that object too
+            GameObject otherControl;
+            if (tag.Equals("RightControl"))
+                otherControl = GameObject.FindGameObjectWithTag("LeftControl");
+            else
+                otherControl = GameObject.FindGameObjectWithTag("RightControl");
+
+            //make sure we found the other controller
+            if (otherControl)
+            {
+                if (otherControl.GetComponent<GetInputVR>().holding)
+                {
+                    if (gameObject.tag.Equals("RightControl"))
+                        otherControl.GetComponent<GetInputVR>().holding.GetComponent<HyperColliderManager>().SlideW(1);
+                    else
+                        otherControl.GetComponent<GetInputVR>().holding.GetComponent<HyperColliderManager>().SlideW(-1);
+                }
+                /*else{
+					if(holding){
+						otherControl.GetComponent<GetInputVR>().holding.GetComponent<HyperObject>().SlideW(1);
+					}
+				}*/
+            }
+            else
+                Debug.Log("CANNOT FIND OTHER CONTROLLER");
+
+            //check if the player is holding an object with this controller
+            if (gameObject.tag.Equals("RightControl"))
+            {
+                if (holding)
+                    holding.GetComponent<HyperColliderManager>().SlideW(1);
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMove(1);
+            }
+            else {
+                if (holding)
+                    holding.GetComponent<HyperColliderManager>().SlideW(-1);
+                gameObject.transform.parent.GetComponent<HyperCreature>().WMove(-1);
+            }
+
+
+        }
+    }
 }
 
 

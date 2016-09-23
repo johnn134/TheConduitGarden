@@ -183,11 +183,13 @@ public class GetInputVR : MonoBehaviour
             {
                 player.WMove(1);
                 callWMoveOnAllHyperScripts = true;
+                SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
             }
             else if ((tUp == 2 && tRight == 1) || (tRight == 2 && tDown == 1) || (tDown == 2 && tLeft == 1) || (tLeft == 2 && tUp == 1))
             {
                 player.WMove(-1);
                 callWMoveOnAllHyperScripts = true;
+                SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).TriggerHapticPulse(1000);
             }
 
             stage = 0;

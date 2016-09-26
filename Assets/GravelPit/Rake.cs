@@ -23,6 +23,14 @@ public class Rake : MonoBehaviour {
 			movement.x += 1f;
 		}
 
+		if (Input.GetKey(KeyCode.Alpha4)) {
+			movement.y += 1f;
+		}
+
+		if (Input.GetKey(KeyCode.Alpha5)) {
+			movement.y -= 1f;
+		}
+
 		transform.Translate(movement * Time.deltaTime);
 	}
 }

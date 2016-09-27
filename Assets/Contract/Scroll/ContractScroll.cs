@@ -140,7 +140,8 @@ public class ContractScroll : MonoBehaviour {
 
 			if(isActive == false) { //closed the scroll
                                     //Accept the contract and move to the next level
-                startFade = true;
+                if (!contractLevel.Equals(""))
+                    startFade = true;
 			}
 		}
 	}
@@ -175,9 +176,7 @@ public class ContractScroll : MonoBehaviour {
 	 * loads the contract's associated level
 	 */
 	void loadLevel() {
-		if(!contractLevel.Equals("")) {
-			SceneManager.LoadScene(contractLevel);
-		}
+		SceneManager.LoadScene(contractLevel);
 	}
 
 	/*

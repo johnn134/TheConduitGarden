@@ -7,8 +7,8 @@ public class HouseManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//fillHouses(PlayerPrefs.GetInt("KamiHighscore"));
-		fillHouses(29);
+		fillHouses(PlayerPrefs.GetInt("KamiHighscore"));
+		//fillHouses(29);
 	}
 
 	void fillHouses(int numKami) {

@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Valve.VR;
 
 public class ContractScroll : MonoBehaviour {
+
+	SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
 
 	public string contractLevel;
 
@@ -22,8 +25,12 @@ public class ContractScroll : MonoBehaviour {
 	const float SCROLL_OPEN_SPEED = 2f;
 	const float SCROLL_CLOSE_SPEED = 5.0f;
 
-    HyperCreature player;
-    
+	HyperCreature player;
+
+	// Use this for initialization
+	void Awake(){
+		controllerManager = SteamVR_ControllerManager.instance;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -32,17 +39,11 @@ public class ContractScroll : MonoBehaviour {
         startFade = false;
 		openScroll(isActive);
         player = HyperCreature.instance;
+		updateVisuals();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.UpArrow)) {
-			if(isActive)
-				openScroll(false);
-			else
-				openScroll(true);
-		}
-
 		if(isScrolling) {
 			updateScroll();
 		}
@@ -52,6 +53,50 @@ public class ContractScroll : MonoBehaviour {
             if (player.FadeOutTransitionStep(.1f))
                 loadLevel();
         }
+	}
+
+	void LateUpdate()
+	{
+		for (int i = 0; i < controllerManager.indices.Length; i++)
+		{
+			if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
+			{
+				if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
+				{
+					updateVisuals();
+				}
+			}
+		}
+	}
+
+	void updateVisuals() {
+		Color temp = Color.white;
+
+		switch(HyperCreature.instance.w) {
+			case 0:
+				temp = Color.red;
+				break;
+			case 1:
+				temp = new Color(1.0f, 0.45f, 0.0f);
+				break;
+			case 2:
+				temp = Color.yellow;
+				break;
+			case 3:
+				temp = Color.green;
+				break;
+			case 4:
+				temp = Color.cyan;
+				break;
+			case 5:
+				temp = Color.blue;
+				break;
+			case 6:
+				temp = Color.magenta;
+				break;
+		}
+
+		transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", temp);
 	}
 
 	/*

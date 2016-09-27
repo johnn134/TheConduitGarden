@@ -54,16 +54,6 @@ public class HyperObject : MonoBehaviour {
             if (controllerManager.right.GetComponent<GetInputVR>().callWMoveOnAllHyperScripts)
                 WMove();
         }
-        /*for (int i = 0; i < controllerManager.indices.Length; i++)
-        {
-            if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
-            {
-                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
-                {
-                    WMove();
-                }
-            }
-        }*/
     }
 
 	#endregion

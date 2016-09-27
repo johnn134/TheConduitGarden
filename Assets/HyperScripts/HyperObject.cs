@@ -43,15 +43,16 @@ public class HyperObject : MonoBehaviour {
     //have the objects detect the vive controller inputs to move themselves
     void LateUpdate()
     {
-        for (int i = 0; i < controllerManager.indices.Length; i++)
+        if (controllerManager.left)
         {
-            if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
-            {
-                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
-                {
-                    WMove();
-                }
-            }
+            if (controllerManager.left.GetComponent<GetInputVR>().callWMoveOnAllHyperScripts)
+                WMove();
+        }
+
+        if (controllerManager.right)
+        {
+            if (controllerManager.right.GetComponent<GetInputVR>().callWMoveOnAllHyperScripts)
+                WMove();
         }
     }
 

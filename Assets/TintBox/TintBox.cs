@@ -6,7 +6,7 @@ public class TintBox : MonoBehaviour {
 
 	SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
 
-	const float TINT_ALPHA = 0.25f;
+	const float TINT_ALPHA = 0.1f;
 
 	// Use this for initialization
 	void Awake(){

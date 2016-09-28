@@ -50,8 +50,8 @@ public class KamiManager : MonoBehaviour {
         if (numKami[newType] < maxKami)
         {
 			nObj = (GameObject)Instantiate(Resources.Load("Kami/Kami"), nPosition, nRotation);
-            nObj.GetComponent<HyperObject>().setW(nW);
-            nObj.GetComponent<HyperObject>().WMove();//change to Slide(0) once 4d shader is implemented
+            //nObj.GetComponent<HyperObject>().setW(nW);
+            //nObj.GetComponent<HyperObject>().WMove();//change to Slide(0) once 4d shader is implemented
             nObj.GetComponent<Kami>().type = (Kami.Type)newType;
             allKami.Add(nObj);
             numKami[newType] += 1;
@@ -69,10 +69,6 @@ public class KamiManager : MonoBehaviour {
         if (allKami.Remove(rObj))
         {
             numKami[(int)rObj.GetComponent<Kami>().type] -= 1;
-
-            //tell shrines to check number of kami so that they lose the ones the player should have
-            //if (rObj.GetComponent<Kami>().type == Kami.Type.Fish)
-            //    fishShrine.CheckKami();
 
             Destroy(rObj);
 
@@ -101,7 +97,6 @@ public class KamiManager : MonoBehaviour {
             if ((int)kami.GetComponent<Kami>().state != 4)
             {
                 kami.GetComponent<Kami>().state = Kami.State.Ending;
-                break;
             }
         }
     }

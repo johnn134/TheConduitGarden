@@ -31,11 +31,13 @@ public class Kami : MonoBehaviour {
 
     public bool helping;                        //is the kami currently helping *Not currently used*
 
+    bool isEnding = false;
+
     HyperObject myHyper;                        //reference to the hyper code on this kami
 
     public int id;                              //unique id number for this kami
 
-    float leavingY = -.5f;                       //the y that the kami should be at for the ending behavior
+    float leavingY = -.01f;                       //the y that the kami should be at for the ending behavior
 
     Vector3 wanderLoc;                          //the current target location the kami is going to
 
@@ -65,111 +67,77 @@ public class Kami : MonoBehaviour {
     void Start()
     {
         player = HyperCreature.instance;
-        //targets = new List<GameObject>();
         myHyper = GetComponent<HyperObject>();
         wanderLoc = new Vector3(Random.Range(-6, 7), 3, Random.Range(-6, 7));
         kamiManager = KamiManager.instance;
-
-        //get targets depending on type
-        //NOTE: good format is to always have the type shrine at index 0
-        /*if (type == Type.Fish)
-        {
-            targets.Add(GameObject.Find("ShrineFish/Visual/TopSphere"));
-        }*/
 
         StartCoroutine(ColorTrans());
     }
 
     void Update()
     {
-        if(state == State.Happy)
+        if (state == State.Ending || isEnding)
         {
-            /*if (target)
-                LandOnTarget();
-            else*/
-                BehaveHappy();
-
-            if(Random.Range(0,500) == 1)
-                if (myHyper.SlideW(Random.Range(-1, 2)))
-                {
-                    myHyper.WMove();
-                    StartCoroutine(ColorTrans());
-                }
+            BehaveEnding();
         }
         else if(state == State.Flee)
         {
             Flee();
         }
-        else if(state == State.Ending)
+        else
+        if (state == State.Happy)
         {
-            BehaveEnding();
+            BehaveHappy();
         }
     }
 
     void LateUpdate()
     {
-        for (int i = 0; i < controllerManager.indices.Length; i++)
+        if (controllerManager.left)
         {
-            if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
-            {
-                if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
-                {
-                    StartCoroutine(ColorTrans());
-                }
-            }
+            if (controllerManager.left.GetComponent<GetInputVR>().callWMoveOnAllHyperScripts)
+                StartCoroutine(ColorTrans());
+        }
+
+        if (controllerManager.right)
+        {
+            if (controllerManager.right.GetComponent<GetInputVR>().callWMoveOnAllHyperScripts)
+                StartCoroutine(ColorTrans());
         }
     }
 
-    /*void FixedUpdate()
-    {
-        if (_cachedRenderer.material.color.a < .5f)
-            _cachedLight.color = Color.black;
-        else
-            _cachedLight.color = _cachedRenderer.material.color;
-
-        _cachedParticleSystem.startColor = _cachedRenderer.material.color;
-    }*/
-
-    //smoothly change the color of this object, rmove once 4D shader is implemented
+    //smoothly change the color of this object
     IEnumerator ColorTrans()
     {
         Color targetColor;
 
         //deturmine the target color based on w point
-        if (myHyper.w == 0)
+        if (player.w == 0)
             targetColor = Color.red;
-        else if (myHyper.w == 1)
+        else if (player.w == 1)
             targetColor = new Color(1, .45f, 0);
-        else if (myHyper.w == 2)
+        else if (player.w == 2)
             targetColor = Color.yellow;
-        else if (myHyper.w == 3)
+        else if (player.w == 3)
             targetColor = Color.green;
-        else if (myHyper.w == 4)
+        else if (player.w == 4)
             targetColor = Color.cyan;
-        else if (myHyper.w == 5)
+        else if (player.w == 5)
             targetColor = Color.blue;
         else
             targetColor = Color.magenta;
 
-        targetColor.a = _cachedRenderer.material.color.a;
-
         for (float i = 0.0f; i <= 1.0f; i += .1f)
         {
 
-            _cachedParticleSystem.startColor = Color.Lerp(_cachedParticleSystem.startColor, targetColor, .1f);
+            _cachedParticleSystem.startColor = Color.Lerp(_cachedParticleSystem.startColor, targetColor, .2f);
 
-            if (myHyper.w != player.w)
-                _cachedLight.color = Color.Lerp(_cachedLight.color, Color.black, .1f);
-            else
-                _cachedLight.color = Color.Lerp(_cachedLight.color, targetColor, .1f);
+            _cachedLight.color = Color.Lerp(_cachedLight.color, targetColor, .2f);
 
             yield return null;
         }
 
-        if (myHyper.w != player.w)
-            _cachedLight.color = Color.black;
-        else
-            _cachedLight.color = _cachedRenderer.material.color;
+        _cachedLight.color = _cachedRenderer.material.color;
 
         _cachedParticleSystem.startColor = _cachedRenderer.material.color;
     }
@@ -193,10 +161,7 @@ public class Kami : MonoBehaviour {
         //change locaiton randomly or if reached the target locaiton
         if (transform.position.Equals(wanderLoc) || Random.Range(0, 20) == 1)
         {
-            /*if (Random.Range(0, 100) == 1)
-                target = targets[Random.Range(0, targets.Count)];
-            else*/
-                wanderLoc = new Vector3(Random.Range(kamiManager.wanderArea1.x, kamiManager.wanderArea2.x), Random.Range(kamiManager.wanderArea1.y, kamiManager.wanderArea2.y), Random.Range(kamiManager.wanderArea1.z, kamiManager.wanderArea2.z));
+            wanderLoc = new Vector3(Random.Range(kamiManager.wanderArea1.x, kamiManager.wanderArea2.x), Random.Range(kamiManager.wanderArea1.y, kamiManager.wanderArea2.y), Random.Range(kamiManager.wanderArea1.z, kamiManager.wanderArea2.z));
         }
     }
 
@@ -261,6 +226,7 @@ public class Kami : MonoBehaviour {
 
     void BehaveEnding()
     {
+        isEnding = true;
         wanderLoc = new Vector3(player.transform.Find("Camera (eye)").position.x, leavingY, player.transform.Find("Camera (eye)").position.z);
 
         if (Vector3.Distance(transform.position, wanderLoc) > 1f)
@@ -268,12 +234,12 @@ public class Kami : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, wanderLoc, Time.deltaTime * 2);
         }
         else
-            transform.RotateAround(wanderLoc, Vector3.up, Time.deltaTime * 200);
+            transform.RotateAround(wanderLoc, Vector3.up, Time.deltaTime * 300);
 
         if (transform.position.y != wanderLoc.y)
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, wanderLoc.y, transform.position.z), Time.deltaTime / 2);
 
-        leavingY += .01f;
+        leavingY += .005f;
 
         if (transform.position.y > 20f)
         {

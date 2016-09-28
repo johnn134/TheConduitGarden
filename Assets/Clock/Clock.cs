@@ -71,6 +71,10 @@ public class Clock : MonoBehaviour {
 
 		//Start Kami End Sequence
 		KamiManager.instance.MakeKamiEnd();
+
+        //Give player max w peripheral vision
+        player.w_perif = 3;
+        player.WMoveAllHyperObjects();
 	}
 
 	/*

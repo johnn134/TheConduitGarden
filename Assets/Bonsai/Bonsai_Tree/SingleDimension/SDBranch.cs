@@ -77,9 +77,9 @@ public class SDBranch : MonoBehaviour {
 		isWaitingForResponse = false;
 		isTip = true;
 
-		requiredZonePasses = new int[5];
+		requiredZonePasses = new int[3];
 
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 3; i++) {
 			requiredZonePasses[i] = 0;
 		}
 
@@ -823,7 +823,7 @@ public class SDBranch : MonoBehaviour {
 		newBud.transform.GetComponent<SDBud>().setDepth(depth + 1);
 
 		//Set the branch's w position
-		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(GetComponent<HyperColliderManager>().w);
 
 		this.registerBudAdded();
 

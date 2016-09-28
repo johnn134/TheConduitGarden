@@ -30,16 +30,20 @@ public class BonsaiShrine : MonoBehaviour {
 	const float INACTIVE_COLOR_VALUE = 0.1f;
 	const float ACTIVE_COLOR_VALUE = 1.0f;
 	const float LINE_WIDTH = 0.0025f;
-	const float TOKYO_LOWEST_HEIGHT = -0.01f;
-	const float TOKYO_BASE_RADIUS = 0.1f;
-	const float TOKYO_BASE_HEIGHT = 0.1f;
-	const float TOKYO_TOP_RADIUS = 0.05f;
-	const float TOKYO_TOP_HEIGHT = 0.25f;
-	const float TOKYO_REQ_TOP_HEIGHT = 0.2f;
-	const float TOKYO_REQ_TOP_RADIUS = 0.025f;
-	const float TOKYO_REQ_BASE_HEIGHT = 0.05f;
-	const float TOKYO_REQ_BASE_RADIUS = 0.025f;
-	const float TOKYO_REQ_BASE_OFFSET = 0.05f;
+
+	const float TOKYO_REQ_RADIUS = 0.025f;
+
+	const float TOKYO_ZONE_A_OFFSET_X = 0.025f;
+	const float TOKYO_ZONE_A_OFFSET_Y = 0.07f;
+	const float TOKYO_ZONE_A_OFFSET_Z = 0.06f;
+
+	const float TOKYO_ZONE_B_OFFSET_X = -0.046f;
+	const float TOKYO_ZONE_B_OFFSET_Y = 0.125f;
+	const float TOKYO_ZONE_B_OFFSET_Z = -0.016f;
+
+	const float TOKYO_ZONE_C_OFFSET_X = 0.008f;
+	const float TOKYO_ZONE_C_OFFSET_Y = 0.119f;
+	const float TOKYO_ZONE_C_OFFSET_Z = -0.052f;
 
     KamiManager kamiManager;
 
@@ -63,7 +67,6 @@ public class BonsaiShrine : MonoBehaviour {
 
 		setActivationStage(0);
 
-		initializeBoundingLines();
 		initializeRequirementLines();
 	}
 
@@ -105,73 +108,6 @@ public class BonsaiShrine : MonoBehaviour {
 	}
 
 	/*
-	 * Set up the visual outline of the bounding zone
-	 */
-	void initializeBoundingLines() {
-		foreach(GameObject tree in trees) {
-			GameObject boundLines = tree.transform.GetChild(0).gameObject;
-			Vector3[] circlePos = new Vector3[17];
-			Vector3[] linePos = new Vector3[2];
-			Vector3 offset = tree.transform.position;
-
-			//Base Circle
-			for(int i = 0; i < 17; i++) {
-				float x = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_BASE_RADIUS;
-				float z = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_BASE_RADIUS;
-
-				circlePos[i] = new Vector3(x + offset.x, TOKYO_LOWEST_HEIGHT + offset.y, z + offset.z);
-			}
-
-			addBoundLine(boundLines, circlePos);
-
-			//Bottom Lines
-			for(int i = 0; i < 8; i++) {
-				float x = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 8f))) * TOKYO_BASE_RADIUS;
-				float z = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 8f))) * TOKYO_BASE_RADIUS;
-
-				linePos[0] = new Vector3(x + offset.x, TOKYO_LOWEST_HEIGHT + offset.y, z + offset.z);
-				linePos[1] = new Vector3(x + offset.x, TOKYO_BASE_HEIGHT + offset.y, z + offset.z);
-
-				addBoundLine(boundLines, linePos);
-			}
-
-			//Middle Circle
-			for(int i = 0; i < 17; i++) {
-				float x = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_BASE_RADIUS;
-				float z = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_BASE_RADIUS;
-
-				circlePos[i] = new Vector3(x + offset.x, TOKYO_BASE_HEIGHT + offset.y, z + offset.z);
-			}
-
-			addBoundLine(boundLines, circlePos);
-
-			//Top Lines
-			for(int i = 0; i < 8; i++) {
-				float x1 = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 8f))) * TOKYO_BASE_RADIUS;
-				float z1 = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 8f))) * TOKYO_BASE_RADIUS;
-
-				float x2 = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 8f))) * TOKYO_TOP_RADIUS;
-				float z2 = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 8f))) * TOKYO_TOP_RADIUS;
-
-				linePos[0] = new Vector3(x1 + offset.x, TOKYO_BASE_HEIGHT + offset.y, z1 + offset.z);
-				linePos[1] = new Vector3(x2 + offset.x, TOKYO_TOP_HEIGHT + offset.y, z2 + offset.z);
-
-				addBoundLine(boundLines, linePos);
-			}
-
-			//Top Circle
-			for(int i = 0; i < 17; i++) {
-				float x = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_TOP_RADIUS;
-				float z = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_TOP_RADIUS;
-
-				circlePos[i] = new Vector3(x + offset.x, TOKYO_TOP_HEIGHT + offset.y, z + offset.z);
-			}
-
-			addBoundLine(boundLines, circlePos);
-		}
-	}
-
-	/*
 	 * Adds a linerenderer to the given object with the given positions
 	 */
 	void addBoundLine(GameObject obj, Vector3[] pos) {
@@ -191,58 +127,34 @@ public class BonsaiShrine : MonoBehaviour {
 		foreach(GameObject tree in trees) {
 			GameObject requiredLines = tree.transform.GetChild(1).gameObject;
 			Vector3[] circlePos = new Vector3[17];
-			Vector3[] linePos = new Vector3[2];
 			Vector3 offset = tree.transform.position;
 
-			//Top Zone
+			//Zone A
 			for(int i = 0; i < 17; i++) {
-				float x = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_TOP_RADIUS;
-				float z = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_TOP_RADIUS;
+				float x = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
+				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
 
-				circlePos[i] = new Vector3(x + offset.x, TOKYO_REQ_TOP_HEIGHT + offset.y, z + offset.z);
+				circlePos[i] = new Vector3(x + offset.x + TOKYO_ZONE_A_OFFSET_X, y + offset.y + TOKYO_ZONE_A_OFFSET_Y, offset.z + TOKYO_ZONE_A_OFFSET_Z);
 			}
 
 			addRequiredLine(requiredLines, circlePos);
 
-			//North Zone - north is +z
+			//Zone B
 			for(int i = 0; i < 17; i++) {
-				float x = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_BASE_RADIUS;
-				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_BASE_RADIUS;
+				float z = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
+				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
 
-				circlePos[i] = new Vector3(x + offset.x, TOKYO_REQ_BASE_HEIGHT + y + offset.y, TOKYO_REQ_BASE_OFFSET + offset.z);
+				circlePos[i] = new Vector3(offset.x + TOKYO_ZONE_B_OFFSET_X, y + offset.y + TOKYO_ZONE_B_OFFSET_Y, z + offset.z + TOKYO_ZONE_B_OFFSET_Z);
 			}
 
 			addRequiredLine(requiredLines, circlePos);
 
-
-			//East Zone - east is +x
+			//Zone C
 			for(int i = 0; i < 17; i++) {
-				float z = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_BASE_RADIUS;
-				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_BASE_RADIUS;
+				float z = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
+				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
 
-				circlePos[i] = new Vector3(TOKYO_REQ_BASE_OFFSET + offset.x, TOKYO_REQ_BASE_HEIGHT + y + offset.y, z + offset.z);
-			}
-
-			addRequiredLine(requiredLines, circlePos);
-
-
-			//South Zone - south is -z
-			for(int i = 0; i < 17; i++) {
-				float x = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_BASE_RADIUS;
-				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_BASE_RADIUS;
-
-				circlePos[i] = new Vector3(x + offset.x, TOKYO_REQ_BASE_HEIGHT + y + offset.y, -TOKYO_REQ_BASE_OFFSET + offset.z);
-			}
-
-			addRequiredLine(requiredLines, circlePos);
-
-
-			//West Zone - west is -x
-			for(int i = 0; i < 17; i++) {
-				float z = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_BASE_RADIUS;
-				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_BASE_RADIUS;
-
-				circlePos[i] = new Vector3(-TOKYO_REQ_BASE_OFFSET + offset.x, TOKYO_REQ_BASE_HEIGHT + y + offset.y, z + offset.z);
+				circlePos[i] = new Vector3(offset.x + TOKYO_ZONE_C_OFFSET_X, y + offset.y + TOKYO_ZONE_C_OFFSET_Y, z + offset.z + TOKYO_ZONE_C_OFFSET_Z);
 			}
 
 			addRequiredLine(requiredLines, circlePos);
@@ -465,9 +377,7 @@ public class BonsaiShrine : MonoBehaviour {
 			if(tree.GetComponent<BonsaiManager>().getZoneExtensions() > 0 ||
 				reqZonePasses[0] <= 0 ||
 				reqZonePasses[1] <= 0 ||
-				reqZonePasses[2] <= 0 ||
-				reqZonePasses[3] <= 0 ||
-				reqZonePasses[4] <= 0) {
+				reqZonePasses[2] <= 0) {
 				satisfied = false;
 			}
 		}
@@ -481,115 +391,52 @@ public class BonsaiShrine : MonoBehaviour {
 	public bool isPointInsideBoundingZone(Vector3 point, GameObject tree) {
 		bool inZone = true;
 
-		if(point.y < tree.transform.position.y + TOKYO_LOWEST_HEIGHT ||
-			point.y > tree.transform.position.y + TOKYO_TOP_HEIGHT) {	//Above or below
-			inZone = false;
-			//Debug.Log("height issue");
-		}
-		else {
-			Vector3 pointPos = new Vector3(point.x, 0.0f, point.z);
-			Vector3 treePos = new Vector3(tree.transform.position.x, 0.0f, tree.transform.position.z);
-
-			if(point.y < tree.transform.position.y + TOKYO_BASE_HEIGHT) {	//Below Median
-				if(Vector3.Distance(pointPos, treePos) > TOKYO_BASE_RADIUS) {
-					inZone = false;
-					//Debug.Log("base issue");
-				}
-			}
-			else {	//Above Median
-				float angle = Mathf.Atan((TOKYO_TOP_HEIGHT - TOKYO_BASE_HEIGHT) /
-										 (TOKYO_BASE_RADIUS - TOKYO_TOP_RADIUS));
-				float coneHeight = Mathf.Tan(angle) * TOKYO_BASE_RADIUS;
-				float pointRadius = (coneHeight - (point.y - (tree.transform.position.y + TOKYO_BASE_HEIGHT))) / Mathf.Tan(angle);
-
-				if(Vector3.Distance(pointPos, treePos) > pointRadius) {
-					inZone = false;
-					//Debug.Log("top issue");
-				}
-			}
-		}
-
 		return inZone;
 	}
 
 	/*
 	 * returns true if the line between the given points
-	 * intersects with the required top zone
-	 * Top = +y
+	 * intersects with required Zone A
 	 */
-	public bool passesThroughReqTopZone(Vector3 start, Vector3 end, GameObject tree) {
-		float slopeXY = (end.y - start.y) / (end.x - start.x);
-		float slopeZY = (end.y - start.y) / (end.z - start.z);
-
-		float x = start.x - ((tree.transform.position.y + TOKYO_REQ_TOP_HEIGHT - start.y) / slopeXY);
-		float z = start.z - ((tree.transform.position.y + TOKYO_REQ_TOP_HEIGHT - start.y) / slopeZY);
-		float distance = Mathf.Sqrt(Mathf.Pow(x - tree.transform.position.x, 2) + Mathf.Pow(z - tree.transform.position.z, 2));
-
-		return distance < TOKYO_REQ_TOP_RADIUS && isPointBetween(tree.transform.position.y + TOKYO_REQ_TOP_HEIGHT, start.y, end.y);
-	}
-
-	/*
-	 * returns true if the line between the given points
-	 * intersects with the required north zone
-	 * North = +z
-	 */
-	public bool passesThroughReqNorthZone(Vector3 start, Vector3 end, GameObject tree) {
+	public bool passesThroughReqZoneA(Vector3 start, Vector3 end, GameObject tree) {
 		float slopeXZ = (end.z - start.z) / (end.x - start.x);
 		float slopeYZ = (end.z - start.z) / (end.y - start.y);
 
-		float x = start.x - ((tree.transform.position.z + TOKYO_REQ_BASE_OFFSET - start.z) / slopeXZ);
-		float y = start.y - ((tree.transform.position.z + TOKYO_REQ_BASE_OFFSET - start.z) / slopeYZ);
-		float distance = Mathf.Sqrt(Mathf.Pow(x - tree.transform.position.x, 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_REQ_BASE_HEIGHT), 2));
+		float x = start.x + ((tree.transform.position.z + TOKYO_ZONE_A_OFFSET_Z - start.z) / slopeXZ);
+		float y = start.y + ((tree.transform.position.z + TOKYO_ZONE_A_OFFSET_Z - start.z) / slopeYZ);
+		float distance = Mathf.Sqrt(Mathf.Pow(x - (tree.transform.position.x + TOKYO_ZONE_A_OFFSET_X), 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_ZONE_A_OFFSET_Y), 2));
 
-		return distance < TOKYO_REQ_BASE_RADIUS && isPointBetween(tree.transform.position.z + TOKYO_REQ_BASE_OFFSET, start.z, end.z);
+		return distance < TOKYO_REQ_RADIUS && isPointBetween(tree.transform.position.z + TOKYO_ZONE_A_OFFSET_Z, start.z, end.z);
 	}
 
 	/*
 	 * returns true if the line between the given points
-	 * intersects with the required east zone
-	 * East = +x
+	 * intersects with required Zone B
 	 */
-	public bool passesThroughReqEastZone(Vector3 start, Vector3 end, GameObject tree) {
-		float slopeXY = (end.x - start.x) / (end.y - start.y);
-		float slopeXZ = (end.x - start.x) / (end.z - start.z);
+	public bool passesThroughReqZoneB(Vector3 start, Vector3 end, GameObject tree) {
+		float slopeZX = (end.x - start.x) / (end.z - start.z);
+		float slopeYX = (end.x - start.x) / (end.y - start.y);
 
-		float y = start.y - ((tree.transform.position.x + TOKYO_REQ_BASE_OFFSET - start.x) / slopeXY);
-		float z = start.z - ((tree.transform.position.x + TOKYO_REQ_BASE_OFFSET - start.x) / slopeXZ);
-		float distance = Mathf.Sqrt(Mathf.Pow(z - tree.transform.position.z, 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_REQ_BASE_HEIGHT), 2));
+		float z = start.z + ((tree.transform.position.x + TOKYO_ZONE_B_OFFSET_X - start.x) / slopeZX);
+		float y = start.y + ((tree.transform.position.x + TOKYO_ZONE_B_OFFSET_X - start.x) / slopeYX);
+		float distance = Mathf.Sqrt(Mathf.Pow(z - (tree.transform.position.z + TOKYO_ZONE_B_OFFSET_Z), 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_ZONE_B_OFFSET_Y), 2));
 
-		return distance < TOKYO_REQ_BASE_RADIUS && isPointBetween(tree.transform.position.x + TOKYO_REQ_BASE_OFFSET, start.x, end.x);
+		return distance < TOKYO_REQ_RADIUS && isPointBetween(tree.transform.position.x + TOKYO_ZONE_B_OFFSET_X, start.x, end.x);
 	}
 
 	/*
 	 * returns true if the line between the given points
-	 * intersects with the required south zone
-	 * South = -z
+	 * intersects with required Zone C
 	 */
-	public bool passesThroughReqSouthZone(Vector3 start, Vector3 end, GameObject tree) {
-		float slopeXZ = (end.z - start.z) / (end.x - start.x);
-		float slopeYZ = (end.z - start.z) / (end.y - start.y);
+	public bool passesThroughReqZoneC(Vector3 start, Vector3 end, GameObject tree) {
+		float slopeZX = (end.x - start.x) / (end.z - start.z);
+		float slopeYX = (end.x - start.x) / (end.y - start.y);
 
-		float x = start.x - ((tree.transform.position.z - TOKYO_REQ_BASE_OFFSET - start.z) / slopeXZ);
-		float y = start.y - ((tree.transform.position.z - TOKYO_REQ_BASE_OFFSET - start.z) / slopeYZ);
-		float distance = Mathf.Sqrt(Mathf.Pow(x - tree.transform.position.x, 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_REQ_BASE_HEIGHT), 2));
+		float z = start.z + ((tree.transform.position.x + TOKYO_ZONE_C_OFFSET_X - start.x) / slopeZX);
+		float y = start.y + ((tree.transform.position.x + TOKYO_ZONE_C_OFFSET_X - start.x) / slopeYX);
+		float distance = Mathf.Sqrt(Mathf.Pow(z - (tree.transform.position.z + TOKYO_ZONE_C_OFFSET_Z), 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_ZONE_C_OFFSET_Y), 2));
 
-		return distance < TOKYO_REQ_BASE_RADIUS && isPointBetween(tree.transform.position.z - TOKYO_REQ_BASE_OFFSET, start.z, end.z);
-	}
-
-	/*
-	 * returns true if the line between the given points
-	 * intersects with the required west zone
-	 * West = -x
-	 */
-	public bool passesThroughReqWestZone(Vector3 start, Vector3 end, GameObject tree) {
-		float slopeXY = (end.x - start.x) / (end.y - start.y);
-		float slopeXZ = (end.x - start.x) / (end.z - start.z);
-
-		float y = start.y - ((tree.transform.position.x - TOKYO_REQ_BASE_OFFSET - start.x) / slopeXY);
-		float z = start.z - ((tree.transform.position.x - TOKYO_REQ_BASE_OFFSET - start.x) / slopeXZ);
-		float distance = Mathf.Sqrt(Mathf.Pow(z - tree.transform.position.z, 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_REQ_BASE_HEIGHT), 2));
-
-		return distance < TOKYO_REQ_BASE_RADIUS && isPointBetween(tree.transform.position.x - TOKYO_REQ_BASE_OFFSET, start.x, end.x);
+		return distance < TOKYO_REQ_RADIUS && isPointBetween(tree.transform.position.x + TOKYO_ZONE_C_OFFSET_X, start.x, end.x);
 	}
 
 	/*

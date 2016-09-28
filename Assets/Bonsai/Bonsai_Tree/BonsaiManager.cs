@@ -40,9 +40,9 @@ public class BonsaiManager : MonoBehaviour {
 
 		zoneExtensions = 0;
 
-		requiredZonePasses = new int[5];
+		requiredZonePasses = new int[3];
 
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 3; i++) {
 			requiredZonePasses[i] = 0;
 		}
 
@@ -71,10 +71,6 @@ public class BonsaiManager : MonoBehaviour {
 		//Testing code for growing the tree with the spacebar
 		if(Input.GetKeyDown(KeyCode.Space)) {
 			processGrowthCycle();
-		}
-
-		if(levelType == CONTRACTLEVEL.TOKYO) {
-
 		}
 	}
 
@@ -106,7 +102,7 @@ public class BonsaiManager : MonoBehaviour {
 	 * passing through required zones
 	 */
 	public void registerReqZonePasses(int[] zones) {
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 3; i++) {
 			requiredZonePasses[i] += zones[i];
 		}
 	}
@@ -116,7 +112,7 @@ public class BonsaiManager : MonoBehaviour {
 	 * passing through required zones
 	 */
 	public void registerRemovalOfReqZonePasses(int[] zones) {
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 3; i++) {
 			requiredZonePasses[i] -= zones[i];
 		}
 	}

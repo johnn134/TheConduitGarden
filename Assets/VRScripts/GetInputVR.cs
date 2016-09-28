@@ -12,12 +12,19 @@ public class GetInputVR : MonoBehaviour
         Scroll
     }
 
+    public enum InteractionButton
+    {
+        TouchPad,
+        Trigger
+    }
+
     public int myIndex = -1;
     public GameObject holding = null;
     public bool griping = false;
     public bool blockMoveMethods = false;
     public bool callWMoveOnAllHyperScripts = false;
     public ControlType controlType;
+    public InteractionButton interactionButton;
     HyperCreature player;
 
 
@@ -96,7 +103,12 @@ public class GetInputVR : MonoBehaviour
 
 
         //pressing the touchpad interacts with the object held if it has a behavior
-        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad))
+        if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_SteamVR_Touchpad) && interactionButton == InteractionButton.TouchPad)
+        {
+            if (holding)
+                InteractWithHolding();
+        }
+        else if (SteamVR_Controller.Input((int)gameObject.GetComponent<SteamVR_TrackedObject>().index).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger) && interactionButton == InteractionButton.Trigger)
         {
             if (holding)
                 InteractWithHolding();

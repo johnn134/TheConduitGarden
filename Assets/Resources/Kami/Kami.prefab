@@ -59,7 +59,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 884b40a6e5375d74c9113594be3b9a4c, type: 2}
+  - {fileID: 2100000, guid: 5727839428a8cd54894341b7a19796b7, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -92,7 +92,7 @@ Light:
   serializedVersion: 7
   m_Type: 2
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Intensity: 8
+  m_Intensity: 2
   m_Range: 0.17
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -131,13 +131,10 @@ MonoBehaviour:
   state: 0
   target: {fileID: 0}
   holding: {fileID: 0}
-  targets: []
   player: {fileID: 0}
   helping: 0
   id: 0
   standbyLoc: {x: 0.5, y: 1.7, z: -2.4}
-  wanderArea1: {x: 4.6, y: 2.6, z: -6.2}
-  wanderArea2: {x: -8.5, y: 5.3, z: 2.6}
 --- !u!114 &114000011522687400
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -150,8 +147,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   w: 0
-  w_depth: 0
+  w_depth: 6
   dullCoef: 1
+  texture: {fileID: 0}
   isParent: 1
   staticRenderMode: 1
 --- !u!198 &198000013198326550

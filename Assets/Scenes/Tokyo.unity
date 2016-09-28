@@ -1043,6 +1043,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -1324,6 +1340,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -1402,7 +1434,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &85203644
 Transform:
@@ -1706,7 +1738,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &101651018
 Transform:
@@ -2064,7 +2096,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &116905468
 Transform:
@@ -2526,6 +2558,134 @@ Transform:
   m_PrefabParentObject: {fileID: 4000012688072152, guid: 60e72baaa359a1745b9303b189e8e94e,
     type: 2}
   m_PrefabInternal: {fileID: 2063825051}
+--- !u!43 &160679865
+Mesh:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  serializedVersion: 8
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 24
+    topology: 0
+    firstVertex: 0
+    vertexCount: 8
+    localAABB:
+      m_Center: {x: 0, y: 0.01, z: 0}
+      m_Extent: {x: 1.15, y: 0, z: 0.9}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexBuffer: 000004000100010004000500010005000200020005000600020006000300030006000700030007000000000007000400
+  m_Skin: []
+  m_VertexData:
+    m_CurrentChannels: 13
+    m_VertexCount: 8
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 12
+      format: 0
+      dimension: 4
+    - stream: 0
+      offset: 28
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 288
+    _typelessdata: 0000803f0ad7233c0000403f000000000000803f0000803f0000803f00000000000000000000803f0ad7233c000040bf000000000000803f0000803f0000803f0000803f00000000000080bf0ad7233c000040bf000000000000803f0000803f0000803f0000000000000000000080bf0ad7233c0000403f000000000000803f0000803f0000803f0000803f000000003333933f0ad7233c6666663f000000000000803f0000803f00000000000000000000803f3333933f0ad7233c666666bf000000000000803f0000803f000000000000803f0000803f333393bf0ad7233c666666bf000000000000803f0000803f00000000000000000000803f333393bf0ad7233c6666663f000000000000803f0000803f000000000000803f0000803f
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: 0, y: 0.01, z: 0}
+    m_Extent: {x: 1.15, y: 0, z: 0.9}
+  m_MeshUsageFlags: 0
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  m_MeshOptimized: 0
 --- !u!1 &161438448 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 119512, guid: 5578b82f17c954843901e8b68ca21dcc, type: 2}
@@ -2724,7 +2884,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &172370507
 Transform:
@@ -4913,7 +5073,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &215927531
 Transform:
@@ -5183,6 +5343,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -5356,6 +5532,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -5432,6 +5624,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -5477,6 +5685,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -6622,7 +6846,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &353013672
 Transform:
@@ -6953,6 +7177,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -7204,7 +7444,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &399111907
 Transform:
@@ -7612,6 +7852,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -7819,7 +8075,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &441691659
 Transform:
@@ -8059,6 +8315,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -8105,7 +8377,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &451045705
 Transform:
@@ -8243,6 +8515,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -8289,7 +8577,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &459652728
 Transform:
@@ -8564,7 +8852,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &464254150
 Transform:
@@ -9684,6 +9972,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -9729,6 +10033,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -10448,6 +10768,35 @@ Transform:
   - {fileID: 301562230}
   m_Father: {fileID: 164775073}
   m_RootOrder: 5
+--- !u!21 &576484801
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Sprites/Default
+  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - first:
+        name: PixelSnap
+      second: 0
+    m_Colors:
+    - first:
+        name: _Color
+      second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &582968671 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000013844650538, guid: 8b6087e6399b61e4ab6eee6486529b62,
@@ -11524,6 +11873,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -11550,7 +11915,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &647452574
 Transform:
@@ -12150,7 +12515,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &669412363
 Transform:
@@ -12832,6 +13197,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -13693,7 +14074,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!23 &749400951
 MeshRenderer:
@@ -13873,6 +14254,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (25)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -15038,6 +15435,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -15089,7 +15502,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &833639148
 Transform:
@@ -15323,6 +15736,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -15431,6 +15860,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -17036,6 +17481,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -17766,6 +18227,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -17983,6 +18460,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -21217,7 +21710,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1142720543
 Transform:
@@ -22337,6 +22830,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -22442,7 +22951,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1226107132
 Transform:
@@ -22674,6 +23183,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -23152,6 +23677,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -24373,7 +24914,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1367350494
 Transform:
@@ -25067,7 +25608,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1402473185
 Transform:
@@ -25180,7 +25721,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1403008924
 Transform:
@@ -25983,6 +26524,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -26131,6 +26688,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -26233,35 +26806,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e90ec1199f80944796fdf99ce8acf2d, type: 2}
   m_IsPrefabParent: 0
---- !u!21 &1446588698
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Sprites/Default
-  m_Shader: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-    - first:
-        name: _MainTex
-      second:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - first:
-        name: PixelSnap
-      second: 0
-    m_Colors:
-    - first:
-        name: _Color
-      second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1448188032
 GameObject:
   m_ObjectHideFlags: 0
@@ -26434,7 +26978,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1453640702
 Transform:
@@ -26806,7 +27350,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1472222989
 Transform:
@@ -27248,6 +27792,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -27721,6 +28281,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -27742,7 +28318,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1536376756
 Transform:
@@ -28585,6 +29161,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -28672,7 +29264,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1609667143
 Transform:
@@ -29027,7 +29619,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1631174247
 Transform:
@@ -29339,6 +29931,22 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -29384,6 +29992,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -29982,12 +30606,12 @@ Prefab:
         type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 2035309793}
+      objectReference: {fileID: 160679865}
     - target: {fileID: 23000014152788214, guid: 996d0d43425f4b14690828a0b85a6ecb,
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1446588698}
+      objectReference: {fileID: 576484801}
     - target: {fileID: 1000011238424012, guid: 996d0d43425f4b14690828a0b85a6ecb, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -31823,6 +32447,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -32430,6 +33070,22 @@ Prefab:
     - target: {fileID: 4000012688072152, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_LocalScale.z
       value: 1.5000014
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -35360,7 +36016,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1953422988
 Transform:
@@ -35551,7 +36207,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1954591085
 Transform:
@@ -35664,7 +36320,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1957245664
 Transform:
@@ -36167,7 +36823,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1987843051
 Transform:
@@ -36541,6 +37197,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
@@ -37094,6 +37766,22 @@ Prefab:
       propertyPath: m_Name
       value: RockLogWall (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
   m_IsPrefabParent: 0
@@ -37115,7 +37803,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2031883563
 Transform:
@@ -37235,134 +37923,6 @@ MonoBehaviour:
   texture: {fileID: 2800000, guid: 6eb1476b439514548903a089becbf46a, type: 3}
   isParent: 1
   staticRenderMode: 0
---- !u!43 &2035309793
-Mesh:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  serializedVersion: 8
-  m_SubMeshes:
-  - serializedVersion: 2
-    firstByte: 0
-    indexCount: 24
-    topology: 0
-    firstVertex: 0
-    vertexCount: 8
-    localAABB:
-      m_Center: {x: 0, y: 0.01, z: 0}
-      m_Extent: {x: 1.15, y: 0, z: 0.9}
-  m_Shapes:
-    vertices: []
-    shapes: []
-    channels: []
-    fullWeights: []
-  m_BindPose: []
-  m_BoneNameHashes: 
-  m_RootBoneNameHash: 0
-  m_MeshCompression: 0
-  m_IsReadable: 1
-  m_KeepVertices: 1
-  m_KeepIndices: 1
-  m_IndexBuffer: 000004000100010004000500010005000200020005000600020006000300030006000700030007000000000007000400
-  m_Skin: []
-  m_VertexData:
-    m_CurrentChannels: 13
-    m_VertexCount: 8
-    m_Channels:
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 3
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 12
-      format: 0
-      dimension: 4
-    - stream: 0
-      offset: 28
-      format: 0
-      dimension: 2
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    - stream: 0
-      offset: 0
-      format: 0
-      dimension: 0
-    m_DataSize: 288
-    _typelessdata: 0000803f0ad7233c0000403f000000000000803f0000803f0000803f00000000000000000000803f0ad7233c000040bf000000000000803f0000803f0000803f0000803f00000000000080bf0ad7233c000040bf000000000000803f0000803f0000803f0000000000000000000080bf0ad7233c0000403f000000000000803f0000803f0000803f0000803f000000003333933f0ad7233c6666663f000000000000803f0000803f00000000000000000000803f3333933f0ad7233c666666bf000000000000803f0000803f000000000000803f0000803f333393bf0ad7233c666666bf000000000000803f0000803f00000000000000000000803f333393bf0ad7233c6666663f000000000000803f0000803f000000000000803f0000803f
-  m_CompressedMesh:
-    m_Vertices:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_UV:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Normals:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Tangents:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Weights:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_NormalSigns:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_TangentSigns:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_FloatColors:
-      m_NumItems: 0
-      m_Range: 0
-      m_Start: 0
-      m_Data: 
-      m_BitSize: 0
-    m_BoneIndices:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_Triangles:
-      m_NumItems: 0
-      m_Data: 
-      m_BitSize: 0
-    m_UVInfo: 0
-  m_LocalAABB:
-    m_Center: {x: 0, y: 0.01, z: 0}
-    m_Extent: {x: 1.15, y: 0, z: 0.9}
-  m_MeshUsageFlags: 0
-  m_BakedConvexCollisionMesh: 
-  m_BakedTriangleCollisionMesh: 
-  m_MeshOptimized: 0
 --- !u!4 &2038322649 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000012688072152, guid: 60e72baaa359a1745b9303b189e8e94e,
@@ -37672,6 +38232,22 @@ Prefab:
     - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
       propertyPath: m_Name
       value: RockLogWall (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010099797384, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010888703754, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011030928874, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000014276714256, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60e72baaa359a1745b9303b189e8e94e, type: 2}

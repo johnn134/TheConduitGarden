@@ -21,7 +21,7 @@ public class Fish : MonoBehaviour {
     public int offset = 0;                          //how big the time offset is for the first feed cycle
 
     int foodsEaten = 0;                             //how many times has the fish eaten
-    int foodsToGrow = 1;                            //how many times the fish needs to eat in order to grow bigger
+    int foodsToGrow = 2;                            //how many times the fish needs to eat in order to grow bigger
     int curW = -1;                                  //the current w position the fish thinks it is on
 
     public float maxSize = .66f;                    //the size of the fish at the largest size

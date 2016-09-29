@@ -32,9 +32,7 @@ public class Shears : MonoBehaviour {
 	}
 
 	public void snip() {
-        Debug.Log("snip");
 		transform.GetChild(1).GetComponent<BoxCollider>().enabled = true;
-        Debug.Log("Shearzone is " + transform.GetChild(1).GetComponent<BoxCollider>().enabled);
         counter = 0;
         startedSnip = true;
 	}

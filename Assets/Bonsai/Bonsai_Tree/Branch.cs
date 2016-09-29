@@ -77,9 +77,9 @@ public class Branch : MonoBehaviour {
 		isWaitingForResponse = false;
 		isTip = true;
 
-		requiredZonePasses = new int[5];
+		requiredZonePasses = new int[3];
 
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 3; i++) {
 			requiredZonePasses[i] = 0;
 		}
 
@@ -158,9 +158,6 @@ public class Branch : MonoBehaviour {
 							}
 						}
 					}
-					/*else {
-						Debug.Log("Tree Growth has ended");
-					}*/
 
 					break;
 			}
@@ -180,16 +177,13 @@ public class Branch : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-                //Debug.Log("snippeda");
 		if(other.transform.parent != null) {
 			if(other.transform.parent.GetComponent<Insecticide>() != null) {	//Insecticide Spray Collision
 				if(isInfested) {
-					//Debug.Log("Spray has removed the infestation");
 					killInfestation();
 				}
 			}
 			else if(other.gameObject.name.Equals("ShearZone")) {
-                //Debug.Log("snippedb");
 				if(canSnip) {
 					Destroy(this.gameObject);
 				}
@@ -210,9 +204,6 @@ public class Branch : MonoBehaviour {
 			isWaitingForResponse = false;
 			growthStep = 0;
 			growthCounter = 0;
-
-			//if(depth == 0)
-			//	Debug.Log("Tree growth has started");
 		}
 	}
 
@@ -339,7 +330,7 @@ public class Branch : MonoBehaviour {
 				int attempts = 0;
 				bool foundPos = false;
 
-				float yPos = Random.Range(0, tipPoint + leafRange);
+				float yPos = Random.Range(0.05f, tipPoint + leafRange);
 
 				while(!foundPos && attempts < MAX_PLACEMENT_ATTEMPTS) {
 					spawnPos = Vector3.zero;    //reset spawn pos
@@ -400,10 +391,9 @@ public class Branch : MonoBehaviour {
 					}
 				}
 
-				if(attempts >= MAX_PLACEMENT_ATTEMPTS) {
-					Debug.Log("Failed to find a spot for new leaves"); //DELETE IN FINAL BUILD
+				//Failed to find an open spot so break
+				if(attempts >= MAX_PLACEMENT_ATTEMPTS)
 					break;
-				}
 
 				//Update pos and rot
 				leafPositions[i + numLeaves] = spawnPos;
@@ -458,16 +448,15 @@ public class Branch : MonoBehaviour {
 					}
 				}
 
-				if(attempts >= MAX_PLACEMENT_ATTEMPTS) {
-					Debug.Log("Failed to find a spot for new branches"); //DELETE IN FINAL BUILD
+				//Failed to find an open spot so break
+				if(attempts >= MAX_PLACEMENT_ATTEMPTS)
 					break;
-				}
 
 				//Update pos and rot
 				branchRotations[i + numBranches] = Quaternion.Euler(newRot);
 
 				//Add the bud at the found position and rotation
-				addBud(newRot, false);
+				addBud(transform.GetChild(1).localPosition, newRot, false);
 			}
 		}
 	}
@@ -697,44 +686,34 @@ public class Branch : MonoBehaviour {
 	void checkBoundsForTokyo() {
 		GameObject shrine = FindObjectOfType<BonsaiShrine>().gameObject;
 
+		/*
 		//Check for the bounding zone
 		bool a = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(1).position, manager);
 		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(2).position, manager);
 		if(!a || !b) {
 			zoneExtension = true;
-			//Debug.Log(gameObject.name + " extends past zone");
+
 			if(manager.GetComponent<BonsaiManager>() != null)
 				manager.GetComponent<BonsaiManager>().registerZoneExtension();
 		}
+		*/
 
-		//Check for the top requirement
-		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqTopZone(transform.GetChild(1).position, 
+		//Check for Zone A Requirement
+		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqZoneA(transform.GetChild(1).position, 
 				transform.GetChild(2).position, manager)) {
 			requiredZonePasses[0] = 1;
 		}
 
-		//Check for the north requirement
-		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqNorthZone(transform.GetChild(1).position, 
-				transform.GetChild(2).position, manager)) {
+		//Check for Zone B Requirement
+		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqZoneB(transform.GetChild(1).position, 
+			transform.GetChild(2).position, manager)) {
 			requiredZonePasses[1] = 1;
 		}
 
-		//check for the east requirement
-		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqEastZone(transform.GetChild(1).position, 
-				transform.GetChild(2).position, manager)) {
+		//Check for Zone C Requirement
+		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqZoneC(transform.GetChild(1).position, 
+			transform.GetChild(2).position, manager)) {
 			requiredZonePasses[2] = 1;
-		}
-
-		//check for the south requirement
-		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqSouthZone(transform.GetChild(1).position, 
-				transform.GetChild(2).position, manager)) {
-			requiredZonePasses[3] = 1;
-		}
-
-		//check for the west requirement
-		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqWestZone(transform.GetChild(1).position, 
-				transform.GetChild(2).position, manager)) {
-			requiredZonePasses[4] = 1;
 		}
 
 		//Send passes
@@ -763,6 +742,7 @@ public class Branch : MonoBehaviour {
 	void setupTokyoTree() {
 		age += 2;
 
+		/*	Old setup
 		GameObject b1 = addBranch(Vector3.zero);
 
 		addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f)).GetComponent<Branch>().addBranch(Vector3.up);
@@ -787,6 +767,22 @@ public class Branch : MonoBehaviour {
 		GameObject b4 = b3.GetComponent<Branch>().addBranch(Vector3.zero);
 
 		b4.GetComponent<Branch>().addBranch(Vector3.zero);
+		*/
+
+		GameObject b1 = addBranch(new Vector3(30.0f, 0.0f, 0.0f));
+
+		b1.GetComponent<Branch>().addBranch(new Vector3(60.0f, 105.0f, 60.0f))
+			.GetComponent<Branch>().addBranch(new Vector3(0.0f, -90.0f, 60.0f));
+
+		GameObject b2 = b1.GetComponent<Branch>().addBranch(new Vector3(322.9f, 3.8f, 37.9f))
+							.GetComponent<Branch>().addBranch(new Vector3(300.9f, 337.8f, 4.7f));
+
+		b2.GetComponent<Branch>().addBranch(new Vector3(65.6f, 357.4f, 10.1f));
+
+		b2.GetComponent<Branch>().addBranch(new Vector3(316.4f, 355.3f, 335.5f))
+			.GetComponent<Branch>().addBranch(new Vector3(320.1f, 17.0f, 351.4f))
+			.GetComponent<Branch>().addBranch(new Vector3(12.6f, 21.2f, 294.5f));
+
 	}
 
 	#endregion
@@ -826,31 +822,35 @@ public class Branch : MonoBehaviour {
 	/*
 	 * Adds a new bud of the given type with the given rotation on the tip of the branch
 	 */
-	GameObject addBud(Vector3 rot, bool isLeaf) {
+	GameObject addBud(Vector3 pos, Vector3 rot, bool isLeaf) {
+		//Instantiate bud
+		GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
+
+		newBud.transform.localPosition = pos;
+		newBud.transform.localRotation = Quaternion.Euler(rot);
+
 		if(!isLeaf) {
-			//Instantiate bud
-			GameObject newBud = Instantiate(Resources.Load("Bonsai/BudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
-
-			newBud.transform.localPosition = transform.GetChild(1).localPosition;
-			newBud.transform.localRotation = Quaternion.Euler(rot);
-			//newBud.transform.localPosition = newBud.transform.localPosition +  * 0.025f;
-
-			//Initialize new branch variables
-			newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
-			newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
-
-			//Set the branch's w position
-			newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
-
-			this.registerBudAdded();
-
-			newBud.transform.GetComponent<Bud>().setManager(manager);
-			manager.GetComponent<BonsaiManager>().addBranch();
-
-			return newBud;
+			//Move the visual of the bud to appear on the surface of the branch tip
+			Vector3 temp = newBud.transform.GetChild(0).localPosition;
+			newBud.transform.GetChild(0).localPosition = new Vector3(temp.x, temp.y + 0.02f, temp.z);	//0.02 will work best with a tree of scale .25
 		}
 
-		return null;
+		//Initialize new branch variables
+		newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
+		newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
+
+		//Set the branch's w position
+		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+
+		this.registerBudAdded();
+
+		newBud.transform.GetComponent<Bud>().setManager(manager);
+		if(isLeaf)
+			manager.GetComponent<BonsaiManager>().addLeaf();
+		else
+			manager.GetComponent<BonsaiManager>().addBranch();
+
+		return newBud;
 	}
 
 	/*

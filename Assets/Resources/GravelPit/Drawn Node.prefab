@@ -21,7 +21,6 @@ GameObject:
   - 4: {fileID: 4000010115996246}
   - 33: {fileID: 33000010853074142}
   - 23: {fileID: 23000010757008072}
-  - 114: {fileID: 114000013157574084}
   m_Layer: 0
   m_Name: Drawn Node
   m_TagString: Untagged
@@ -78,14 +77,3 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011191284372}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114000013157574084
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011191284372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67397dab7c1f4e54485a207d7896f578, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

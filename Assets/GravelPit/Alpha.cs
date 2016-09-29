@@ -101,6 +101,8 @@ public class Alpha : MonoBehaviour {
 
 		drawPeriod = 3.0f;
 		frame = 1;
+
+		texture.Apply();
 	}
 
 	// Update is called once per frame
@@ -131,6 +133,8 @@ public class Alpha : MonoBehaviour {
 			}
 
 			//raked = 0;
+
+			texture.Apply();
 		}
 
 		if (frame == 1) {
@@ -311,8 +315,6 @@ public class Alpha : MonoBehaviour {
 		}
 
 		frame++;
-
-		texture.Apply();
 	}
 
 	void OnDestroy() {

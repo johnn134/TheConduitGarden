@@ -6,6 +6,7 @@ public class Clock : MonoBehaviour {
 
 	public float gameMinutes;
 	public float gameSeconds;
+	public bool savescore = true;
 
 	float startTime;
 	float gameDuration;
@@ -65,7 +66,7 @@ public class Clock : MonoBehaviour {
 		isEnding = true;
 
 		//Save Kami Count
-		if(PlayerPrefs.GetInt("KamiHighscore") < KamiManager.instance.getNumberOfKami()) {
+		if(PlayerPrefs.GetInt("KamiHighscore") < KamiManager.instance.getNumberOfKami() && savescore) {
 			PlayerPrefs.SetInt("KamiHighscore", KamiManager.instance.getNumberOfKami());
 		}
 

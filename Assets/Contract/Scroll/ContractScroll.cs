@@ -37,7 +37,7 @@ public class ContractScroll : MonoBehaviour {
 		isScrolling = false;
 		playerClosed = false;
 		startFade = false;
-		openScroll(isActive);
+		setScroll(isActive);
 		player = HyperCreature.instance;
 		updateVisuals();
 	}
@@ -110,9 +110,15 @@ public class ContractScroll : MonoBehaviour {
 		float speed;
 
 		if(isActive) {	//opening
-			childStart = new Vector3(child.localPosition.x, CLOSED_Y_POS, child.localPosition.z);
+			if(playerClosed) {
+				childStart = scrollBottomStartPos;
+				dragStart = scrollDragPointStartPos;
+			}
+			else {
+				childStart = new Vector3(child.localPosition.x, CLOSED_Y_POS, child.localPosition.z);
+				dragStart = new Vector3(dragPoint.localPosition.x, CLOSED_Y_POS - offset, dragPoint.localPosition.z);
+			}
 			childEnd = new Vector3(child.localPosition.x, OPENED_Y_POS, child.localPosition.z);
-			dragStart = new Vector3(dragPoint.localPosition.x, CLOSED_Y_POS - offset, dragPoint.localPosition.z);
 			dragEnd = new Vector3(dragPoint.localPosition.x, OPENED_Y_POS - offset, dragPoint.localPosition.z);
 			speed = SCROLL_OPEN_SPEED;
 		}
@@ -151,7 +157,7 @@ public class ContractScroll : MonoBehaviour {
 	 * true opens the scroll
 	 * false closes the scroll
 	 */
-	void openScroll(bool newState) {
+	void setScroll(bool newState) {
 		scrollingStartTime = Time.time;
 		isScrolling = true;
 		isActive = newState;
@@ -162,13 +168,22 @@ public class ContractScroll : MonoBehaviour {
 	 * public method for closing the scroll by player interaction
 	 */
 	public void closeScroll() {
-		Debug.Log("Closing Scroll");
 		scrollBottomStartPos = transform.GetChild(0).GetChild(1).localPosition;
 		scrollDragPointStartPos = transform.GetChild(2).localPosition;
 
 		scrollingStartTime = Time.time;
 		isScrolling = true;
 		isActive = false;
+		playerClosed = true;
+	}
+
+	public void openScroll() {
+		scrollBottomStartPos = transform.GetChild(0).GetChild(1).localPosition;
+		scrollDragPointStartPos = transform.GetChild(2).localPosition;
+
+		scrollingStartTime = Time.time;
+		isScrolling = true;
+		isActive = true;
 		playerClosed = true;
 	}
 

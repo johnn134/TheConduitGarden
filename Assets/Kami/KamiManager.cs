@@ -34,10 +34,11 @@ public class KamiManager : MonoBehaviour {
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
+
+		allKami = new List<GameObject>();
     }
 
     void Start () {
-	    allKami = new List<GameObject>();
         fishShrine = Object.FindObjectOfType<FishShrine>();
     }
 

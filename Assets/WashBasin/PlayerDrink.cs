@@ -56,9 +56,11 @@ public class PlayerDrink : MonoBehaviour {
 	void addDrinkEffect() {
 		player_periph = hyperC.w_perif;
         hyperC.w_perif = 3;
+		hyperC.WMoveAllHyperObjects ();
 	}
 
 	void removeDrinkEffect() {
         hyperC.w_perif = player_periph;
+		hyperC.WMoveAllHyperObjects ();
 	}
 }

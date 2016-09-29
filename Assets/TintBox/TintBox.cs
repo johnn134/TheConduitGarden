@@ -19,15 +19,16 @@ public class TintBox : MonoBehaviour {
 
 	void LateUpdate()
 	{
-		for (int i = 0; i < controllerManager.indices.Length; i++)
+		if (controllerManager.left)
 		{
-			if (controllerManager.indices[i] != OpenVR.k_unTrackedDeviceIndexInvalid)
-			{
-				if (SteamVR_Controller.Input((int)controllerManager.indices[i]).GetPressDown(EVRButtonId.k_EButton_SteamVR_Trigger))
-				{
-					updateBoxVisuals();
-				}
-			}
+			if (controllerManager.left.GetComponent<GetInputVR> ().callWMoveOnAllHyperScripts)
+				updateBoxVisuals ();
+		}
+
+		if (controllerManager.right)
+		{
+			if (controllerManager.right.GetComponent<GetInputVR>().callWMoveOnAllHyperScripts)
+				updateBoxVisuals();
 		}
 	}
 

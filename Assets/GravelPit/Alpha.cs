@@ -62,7 +62,7 @@ public class Alpha : MonoBehaviour {
 	void Start() {
 		player = HyperCreature.instance;
 		myHyper = GetComponent<HyperObject>();
-		rake = GameObject.FindGameObjectWithTag("Rake");
+		rake = GameObject.Find("Rake");
 		tine1 = GameObject.FindGameObjectWithTag("Tine 1");
 		tine2 = GameObject.FindGameObjectWithTag("Tine 2");
 		tine3 = GameObject.FindGameObjectWithTag("Tine 3");
@@ -84,7 +84,7 @@ public class Alpha : MonoBehaviour {
 
 		coordinates = new int[1024, 1024];
 
-		originalThird = (int)Mathf.Ceil((float)texture.width/3.0f);
+		originalThird = (int)Mathf.Ceil((float)texture.width/10.0f);
 
 		tine1Collision = false;
 		tine2Collision = false;
@@ -101,6 +101,7 @@ public class Alpha : MonoBehaviour {
 
 		drawPeriod = 3.0f;
 		frame = 1;
+		texture.Apply();
 	}
 
 	// Update is called once per frame
@@ -131,6 +132,7 @@ public class Alpha : MonoBehaviour {
 			}
 
 			//raked = 0;
+			texture.Apply();
 		}
 
 		if (frame == 1) {
@@ -312,7 +314,7 @@ public class Alpha : MonoBehaviour {
 
 		frame++;
 
-		texture.Apply();
+
 	}
 
 	void OnDestroy() {
@@ -626,7 +628,7 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = (-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f));
 			float rightBound = ((-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f)) + ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
-			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<DrawnLine>().drawnDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}
@@ -722,7 +724,7 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = ((-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f)) + ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
 			float rightBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x/2.0f) - ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
-			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<DrawnLine>().drawnDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}
@@ -818,7 +820,7 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x/2.0f) - ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
 			float rightBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f);
-			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<DrawnLine>().drawnDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}

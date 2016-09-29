@@ -6,6 +6,7 @@ public class Alpha : MonoBehaviour {
 	public GameObject gravel;
 	public GameObject pit;
 	public GameObject drawnPattern;
+	public GameObject originalPattern;
 	public GameObject drawnLine;
 	public GameObject drawnNode;
 	public GameObject tine1;
@@ -323,13 +324,13 @@ public class Alpha : MonoBehaviour {
 	void CalculateAmountRaked() {
 		if (raked >= (originalThird * texture.height) && !isRakedEnough) {
 			isRakedEnough = true;
-			Debug.Log("Raked enough.");
+			//Debug.Log("Raked enough.");
 			gravelShrine.processPits();
 		}
 
 		else if (raked < (originalThird * texture.height) && isRakedEnough) {
 			isRakedEnough = false;
-			Debug.Log("Not Raked enough.");
+			//Debug.Log("Not Raked enough.");
 			gravelShrine.processPits();
 		}
 	}
@@ -487,7 +488,7 @@ public class Alpha : MonoBehaviour {
 
 		if (((tine1Lines + tine2Lines + tine3Lines + tine4Lines)/GetComponent<PatternRecognition>().linesOnDimension) >= 0.80f) {
 			if (GetComponent<PatternRecognition>().patternMatches == false) {
-				Debug.Log ("Pattern matches = false");
+				//Debug.Log ("Pattern matches = false");
 				checkPattern = true;
 				GetComponent<PatternRecognition>().check = 0;
 			}	
@@ -625,13 +626,33 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = (-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f));
 			float rightBound = ((-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f)) + ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
-			if (xPosition >= leftBound && xPosition <= rightBound) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}
 		}
-			
-		GetComponent<PatternRecognition>().patternMatches = false;
+
+		bool patternInSection = false;
+		foreach (Transform child in originalPattern.transform) {
+			float startNode = child.GetChild(0).transform.position.x;
+			float endNode = child.GetChild(1).transform.position.x;
+			float leftBound = (-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f));
+			float rightBound = ((-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f)) + ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
+			if (startNode >= leftBound && startNode <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+				patternInSection = true;
+				//Debug.Log ("Pattern line in this section.");
+				break;
+			}
+			if (endNode >= leftBound && endNode <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+				patternInSection = true;
+				//Debug.Log ("Pattern line in this section.");
+				break;
+			}
+		}
+
+		if (patternInSection == true) {
+			GetComponent<PatternRecognition>().patternMatches = false;
+		}
 	}
 
 	void clearPitSection2() {
@@ -701,13 +722,33 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = ((-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f)) + ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
 			float rightBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x/2.0f) - ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
-			if (xPosition >= leftBound && xPosition <= rightBound) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}
 		}
 
-		GetComponent<PatternRecognition>().patternMatches = false;
+		bool patternInSection = false;
+		foreach (Transform child in originalPattern.transform) {
+			float startNode = child.GetChild(0).transform.position.x;
+			float endNode = child.GetChild(1).transform.position.x;
+			float leftBound = ((-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f)) + ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
+			float rightBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x/2.0f) - ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
+			if (startNode >= leftBound && startNode <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+				patternInSection = true;
+				//Debug.Log ("Pattern line in this section.");
+				break;
+			}
+			if (endNode >= leftBound && endNode <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+				patternInSection = true;
+				//Debug.Log ("Pattern line in this section.");
+				break;
+			}
+		}
+
+		if (patternInSection == true) {
+			GetComponent<PatternRecognition>().patternMatches = false;
+		}
 	}
 
 	void clearPitSection3() {
@@ -777,12 +818,32 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x/2.0f) - ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
 			float rightBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f);
-			if (xPosition >= leftBound && xPosition <= rightBound) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}
 		}
 
-		GetComponent<PatternRecognition>().patternMatches = false;
+		bool patternInSection = false;
+		foreach (Transform child in originalPattern.transform) {
+			float startNode = child.GetChild(0).transform.position.x;
+			float endNode = child.GetChild(1).transform.position.x;
+			float leftBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x/2.0f) - ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
+			float rightBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f);
+			if (startNode >= leftBound && startNode <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+				patternInSection = true;
+				//Debug.Log ("Pattern line in this section.");
+				break;
+			}
+			if (endNode >= leftBound && endNode <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+				patternInSection = true;
+				//Debug.Log ("Pattern line in this section.");
+				break;
+			}
+		}
+
+		if (patternInSection == true) {
+			GetComponent<PatternRecognition>().patternMatches = false;
+		}
 	}
 }

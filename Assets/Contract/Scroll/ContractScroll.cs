@@ -16,7 +16,7 @@ public class ContractScroll : MonoBehaviour {
 
 	bool isScrolling;
 	bool playerClosed;
-    bool startFade;
+	bool startFade;
 
 	float scrollingStartTime;
 
@@ -36,23 +36,23 @@ public class ContractScroll : MonoBehaviour {
 	void Start () {
 		isScrolling = false;
 		playerClosed = false;
-        startFade = false;
+		startFade = false;
 		openScroll(isActive);
-        player = HyperCreature.instance;
+		player = HyperCreature.instance;
 		updateVisuals();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if(isScrolling) {
 			updateScroll();
 		}
 
-        if (startFade)
-        {
-            if (player.FadeOutTransitionStep(.1f))
-                loadLevel();
-        }
+		if (startFade)
+		{
+			if (player.FadeOutTransitionStep(.1f))
+				loadLevel();
+		}
 	}
 
 	void LateUpdate()
@@ -73,27 +73,27 @@ public class ContractScroll : MonoBehaviour {
 		Color temp = Color.white;
 
 		switch(HyperCreature.instance.w) {
-			case 0:
-				temp = Color.red;
-				break;
-			case 1:
-				temp = new Color(1.0f, 0.45f, 0.0f);
-				break;
-			case 2:
-				temp = Color.yellow;
-				break;
-			case 3:
-				temp = Color.green;
-				break;
-			case 4:
-				temp = Color.cyan;
-				break;
-			case 5:
-				temp = Color.blue;
-				break;
-			case 6:
-				temp = Color.magenta;
-				break;
+		case 0:
+			temp = Color.red;
+			break;
+		case 1:
+			temp = new Color(1.0f, 0.45f, 0.0f);
+			break;
+		case 2:
+			temp = Color.yellow;
+			break;
+		case 3:
+			temp = Color.green;
+			break;
+		case 4:
+			temp = Color.cyan;
+			break;
+		case 5:
+			temp = Color.blue;
+			break;
+		case 6:
+			temp = Color.magenta;
+			break;
 		}
 
 		transform.GetChild(0).GetChild(1).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", temp);
@@ -139,9 +139,9 @@ public class ContractScroll : MonoBehaviour {
 			isScrolling = false;
 
 			if(isActive == false) { //closed the scroll
-                                    //Accept the contract and move to the next level
-                if (!contractLevel.Equals(""))
-                    startFade = true;
+				//Accept the contract and move to the next level
+				if (!contractLevel.Equals(""))
+					startFade = true;
 			}
 		}
 	}

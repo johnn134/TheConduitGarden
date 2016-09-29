@@ -36,18 +36,18 @@ public class PatternRecognition : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		if (GetComponent<Alpha>().checkPattern == true && check == 0) {
-			Debug.Log ("Check pattern = true");
+			//Debug.Log ("Check pattern = true");
 			if (checkDrawnPattern() >= 0.80f) {
 				patternMatches = true;
-				Debug.Log ("Current Plane: " + GetComponent<HyperColliderManager>().w);
-				Debug.Log ("Pattern matches.");
+				//Debug.Log ("Current Plane: " + GetComponent<HyperColliderManager>().w);
+				//Debug.Log ("Pattern matches.");
 				gravelShrine.processPits();
 				check = 1;
 			} 
 
 			else {
-				Debug.Log ("Current Plane: " + GetComponent<HyperColliderManager>().w);
-				Debug.Log ("Pattern does not match.");
+				//Debug.Log ("Current Plane: " + GetComponent<HyperColliderManager>().w);
+				//Debug.Log ("Pattern does not match.");
 				check = 1;
 			}
 		}
@@ -139,7 +139,7 @@ public class PatternRecognition : MonoBehaviour {
 
 		float percent = similarity/linesOnDimension;
 		similarity = 0.0f;
-		Debug.Log("Pattern drawn by player is " + (percent * 100.0f) + "% similar to the designed pattern."); 
+		//Debug.Log("Pattern drawn by player is " + (percent * 100.0f) + "% similar to the designed pattern."); 
 
 		return percent;
 	}

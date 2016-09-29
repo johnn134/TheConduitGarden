@@ -36,7 +36,7 @@ public class GravelShrine : MonoBehaviour
         foreach (GameObject node in pits)
             if (node)
                 maxPoints++;
-        //maxPoints *= 2;
+        maxPoints *= 2;
 
         //cache the transforms of all the lights and set their color
         lights[0] = GameObject.Find("ShrineGravelPit/Visual/LevelOneLight").transform;
@@ -80,6 +80,10 @@ public class GravelShrine : MonoBehaviour
                     pointMatrix[index]++;
                 }
 
+				if (pit.GetComponent<PatternRecognition> ().patternMatches) {
+					points++;
+					pointMatrix[index]++;
+				}
                 //add to point if pattern matched
             }
             index++;

@@ -626,7 +626,7 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = (-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f));
 			float rightBound = ((-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f)) + ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
-			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<DrawnLine>().drawnDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}
@@ -722,7 +722,7 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = ((-1.0f * ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f)) + ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
 			float rightBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x/2.0f) - ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
-			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<DrawnLine>().drawnDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}
@@ -818,7 +818,7 @@ public class Alpha : MonoBehaviour {
 			float xPosition = child.transform.position.x;
 			float leftBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x/2.0f) - ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/3.0f));
 			float rightBound = ((bounds.size.x * gravel.GetComponent<Transform>().localScale.x)/2.0f);
-			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+			if (xPosition >= leftBound && xPosition <= rightBound && child.GetComponent<DrawnLine>().drawnDimension == GetComponent<HyperObject>().w) {
 				//testPattern.transform.GetChild(k).gameObject.SetActive(false);
 				Destroy(child.gameObject);
 			}

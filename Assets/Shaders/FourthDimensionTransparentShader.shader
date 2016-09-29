@@ -25,6 +25,7 @@
 			#pragma fragment frag
 
 			uniform sampler2D _MainTex;
+			uniform float4 _MainTex_ST;
 			uniform float4 _Color;
 
 			struct vertexInput
@@ -39,19 +40,20 @@
 				float4 tex : TEXCOORD1;
 			}; 
 
-			vertexOutput vert(vertexInput i)
+			vertexOutput vert(vertexInput input)
 			{
 				vertexOutput o;
 
-				o.pos = mul(UNITY_MATRIX_MVP, i.vertex);
-				o.tex = i.texcoord;
+				o.pos = mul(UNITY_MATRIX_MVP, input.vertex);
+				o.tex = input.texcoord;
 
 				return o;
 			}
 			
-			float4 frag(vertexOutput i) : COLOR
+			float4 frag(vertexOutput input) : COLOR
 			{
-				return _Color * tex2D(_MainTex, i.tex.xy);
+				float4 textureColor = tex2D(_MainTex, _MainTex_ST.xy * input.tex.xy + _MainTex_ST.zw);
+				return _Color * textureColor;
 			}
 
 			ENDCG
@@ -72,6 +74,7 @@
 			#pragma fragment frag
 
 			uniform sampler2D _MainTex;
+			uniform float4 _MainTex_ST;
 			uniform float4 _Color;
 
 			struct vertexInput
@@ -86,19 +89,20 @@
 				float4 tex : TEXCOORD1;
 			}; 
 
-			vertexOutput vert(vertexInput i)
+			vertexOutput vert(vertexInput input)
 			{
 				vertexOutput o;
 
-				o.pos = mul(UNITY_MATRIX_MVP, i.vertex);
-				o.tex = i.texcoord;
+				o.pos = mul(UNITY_MATRIX_MVP, input.vertex);
+				o.tex = input.texcoord;
 
 				return o;
 			}
 			
-			float4 frag(vertexOutput i) : COLOR
+			float4 frag(vertexOutput input) : COLOR
 			{
-				return _Color * tex2D(_MainTex, i.tex.xy);
+				float4 textureColor = tex2D(_MainTex, input.tex.xy * _MainTex_ST.xy * _MainTex_ST.zw);
+				return _Color * textureColor;
 			}
 
 			ENDCG

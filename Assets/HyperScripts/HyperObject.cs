@@ -11,6 +11,7 @@ public class HyperObject : MonoBehaviour {
     public float dullCoef = 1.0f;                   //how much to dull the color of the object by
 
 	public Texture texture;
+	public float tilingX, tilingY, offsetX, offsetY;
 
     public bool isParent = false;                   //is this object the parent?
     //NOTE: Enable even if no children and if has both HyperObject and HyperColliderManager enable this as parent and not the other
@@ -267,6 +268,9 @@ public class HyperObject : MonoBehaviour {
 		Color temp = _cachedRenderer.material.GetColor("_Color");
 		_cachedRenderer.material.shader = Shader.Find("FourthDimension/FourthDimensionOpaqueShader");
 		_cachedRenderer.material.SetTexture("_MainTex", texture);
+		_cachedRenderer.material.SetTextureScale("_MainTex", 
+			new Vector2(tilingX == 0 ? 1.0f : tilingX, tilingY == 0 ? 1.0f : tilingY));
+		_cachedRenderer.material.SetTextureOffset("_MainTex", new Vector2(offsetX, offsetY));
 		_cachedRenderer.material.SetColor("_Color", temp);
 	}
 
@@ -277,6 +281,9 @@ public class HyperObject : MonoBehaviour {
 		Color temp = _cachedRenderer.material.GetColor("_Color");
 		_cachedRenderer.material.shader = Shader.Find("FourthDimension/FourthDimensionTransparentShader");
 		_cachedRenderer.material.SetTexture("_MainTex", texture);
+		_cachedRenderer.material.SetTextureScale("_MainTex", 
+			new Vector2(tilingX == 0 ? 1.0f : tilingX, tilingY == 0 ? 1.0f : tilingY));
+		_cachedRenderer.material.SetTextureOffset("_MainTex", new Vector2(offsetX, offsetY));
 		_cachedRenderer.material.SetColor("_Color", temp);
 	}
 

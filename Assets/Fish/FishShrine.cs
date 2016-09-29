@@ -4,69 +4,52 @@ using System.Collections.Generic;
 
 public class FishShrine : MonoBehaviour {
 
-    int stage = 0;                                              //how many thirds of the way the shrine is to activation
-    int numKamiNeed = 0;                                        //how many kami should be in the scene
-    int numKamiSpawnCalls = 0;                                  //how many kami are in the process of bein spawned in
+	public GameObject[] redLights, orangeLights, blueLights, magentaLights;
 
     public int[] onWs = new int[] {0, 0, 0, 0, 0, 0, 0};        //the number of fish required on each w point to activate the shrine
+
+	KamiManager kamiManager;                                    //reference to the kami manager
+	HyperCreature player;                                       //reference to the hyper creature
+
+	ParticleSystem particleObj_LA, particleObj_LB, particleObj_RA, particleObj_RB;
 
     float maxPoints = 0.0f;                                     //the total points the shine needs to activate
     float points = 0.0f;                                        //the current number of points the shrine has
 
-    bool activated = false;                                     //is the shine activated
+	int stage;                                              //how many thirds of the way the shrine is to activation
 
-    FishManager fishManager;                                    //reference to the fish manager
-    KamiManager kamiManager;                                    //reference to the kami manager
-    ParticleSystem particleObj;                                 //the particle emmiter on this shrine
-    HyperCreature player;                                       //reference to the hyper creature
+    bool fullyActivated;                                     //is the shine activated
 
-    //Chached light transforms
-    Transform[] lights = new Transform[] { null, null, null, null, null, null, null };
+	void Awake() {
+		fullyActivated = false;
 
-    void Start() {
-        fishManager = FishManager.instance;
-        kamiManager = KamiManager.instance;
-        player = HyperCreature.instance;
+		stage = 0;
 
-        particleObj = GameObject.Find("ShrineFish/Particles").GetComponent<ParticleSystem>();
+		//Cache particle systems
+		particleObj_LA = transform.GetChild(1).GetComponent<ParticleSystem>();
+		particleObj_LB = transform.GetChild(1).GetChild(0).GetComponent<ParticleSystem>();
 
-        var em = particleObj.emission;
-        em.rate = 0;
+		particleObj_RA = transform.GetChild(2).GetComponent<ParticleSystem>();
+		particleObj_RB = transform.GetChild(2).GetChild(0).GetComponent<ParticleSystem>();
 
-        foreach (int node in onWs)
-            maxPoints += node;
+		foreach (int node in onWs)
+			maxPoints += node;
 
-        //cache the transforms of all the lights and set their color
-        lights[0] = GameObject.Find("ShrineFish/Visual/LevelOneLight").transform;
-        lights[0].gameObject.GetComponent<Renderer>().material.color = Color.red;
+		//Deactivate lights
+		updateLights(new int[] { 0, 0, 0, 0, 0, 0, 0 });
+	}
 
-        lights[1] = GameObject.Find("ShrineFish/Visual/LevelTwoLight").transform;
-        lights[1].gameObject.GetComponent<Renderer>().material.color = new Color(1, .45f, 0);
-
-        lights[2] = GameObject.Find("ShrineFish/Visual/LevelThreeLight").transform;
-        lights[2].gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-
-        lights[3] = GameObject.Find("ShrineFish/Visual/LevelFourLight").transform;
-        lights[3].gameObject.GetComponent<Renderer>().material.color = Color.green;
-
-        lights[4] = GameObject.Find("ShrineFish/Visual/LevelFiveLight").transform;
-        lights[4].gameObject.GetComponent<Renderer>().material.color = Color.cyan;
-
-        lights[5] = GameObject.Find("ShrineFish/Visual/LevelSixLight").transform;
-        lights[5].gameObject.GetComponent<Renderer>().material.color = Color.blue;
-
-        lights[6] = GameObject.Find("ShrineFish/Visual/LevelSevenLight").transform;
-        lights[6].gameObject.GetComponent<Renderer>().material.color = Color.magenta;
-
-        //initalize the lights
-        UpdateLights(new float[] { 0, 0, 0, 0, 0, 0, 0 });
+	void Start() {
+		kamiManager = KamiManager.instance;
+		player = HyperCreature.instance;
     }
 	
     public void processFish(List<GameObject> allFish)
     {
-        float oldPoints = points;
-        points = 0;
-        float[] pointMatrix = new float[] { 0, 0, 0, 0, 0, 0, 0 };
+		int[] pointMatrix = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		float oldPoints = points;
+		points = 0;
+
         foreach(GameObject fish in allFish)
         {
             int fishW = fish.GetComponent<HyperColliderManager>().w;
@@ -80,13 +63,17 @@ public class FishShrine : MonoBehaviour {
             }
         }
 
-        if(points > oldPoints)
-            particleObj.Emit(20);
+		if(points > oldPoints) {
+			particleObj_LA.Play();
+			particleObj_LB.Play();
+			particleObj_RA.Play();
+			particleObj_RB.Play();
+		}
 
-        UpdateLights(pointMatrix);
+		updateLights(pointMatrix);
 
-        if(points >= maxPoints/3 && stage == 0 ||
-            points >= (maxPoints/3)*2 && stage == 1)
+        if(points >= maxPoints / 3 && stage == 0 ||
+            points >= (maxPoints / 3) * 2 && stage == 1)
         {
             stage++;
             Invoke("MakeKami", kamiManager.kamiArriveTime);
@@ -110,49 +97,109 @@ public class FishShrine : MonoBehaviour {
             }
         }
 
-        if (points >= maxPoints && !activated)
+		if (points >= maxPoints && !fullyActivated)
         {
-            activated = true;
-            CancelInvoke();
+            CancelInvoke();	//clear invoked methods
+
+			//Spawn remaining kami
             for (int i = 0; i < stage - kamiManager.NumberOfHappyKami(0); i++)
                 Invoke("MakeKami", kamiManager.kamiArriveTime);
-            var em = particleObj.emission;
-            em.rate = 5;
-            player.w_perif++;
-            player.WMoveAllHyperObjects();
-            //kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7));
-            InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
-            //GetComponent<HyperObject>().dullCoef = .1f;
+
+			//start repeating kami spawning
+			InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
+
+			//Emit Particles
+			particleObj_LA.loop = true;
+			particleObj_LB.loop = true;
+			particleObj_RA.loop = true;
+			particleObj_RB.loop = true;
+
+			//Increase peripheral vision
+			player.w_perif++;
+			player.WMoveAllHyperObjects();
+
+			fullyActivated = true;
         }
 
-        if (points < maxPoints && activated)
+		if (points < maxPoints && fullyActivated)
         {
-            activated = false;
-            CancelInvoke();
-            player.w_perif--;
-            player.WMoveAllHyperObjects();
+            CancelInvoke();	//clear invoked methods
             InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
-            var em = particleObj.emission;
-            em.rate = 0;
+
+			//Stop emmitting particles
+			particleObj_LA.loop = false;
+			particleObj_LB.loop = false;
+			particleObj_RA.loop = false;
+			particleObj_RB.loop = false;
+
+			//Decrease peripheral vision
+			player.w_perif--;
+			player.WMoveAllHyperObjects();
+
+			fullyActivated = false;
         }
     }
 
-    void UpdateLights(float[] pointMatrix)
-    {
-        for(int i = 0; i < 7; i++)
-        {
-            //skip lights that track a layer where no fish are required for activation
-            if(onWs[i] != 0)
-            {
-                if (pointMatrix[i] != 0)
-                    lights[i].localScale = new Vector3(lights[i].localScale.x, .075f / (onWs[i] / pointMatrix[i]), lights[i].localScale.z);
-                else
-                    lights[i].localScale = new Vector3(lights[i].localScale.x, 0, lights[i].localScale.z);
+	void updateLights(int[] fish) {
+		Color temp = Color.white;
 
-                lights[i].localPosition = new Vector3(lights[i].localPosition.x, 1.41f + (.1f * i) - (.075f / 2.0f) + (lights[i].localScale.y / 2.0f), lights[i].localPosition.z);
-            }
-        }
-    }
+		if(redLights.Length == 3) {
+			if(redLights[0] != null) {
+				temp = fish[0] >= 1 ? Color.red : (Color.white * 0.1f);
+				redLights[0].GetComponent<Renderer>().material.color = temp;
+			}
+			if(redLights[1] != null) {
+				temp = fish[0] >= 2 ? Color.red : (Color.white * 0.1f);
+				redLights[1].GetComponent<Renderer>().material.color = temp;
+			}
+			if(redLights[2] != null) {
+				temp = fish[0] >= 3 ? Color.red : (Color.white * 0.1f);
+				redLights[2].GetComponent<Renderer>().material.color = temp;
+			}
+		}
+		if(orangeLights.Length == 3) {
+			if(orangeLights[0] != null) {
+				temp = fish[1] >= 1 ? new Color(1.0f, 0.45f, 0.0f) : (Color.white * 0.1f);
+				orangeLights[0].GetComponent<Renderer>().material.color = temp;
+			}
+			if(orangeLights[1] != null) {
+				temp = fish[1] >= 2 ? new Color(1.0f, 0.45f, 0.0f) : (Color.white * 0.1f);
+				orangeLights[1].GetComponent<Renderer>().material.color = temp;
+			}
+			if(orangeLights[2] != null) {
+				temp = fish[1] >= 3 ? new Color(1.0f, 0.45f, 0.0f) : (Color.white * 0.1f);
+				orangeLights[2].GetComponent<Renderer>().material.color = temp;
+			}
+		}
+		if(blueLights.Length == 3) {
+			if(blueLights[0] != null) {
+				temp = fish[5] >= 1 ? Color.blue : (Color.white * 0.1f);
+				blueLights[0].GetComponent<Renderer>().material.color = temp;
+			}
+			if(blueLights[1] != null) {
+				temp = fish[5] >= 2 ? Color.blue : (Color.white * 0.1f);
+				blueLights[1].GetComponent<Renderer>().material.color = temp;
+			}
+			if(blueLights[2] != null) {
+				temp = fish[5] >= 3 ? Color.blue : (Color.white * 0.1f);
+				blueLights[2].GetComponent<Renderer>().material.color = temp;
+			}
+		}
+		if(magentaLights.Length == 3) {
+			if(magentaLights[0] != null) {
+				temp = fish[6] >= 1 ? Color.magenta : (Color.white * 0.1f);
+				magentaLights[0].GetComponent<Renderer>().material.color = temp;
+			}
+			if(magentaLights[1] != null) {
+				temp = fish[6] >= 2 ? Color.magenta : (Color.white * 0.1f);
+				magentaLights[1].GetComponent<Renderer>().material.color = temp;
+			}
+			if(magentaLights[2] != null) {
+				temp = fish[6] >= 3 ? Color.magenta : (Color.white * 0.1f);
+				magentaLights[2].GetComponent<Renderer>().material.color = temp;
+			}
+		}
+	}
 
     void MakeKami()
     {

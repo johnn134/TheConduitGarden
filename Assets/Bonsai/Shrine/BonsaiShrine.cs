@@ -3,24 +3,27 @@ using System.Collections;
 
 public class BonsaiShrine : MonoBehaviour {
 
-	public GameObject LevelOneLights;
-	public GameObject LevelTwoLights;
-	public GameObject LevelThreeLights;
-	public GameObject LevelFourLights;
+	public GameObject[] LevelLights_A, LevelLights_B;
 
 	public GameObject[] trees;
 
-    Transform shears;
-
 	public CONTRACTLEVEL levelRequirement = CONTRACTLEVEL.NONE;
 
-	int activationStage = 0;
+	Transform shears;
+
+	KamiManager kamiManager;
+
+	HyperCreature player;
+
+	ParticleSystem particleObj_LA, particleObj_LB, particleObj_RA, particleObj_RB;
+
+	int activationStage;
 
 	int[] issues;
 
 	float checkTime;
 
-	bool activated = false;
+	bool fullyActivated;
 	bool linesActivated;
 
 	const int MIN_LEAVES = 4;
@@ -45,28 +48,34 @@ public class BonsaiShrine : MonoBehaviour {
 	const float TOKYO_ZONE_C_OFFSET_Y = 0.119f;
 	const float TOKYO_ZONE_C_OFFSET_Z = -0.052f;
 
-    KamiManager kamiManager;
-
-    HyperCreature player;
-
-    ParticleSystem particleObj;
-
     public enum CONTRACTLEVEL {
 		NONE, TOKYO
 	};
 
 	void Awake() {
+		fullyActivated = false;
 		linesActivated = true;
 
 		checkTime = 2.0f;
+
+		activationStage = 0;
 
 		issues = new int[trees.Length];
 		for(int i = 0; i < issues.Length; i++) {
 			issues[i] = 0;
 		}
 
-		setActivationStage(0);
+		//Cache particle systems
+		particleObj_LA = transform.GetChild(1).GetComponent<ParticleSystem>();
+		particleObj_LB = transform.GetChild(1).GetChild(0).GetComponent<ParticleSystem>();
 
+		particleObj_RA = transform.GetChild(2).GetComponent<ParticleSystem>();
+		particleObj_RB = transform.GetChild(2).GetChild(0).GetComponent<ParticleSystem>();
+
+		//Initialize lights to off
+		setActivationStage(0, 0);
+
+		//Create Requirement lines on trees
 		initializeRequirementLines();
 	}
 
@@ -76,12 +85,7 @@ public class BonsaiShrine : MonoBehaviour {
 
         player = HyperCreature.instance;
 
-        particleObj = GameObject.Find("BonsaiShrine/Particles").GetComponent<ParticleSystem>();
-
         shears = GameObject.Find("Shears").transform;
-
-        var em = particleObj.emission;
-        em.rate = 0;
     }
 	
 	// Update is called once per frame
@@ -219,7 +223,12 @@ public class BonsaiShrine : MonoBehaviour {
 	 * 4 - All trees meet the specific requirement of the contract
 	 */
 	void checkTrees() {
-		bool contractSatisfied = true;
+		bool contractSatisfiedA = true;
+		bool contractSatisfiedB = true;
+
+		//contract requirement check
+		contractSatisfiedA = checkContractProgress(trees[0]);
+		contractSatisfiedB = checkContractProgress(trees[1]);
 
 		for(int i = 0; i < trees.Length; i++) {
 			GameObject g = trees[i];
@@ -248,85 +257,100 @@ public class BonsaiShrine : MonoBehaviour {
 				   g.GetComponent<BonsaiManager>().getNumBranches() < MIN_BRANCHES) {
 					issues[i] = 3;	//undergrowth turns off the shrine
 				}
-
-				//contract requirement check
-				contractSatisfied = checkContractProgress();	/*** Change this to work with the required contract ***/
 			}
 		}
 
-		int stage = 4;
+		int stageA = (3 - issues[0]) + (contractSatisfiedA ? 1 : 0);
+		int stageB = (3 - issues[1]) + (contractSatisfiedB ? 1 : 0);
 
-		for(int i = 0; i < issues.Length; i++) {
-			int val = 3 - issues[i];
-			val += contractSatisfied ? 1 : 0;
-
-			stage = Mathf.Min(val, stage);
-		}
-
-		setActivationStage(stage);
+		setActivationStage(stageA, stageB);
 	}
 
 	/*
 	 * Sets the stage of activation for this shrine between 0 - 4 (inclusive)
 	 */
-	void setActivationStage(int newStage) {
-		activateLights(newStage);
-        checkIfActivated(newStage);
+	void setActivationStage(int newStageA, int newStageB) {
+		activateLights(newStageA, LevelLights_A);
+		activateLights(newStageB, LevelLights_B);
+		checkForStageChange((int)((newStageA + newStageB) / 2));
 	}
 
 	/*
 	 * Activates the lights up to the given level
 	 * i.e. lightLevel 2 activates 1 and 2
 	 */
-	void activateLights(int lightLevel) {
+	void activateLights(int lightLevel, GameObject[] lights) {
 		Color active = Color.white * ACTIVE_COLOR_VALUE;
 		Color inactive = Color.white * INACTIVE_COLOR_VALUE;
 
-		LevelOneLights.GetComponent<Renderer>().material.color = lightLevel >= 1 ? active : inactive;
-		LevelTwoLights.GetComponent<Renderer>().material.color = lightLevel >= 2 ? active : inactive;
-		LevelThreeLights.GetComponent<Renderer>().material.color = lightLevel >= 3 ? active : inactive;
-		LevelFourLights.GetComponent<Renderer>().material.color = lightLevel >= 4 ? active : inactive;
+		lights[0].GetComponent<Renderer>().material.color = lightLevel >= 1 ? active : inactive;
+		lights[1].GetComponent<Renderer>().material.color = lightLevel >= 2 ? active : inactive;
+		lights[2].GetComponent<Renderer>().material.color = lightLevel >= 3 ? active : inactive;
+		lights[3].GetComponent<Renderer>().material.color = lightLevel >= 4 ? active : inactive;
 	}
 
-    void checkIfActivated(int newStage){
-        int oldStage = activationStage;
-        activationStage = newStage;
+	/*
+	 * Provide feedback for reaching a higher or lower stage of activation
+	 */
+	void checkForStageChange(int newStage){
+		//Check for new stage
+		if (newStage > activationStage) {	//increase activation level
+			particleObj_LA.Play();
+			particleObj_LB.Play();
+			particleObj_RA.Play();
+			particleObj_RB.Play();
 
-        if (newStage > oldStage)
-        {
-            particleObj.Emit(20);
-
-            for(int i = 0; i < newStage - oldStage; i++)
+			for(int i = 0; i < newStage - activationStage; i++)
                 Invoke("MakeKami", kamiManager.kamiArriveTime);
         }
-        else if(newStage < oldStage)
-        {
-            for (int i = 0; i < oldStage - newStage; i++)
+		else if(newStage < activationStage) {	//decrease activation level
+			for (int i = 0; i < activationStage - newStage; i++)
                 ScareKami();
         }
 
-        if (newStage == 4 && !activated)
-        {
-            activated = true;
-            CancelInvoke();
-            for (int i = 0; i < activationStage - kamiManager.NumberOfHappyKami(1); i++)
-                Invoke("MakeKami", kamiManager.kamiArriveTime);
-            var em = particleObj.emission;
-            em.rate = 5;
+		//Check for full activation
+		if (newStage == 4 && !fullyActivated) {	//Turn on full activation
+            CancelInvoke();	//clear invoked methods
+
+			//Create remaining minimum Kami for final stage
+			for (int i = 0; i < newStage - kamiManager.NumberOfHappyKami(1); i++)
+				Invoke("MakeKami", kamiManager.kamiArriveTime);
+
+			//Start repeating Kami creation
+			InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
+
+			//Start emmitting particles
+			particleObj_LA.loop = true;
+			particleObj_LB.loop = true;
+			particleObj_RA.loop = true;
+			particleObj_RB.loop = true;
+
+			//Increase Peripheral vision
             player.w_perif++;
-            player.WMoveAllHyperObjects();
-            InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
+			player.WMoveAllHyperObjects();
+
+			fullyActivated = true;
         }
-        else if (newStage != 4 && activated)
-        {
-            activated = false;
-            CancelInvoke();
-            player.w_perif--;
-            player.WMoveAllHyperObjects();
-            InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
-            var em = particleObj.emission;
-            em.rate = 0;
+		else if (newStage != 4 && fullyActivated) {	//Turn of full activation
+			CancelInvoke();	//clear invoked methods
+
+			//Start repeating Kami Exits
+			InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
+
+			//Stop emmitting particles
+			particleObj_LA.loop = false;
+			particleObj_LB.loop = false;
+			particleObj_RA.loop = false;
+			particleObj_RB.loop = false;
+
+			//Decrease Peripheral vision
+			player.w_perif--;
+			player.WMoveAllHyperObjects();
+
+			fullyActivated = false;
         }
+
+		activationStage = newStage;
     }
 
     void MakeKami()
@@ -352,12 +376,12 @@ public class BonsaiShrine : MonoBehaviour {
     /*
 	 * Wrapper for checking the progress of the bonsai trees in the contract level
 	 */
-    bool checkContractProgress() {
+	bool checkContractProgress(GameObject tree) {
 		switch(levelRequirement) {
 			case CONTRACTLEVEL.NONE:
 				return true;
 			case CONTRACTLEVEL.TOKYO:
-				return checkTokyoContractProgress();
+				return checkTokyoContractProgress(tree);
 			default:
 				return false;
 		}
@@ -369,17 +393,15 @@ public class BonsaiShrine : MonoBehaviour {
 	 * - branches or leaves do NOT extend past the Top, Bottom, Lower or Upper bounds
 	 * - there is at least 1 branch through each of the 5 required zones
 	 */
-	bool checkTokyoContractProgress() {
+	bool checkTokyoContractProgress(GameObject tree) {
 		bool satisfied = true;
 
-		foreach(GameObject tree in trees) {
-			int[] reqZonePasses = tree.GetComponent<BonsaiManager>().getReqZonePasses();
-			if(tree.GetComponent<BonsaiManager>().getZoneExtensions() > 0 ||
-				reqZonePasses[0] <= 0 ||
-				reqZonePasses[1] <= 0 ||
-				reqZonePasses[2] <= 0) {
-				satisfied = false;
-			}
+		int[] reqZonePasses = tree.GetComponent<BonsaiManager>().getReqZonePasses();
+		if(tree.GetComponent<BonsaiManager>().getZoneExtensions() > 0 ||
+			reqZonePasses[0] <= 0 ||
+			reqZonePasses[1] <= 0 ||
+			reqZonePasses[2] <= 0) {
+			satisfied = false;
 		}
 		
 		return satisfied;

@@ -2,73 +2,55 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GravelShrine : MonoBehaviour
-{
+public class GravelShrine : MonoBehaviour {
 
-    int stage = 0;                                              //how many thirds of the way the shrine is to activation
+	public GameObject[] lights;
+	public GameObject[] pits = new GameObject[7] {null, null, null, null, null, null, null};
 
-    //public bool[] onWs = new bool[] { false, false, false, false, false, false, false };        //the number of fish required on each w point to activate the shrine
+	public int[] onWs = new int[] {0, 0, 0, 0, 0, 0, 0};        //the number of fish required on each w point to activate the shrine
 
-    public GameObject[] pits = new GameObject[] {null, null, null, null, null, null, null};
+	KamiManager kamiManager;                                    //reference to the kami manager
+	HyperCreature player;                                       //reference to the hyper creature
 
-    float maxPoints = 0.0f;                                     //the total points the shine needs to activate
-    float points = 0.0f;                                        //the current number of points the shrine has
+	ParticleSystem particleObj_LA, particleObj_LB, particleObj_RA, particleObj_RB;
 
-    bool activated = false;                                     //is the shine activated
+	float maxPoints = 0.0f;                                     //the total points the shine needs to activate
+	float points = 0.0f;                                        //the current number of points the shrine has
 
-    KamiManager kamiManager;                                    //reference to the kami manager
-    ParticleSystem particleObj;                                 //the particle emmiter on this shrine
-    HyperCreature player;                                       //reference to the hyper creature
+	int stage;                                              //how many thirds of the way the shrine is to activation
 
-    //Chached light transforms
-    Transform[] lights = new Transform[] { null, null, null, null, null, null, null };
+	bool fullyActivated;                                     //is the shine activated
 
-    void Start()
-    {
-        kamiManager = KamiManager.instance;
-        player = HyperCreature.instance;
+	void Awake() {
+		fullyActivated = false;
 
-        particleObj = GameObject.Find("ShrineGravelPit/Particles").GetComponent<ParticleSystem>();
+		stage = 0;
 
-        var em = particleObj.emission;
-        em.rate = 0;
+		//Cache particle systems
+		particleObj_LA = transform.GetChild(1).GetComponent<ParticleSystem>();
+		particleObj_LB = transform.GetChild(1).GetChild(0).GetComponent<ParticleSystem>();
 
-        foreach (GameObject node in pits)
-            if (node)
-                maxPoints++;
-        maxPoints *= 2;
+		particleObj_RA = transform.GetChild(2).GetComponent<ParticleSystem>();
+		particleObj_RB = transform.GetChild(2).GetChild(0).GetComponent<ParticleSystem>();
 
-        //cache the transforms of all the lights and set their color
-        lights[0] = GameObject.Find("ShrineGravelPit/Visual/LevelOneLight").transform;
-        lights[0].gameObject.GetComponent<Renderer>().material.color = Color.red;
+		foreach (int node in onWs)
+			maxPoints += node;
 
-        lights[1] = GameObject.Find("ShrineGravelPit/Visual/LevelTwoLight").transform;
-        lights[1].gameObject.GetComponent<Renderer>().material.color = new Color(1, .45f, 0);
+		//Deactivate lights
+		updateLights(new int[] { 0, 0, 0, 0, 0, 0, 0 });
+	}
 
-        lights[2] = GameObject.Find("ShrineGravelPit/Visual/LevelThreeLight").transform;
-        lights[2].gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-
-        lights[3] = GameObject.Find("ShrineGravelPit/Visual/LevelFourLight").transform;
-        lights[3].gameObject.GetComponent<Renderer>().material.color = Color.green;
-
-        lights[4] = GameObject.Find("ShrineGravelPit/Visual/LevelFiveLight").transform;
-        lights[4].gameObject.GetComponent<Renderer>().material.color = Color.cyan;
-
-        lights[5] = GameObject.Find("ShrineGravelPit/Visual/LevelSixLight").transform;
-        lights[5].gameObject.GetComponent<Renderer>().material.color = Color.blue;
-
-        lights[6] = GameObject.Find("ShrineGravelPit/Visual/LevelSevenLight").transform;
-        lights[6].gameObject.GetComponent<Renderer>().material.color = Color.magenta;
-
-        //initalize the lights
-        UpdateLights(new float[] { 0, 0, 0, 0, 0, 0, 0 });
+	void Start() {
+		kamiManager = KamiManager.instance;
+		player = HyperCreature.instance;
     }
 
     public void processPits()
     {
-        float oldPoints = points;
-        points = 0;
-        float[] pointMatrix = new float[] { 0, 0, 0, 0, 0, 0, 0 };
+		int[] pointMatrix = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		float oldPoints = points;
+		points = 0;
+
         int index = 0;
         foreach (GameObject pit in pits)
         {
@@ -80,7 +62,7 @@ public class GravelShrine : MonoBehaviour
                     pointMatrix[index]++;
                 }
 
-				if (pit.GetComponent<PatternRecognition> ().patternMatches) {
+				if (pit.GetComponent<PatternRecognition>().patternMatches) {
 					points++;
 					pointMatrix[index]++;
 				}
@@ -89,10 +71,14 @@ public class GravelShrine : MonoBehaviour
             index++;
         }
 
-        if (points > oldPoints)
-            particleObj.Emit(20);
+		if(points > oldPoints) {
+			particleObj_LA.Play();
+			particleObj_LB.Play();
+			particleObj_RA.Play();
+			particleObj_RB.Play();
+		}
 
-        UpdateLights(pointMatrix);
+		updateLights(pointMatrix);
 
         if (points >= maxPoints / 3 && stage == 0 ||
             points >= (maxPoints / 3) * 2 && stage == 1)
@@ -119,49 +105,82 @@ public class GravelShrine : MonoBehaviour
             }
         }
 
-        if (points >= maxPoints && !activated)
+		if (points >= maxPoints && !fullyActivated)
         {
-            activated = true;
-            CancelInvoke();
+			CancelInvoke();	//clear invoked methods
+
+			//Spawn remaining kami
             for (int i = 0; i < stage - kamiManager.NumberOfHappyKami(2); i++)
-                Invoke("MakeKami", kamiManager.kamiArriveTime);
-            var em = particleObj.emission;
-            em.rate = 5;
+				Invoke("MakeKami", kamiManager.kamiArriveTime);
+
+			//start repeating kami spawning
+			InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
+
+			//Emit Particles
+			particleObj_LA.loop = true;
+			particleObj_LB.loop = true;
+			particleObj_RA.loop = true;
+			particleObj_RB.loop = true;
+
+			//Increase peripheral vision
             player.w_perif++;
             player.WMoveAllHyperObjects();
-            //kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7));
-            InvokeRepeating("MakeKami", kamiManager.kamiArriveTime, kamiManager.kamiComeRate);
-            //GetComponent<HyperObject>().dullCoef = .1f;
+
+			fullyActivated = true;
         }
 
-        if (points < maxPoints && activated)
+		if (points < maxPoints && fullyActivated)
         {
-            activated = false;
-            CancelInvoke();
-            player.w_perif--;
-            player.WMoveAllHyperObjects();
-            InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
-            var em = particleObj.emission;
-            em.rate = 0;
-        }
-    }
+			CancelInvoke();	//clear invoked methods
+			InvokeRepeating("ScareKami", 0, kamiManager.kamiLeaveRate);
 
-    void UpdateLights(float[] pointMatrix)
-    {
-        for (int i = 0; i < 7; i++)
-        {
-            //skip lights that track a layer where no fish are required for activation
-            if (pits[i] != null)
-            {
-                if (pointMatrix[i] != 0)
-                    lights[i].localScale = new Vector3(lights[i].localScale.x, .075f / (2 / pointMatrix[i]), lights[i].localScale.z);
-                else
-                    lights[i].localScale = new Vector3(lights[i].localScale.x, 0, lights[i].localScale.z);
+			//Stop emmitting particles
+			particleObj_LA.loop = false;
+			particleObj_LB.loop = false;
+			particleObj_RA.loop = false;
+			particleObj_RB.loop = false;
 
-                lights[i].localPosition = new Vector3(lights[i].localPosition.x, 1.41f + (.1f * i) - (.075f / 2.0f) + (lights[i].localScale.y / 2.0f), lights[i].localPosition.z);
-            }
+			//Decrease peripheral vision
+			player.w_perif--;
+			player.WMoveAllHyperObjects();
+
+			fullyActivated = false;
         }
-    }
+	}
+
+	void updateLights(int[] pointMatrix) {
+		Color temp = Color.white;
+
+		if(lights.Length == 14) {
+			//Red
+			lights[0].GetComponent<Renderer>().material.color = pointMatrix[0] >= 1 ? Color.red : (Color.white * 0.1f);
+			lights[1].GetComponent<Renderer>().material.color = pointMatrix[0] >= 2 ? Color.red : (Color.white * 0.1f);
+
+			//Orange
+			lights[2].GetComponent<Renderer>().material.color = pointMatrix[1] >= 1 ? new Color(1.0f, 0.45f, 0.0f) : (Color.white * 0.1f);
+			lights[3].GetComponent<Renderer>().material.color = pointMatrix[1] >= 2 ? new Color(1.0f, 0.45f, 0.0f) : (Color.white * 0.1f);
+
+			//Yellow
+			lights[4].GetComponent<Renderer>().material.color = pointMatrix[2] >= 1 ? Color.yellow : (Color.white * 0.1f);
+			lights[5].GetComponent<Renderer>().material.color = pointMatrix[2] >= 2 ? Color.yellow : (Color.white * 0.1f);
+
+			//Green
+			lights[6].GetComponent<Renderer>().material.color = pointMatrix[3] >= 1 ? Color.green : (Color.white * 0.1f);
+			lights[7].GetComponent<Renderer>().material.color = pointMatrix[3] >= 2 ? Color.green : (Color.white * 0.1f);
+
+			//Cyan
+			lights[8].GetComponent<Renderer>().material.color = pointMatrix[4] >= 1 ? Color.cyan : (Color.white * 0.1f);
+			lights[9].GetComponent<Renderer>().material.color = pointMatrix[4] >= 2 ? Color.cyan : (Color.white * 0.1f);
+
+			//Blue
+			lights[10].GetComponent<Renderer>().material.color = pointMatrix[5] >= 1 ? Color.blue : (Color.white * 0.1f);
+			lights[11].GetComponent<Renderer>().material.color = pointMatrix[5] >= 2 ? Color.blue : (Color.white * 0.1f);
+
+			//Magenta
+			lights[12].GetComponent<Renderer>().material.color = pointMatrix[6] >= 1 ? Color.magenta : (Color.white * 0.1f);
+			lights[13].GetComponent<Renderer>().material.color = pointMatrix[6] >= 2 ? Color.magenta : (Color.white * 0.1f);
+		}
+	}
 
     void MakeKami()
     {

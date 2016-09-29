@@ -21,6 +21,7 @@
 			#include "AutoLight.cginc"
 
 			uniform sampler2D _MainTex;
+			uniform float4 _MainTex_ST;
 			uniform float4 _Color;
 
 			struct vertexInput
@@ -61,7 +62,8 @@
 			
 			float4 frag (vertexOutput input) : COLOR
 			{
-				return tex2D(_MainTex, input.tex.xy) * float4(input.col, 1.0) * LIGHT_ATTENUATION(input);
+				float4 textureColor = tex2D(_MainTex, _MainTex_ST.xy * input.tex.xy + _MainTex_ST.zw);
+				return textureColor * float4(input.col, 1.0) * LIGHT_ATTENUATION(input);
 			}
 			ENDCG
 		}

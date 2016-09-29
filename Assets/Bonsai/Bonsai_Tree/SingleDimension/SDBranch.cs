@@ -77,9 +77,9 @@ public class SDBranch : MonoBehaviour {
 		isWaitingForResponse = false;
 		isTip = true;
 
-		requiredZonePasses = new int[5];
+		requiredZonePasses = new int[3];
 
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < 3; i++) {
 			requiredZonePasses[i] = 0;
 		}
 
@@ -467,7 +467,7 @@ public class SDBranch : MonoBehaviour {
 				branchRotations[i + numBranches] = Quaternion.Euler(newRot);
 
 				//Add the bud at the found position and rotation
-				addBud(newRot, false);
+				addBud(transform.GetChild(1).localPosition, newRot, false);
 			}
 		}
 	}
@@ -697,44 +697,34 @@ public class SDBranch : MonoBehaviour {
 	void checkBoundsForTokyo() {
 		GameObject shrine = FindObjectOfType<SDBonsaiShrine>().gameObject;
 
+		/*
 		//Check for the bounding zone
-		bool a = shrine.GetComponent<SDBonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(1).position, manager);
-		bool b = shrine.GetComponent<SDBonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(2).position, manager);
+		bool a = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(1).position, manager);
+		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(2).position, manager);
 		if(!a || !b) {
 			zoneExtension = true;
-			//Debug.Log(gameObject.name + " extends past zone");
-			if(manager.GetComponent<SDBonsaiManager>() != null)
-				manager.GetComponent<SDBonsaiManager>().registerZoneExtension();
-		}
 
-		//Check for the top requirement
-		if(shrine.GetComponent<SDBonsaiShrine>().passesThroughReqTopZone(transform.GetChild(1).position, 
+			if(manager.GetComponent<BonsaiManager>() != null)
+				manager.GetComponent<BonsaiManager>().registerZoneExtension();
+		}
+		*/
+
+		//Check for Zone A Requirement
+		if(shrine.GetComponent<SDBonsaiShrine>().passesThroughReqZoneA(transform.GetChild(1).position, 
 			transform.GetChild(2).position, manager)) {
 			requiredZonePasses[0] = 1;
 		}
 
-		//Check for the north requirement
-		if(shrine.GetComponent<SDBonsaiShrine>().passesThroughReqNorthZone(transform.GetChild(1).position, 
+		//Check for Zone B Requirement
+		if(shrine.GetComponent<SDBonsaiShrine>().passesThroughReqZoneB(transform.GetChild(1).position, 
 			transform.GetChild(2).position, manager)) {
 			requiredZonePasses[1] = 1;
 		}
 
-		//check for the east requirement
-		if(shrine.GetComponent<SDBonsaiShrine>().passesThroughReqEastZone(transform.GetChild(1).position, 
+		//Check for Zone C Requirement
+		if(shrine.GetComponent<SDBonsaiShrine>().passesThroughReqZoneC(transform.GetChild(1).position, 
 			transform.GetChild(2).position, manager)) {
 			requiredZonePasses[2] = 1;
-		}
-
-		//check for the south requirement
-		if(shrine.GetComponent<SDBonsaiShrine>().passesThroughReqSouthZone(transform.GetChild(1).position, 
-			transform.GetChild(2).position, manager)) {
-			requiredZonePasses[3] = 1;
-		}
-
-		//check for the west requirement
-		if(shrine.GetComponent<SDBonsaiShrine>().passesThroughReqWestZone(transform.GetChild(1).position, 
-			transform.GetChild(2).position, manager)) {
-			requiredZonePasses[4] = 1;
 		}
 
 		//Send passes
@@ -763,30 +753,19 @@ public class SDBranch : MonoBehaviour {
 	void setupTokyoTree() {
 		age += 2;
 
-		GameObject b1 = addBranch(Vector3.zero);
+		GameObject b1 = addBranch(new Vector3(30.0f, 0.0f, 0.0f));
 
-		addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f)).GetComponent<SDBranch>().addBranch(Vector3.up);
-		addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f)).GetComponent<SDBranch>().addBranch(Vector3.up);
-		addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE)).GetComponent<SDBranch>().addBranch(Vector3.up);
-		addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE)).GetComponent<SDBranch>().addBranch(Vector3.up);
+		b1.GetComponent<SDBranch>().addBranch(new Vector3(60.0f, 105.0f, 60.0f))
+			.GetComponent<SDBranch>().addBranch(new Vector3(0.0f, -90.0f, 60.0f));
 
-		GameObject b2 = b1.GetComponent<SDBranch>().addBranch(Vector3.zero);
+		GameObject b2 = b1.GetComponent<SDBranch>().addBranch(new Vector3(322.9f, 3.8f, 37.9f))
+			.GetComponent<SDBranch>().addBranch(new Vector3(300.9f, 337.8f, 4.7f));
 
-		b1.GetComponent<SDBranch>().addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
-		b1.GetComponent<SDBranch>().addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
-		b1.GetComponent<SDBranch>().addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE));
-		b1.GetComponent<SDBranch>().addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE));
+		b2.GetComponent<SDBranch>().addBranch(new Vector3(65.6f, 357.4f, 10.1f));
 
-		GameObject b3 = b2.GetComponent<SDBranch>().addBranch(Vector3.zero);
-
-		//b2.GetComponent<Branch>().addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
-		//b2.GetComponent<Branch>().addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
-		//b2.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE));
-		//b2.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE));
-
-		GameObject b4 = b3.GetComponent<SDBranch>().addBranch(Vector3.zero);
-
-		b4.GetComponent<SDBranch>().addBranch(Vector3.zero);
+		b2.GetComponent<SDBranch>().addBranch(new Vector3(316.4f, 355.3f, 335.5f))
+			.GetComponent<SDBranch>().addBranch(new Vector3(320.1f, 17.0f, 351.4f))
+			.GetComponent<SDBranch>().addBranch(new Vector3(12.6f, 21.2f, 294.5f));
 	}
 
 	#endregion
@@ -826,31 +805,35 @@ public class SDBranch : MonoBehaviour {
 	/*
 	 * Adds a new bud of the given type with the given rotation on the tip of the branch
 	 */
-	GameObject addBud(Vector3 rot, bool isLeaf) {
+	GameObject addBud(Vector3 pos, Vector3 rot, bool isLeaf) {
+		//Instantiate bud
+		GameObject newBud = Instantiate(Resources.Load("Bonsai/SDBudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
+
+		newBud.transform.localPosition = pos;
+		newBud.transform.localRotation = Quaternion.Euler(rot);
+
 		if(!isLeaf) {
-			//Instantiate bud
-			GameObject newBud = Instantiate(Resources.Load("Bonsai/SDBudPrefab"), Vector3.zero, Quaternion.identity, transform) as GameObject;
-
-			newBud.transform.localPosition = transform.GetChild(1).localPosition;
-			newBud.transform.localRotation = Quaternion.Euler(rot);
-			//newBud.transform.localPosition = newBud.transform.localPosition +  * 0.025f;
-
-			//Initialize new branch variables
-			newBud.transform.GetComponent<SDBud>().setisLeaf(isLeaf);
-			newBud.transform.GetComponent<SDBud>().setDepth(depth + 1);
-
-			//Set the branch's w position
-			newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(GetComponent<HyperColliderManager>().w);
-
-			this.registerBudAdded();
-
-			newBud.transform.GetComponent<SDBud>().setManager(manager);
-			manager.GetComponent<SDBonsaiManager>().addBranch();
-
-			return newBud;
+			//Move the visual of the bud to appear on the surface of the branch tip
+			Vector3 temp = newBud.transform.GetChild(0).localPosition;
+			newBud.transform.GetChild(0).localPosition = new Vector3(temp.x, temp.y + 0.02f, temp.z);	//0.02 will work best with a tree of scale .25
 		}
 
-		return null;
+		//Initialize new branch variables
+		newBud.transform.GetComponent<SDBud>().setisLeaf(isLeaf);
+		newBud.transform.GetComponent<SDBud>().setDepth(depth + 1);
+
+		//Set the branch's w position
+		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(GetComponent<HyperColliderManager>().w);
+
+		this.registerBudAdded();
+
+		newBud.transform.GetComponent<SDBud>().setManager(manager);
+		if(isLeaf)
+			manager.GetComponent<SDBonsaiManager>().addLeaf();
+		else
+			manager.GetComponent<SDBonsaiManager>().addBranch();
+
+		return newBud;
 	}
 
 	/*

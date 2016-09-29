@@ -181,15 +181,16 @@ public class Leaf : MonoBehaviour {
 	 * Determines if the branch extends past the bounding zone for the Tokyo contract
 	 */
 	void checkBoundsForTokyo() {
+		/*
 		GameObject shrine = FindObjectOfType<BonsaiShrine>().gameObject;
 		bool a = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(1).position, manager);
 		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.position, manager);
 		if(!a || !b) {
 			zoneExtension = true;
-			//Debug.Log(gameObject.name + " extends past zone");
 			if(manager.GetComponent<BonsaiManager>() != null)
 				manager.GetComponent<BonsaiManager>().registerZoneExtension();
 		}
+		*/
 	}
 
 	/*

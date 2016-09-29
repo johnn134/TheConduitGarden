@@ -5,15 +5,15 @@ public class ScrollDrag : MonoBehaviour {
 
 	public GameObject target;
 
-	public SCROLLTYPE scrollType;
+	public SCROLLAXIS scrollType;
 
 	bool grabbed;
 
 	const float UPPER_LIMIT = 0.9f;
 	const float LOWER_LIMIT = -0.95f;
 
-	public enum SCROLLTYPE {
-		VERTICAL, HORIZONTAL
+	public enum SCROLLAXIS {
+		X, Y, Z
 	};
 
 	// Use this for initialization
@@ -74,7 +74,10 @@ public class ScrollDrag : MonoBehaviour {
 	public void dropScroll() {
 		grabbed = false;
 
-		transform.parent.GetComponent<ContractScroll>().closeScroll();
+		if(transform.parent.GetComponent<ContractScroll>().isActive)
+			transform.parent.GetComponent<ContractScroll>().closeScroll();
+		else
+			transform.parent.GetComponent<ContractScroll>().openScroll();
 	}
 
 	/*
@@ -91,7 +94,7 @@ public class ScrollDrag : MonoBehaviour {
 			float offset;
 
 			switch(scrollType) {
-				case SCROLLTYPE.VERTICAL:
+				case SCROLLAXIS.Y:
 					offset = visualBottom.position.y - transform.position.y;	//between bottom visual and drag point
 
 					//reposition the visual of the bottom of the scroll object
@@ -109,7 +112,7 @@ public class ScrollDrag : MonoBehaviour {
 						transform.position.z);
 					
 					break;
-				case SCROLLTYPE.HORIZONTAL:
+				case SCROLLAXIS.X:
 					offset = visualBottom.position.x - transform.position.x;	//between bottom visual and drag point
 
 					//reposition the visual of the bottom of the scroll object
@@ -125,6 +128,24 @@ public class ScrollDrag : MonoBehaviour {
 							visualTopPos.x + UPPER_LIMIT * transform.parent.lossyScale.y - offset),
 						transform.position.y,
 						transform.position.z);
+
+					break;
+				case SCROLLAXIS.Z:
+					offset = visualBottom.position.z - transform.position.z;	//between bottom visual and drag point
+
+					//reposition the visual of the bottom of the scroll object
+					visualBottom.position = new Vector3(visualBottom.position.x, 
+						visualBottom.position.y,
+						Mathf.Clamp(otherPos.x + offset, 
+							visualTopPos.z + LOWER_LIMIT * transform.parent.lossyScale.y, 
+							visualTopPos.z + UPPER_LIMIT * transform.parent.lossyScale.y));
+
+					//reposition this point
+					transform.position = new Vector3(visualBottom.position.x, 
+						visualBottom.position.y,
+						Mathf.Clamp(otherPos.x + offset, 
+							visualTopPos.z + LOWER_LIMIT * transform.parent.lossyScale.y - offset, 
+							visualTopPos.z + UPPER_LIMIT * transform.parent.lossyScale.y - offset));
 
 					break;
 			}

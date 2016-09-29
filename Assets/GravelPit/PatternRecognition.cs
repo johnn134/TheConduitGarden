@@ -89,7 +89,7 @@ public class PatternRecognition : MonoBehaviour {
 						float drawnVectorX = drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnVector.x;
 						float drawnVectorZ = drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnVector.z;
 
-						if (Mathf.Abs(patternVectorX - drawnVectorX) <= rangeCheck && Mathf.Abs(patternVectorZ - drawnVectorZ) <= rangeCheck) {
+						if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
 							//Debug.Log("Line within range.");
 							thisCheckValue += 0.5f;
 							//Debug.Log(thisCheckValue);
@@ -100,20 +100,44 @@ public class PatternRecognition : MonoBehaviour {
 
 						if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().isVertical == true) {
 							for (int k = 0; k < drawnPattern.transform.GetChild(j).transform.childCount; k++) {
-								if (Mathf.Abs(originalPattern.transform.GetChild(i).transform.position.x - drawnPattern.transform.GetChild(j).GetChild(k).transform.position.x) <= rangeCheck) {
-									//Debug.Log("Node within range.");
-									thisCheckValue += section;
-									//Debug.Log(thisCheckValue);
+								float patternXPosition = originalPattern.transform.GetChild(i).transform.position.x;
+								float drawnXPosition = drawnPattern.transform.GetChild(j).GetChild(k).transform.position.x;
+								if (drawnXPosition >= 0) {
+									if (Mathf.Abs(patternXPosition - drawnXPosition) <= rangeCheck) {
+										//Debug.Log("Node within range.");
+										thisCheckValue += section;
+										//Debug.Log(thisCheckValue);
+									}
+								}
+
+								else if (drawnXPosition < 0) {
+									if (Mathf.Abs(drawnXPosition - patternXPosition) <= rangeCheck) {
+										//Debug.Log("Node within range.");
+										thisCheckValue += section;
+										//Debug.Log(thisCheckValue);
+									}
 								}
 							}
 						} 
 
 						else if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().isVertical == false) {
 							for (int k = 0; k < drawnPattern.transform.GetChild(j).transform.childCount; k++) {
-								if (Mathf.Abs(originalPattern.transform.GetChild(i).transform.position.z - drawnPattern.transform.GetChild(j).GetChild(k).transform.position.z) <= rangeCheck) {
-									//Debug.Log("Node within range.");
-									thisCheckValue += section;
-									//Debug.Log(thisCheckValue);
+								float patternZPosition = originalPattern.transform.GetChild(i).transform.position.z;
+								float drawnZPosition = drawnPattern.transform.GetChild(j).GetChild(k).transform.position.z;
+								if (drawnZPosition >= 0) {
+									if (Mathf.Abs(patternZPosition - drawnZPosition) <= rangeCheck) {
+										//Debug.Log("Node within range.");
+										thisCheckValue += section;
+										//Debug.Log(thisCheckValue);
+									}
+								}
+
+								else if (drawnZPosition < 0) {
+									if (Mathf.Abs(drawnZPosition - patternZPosition) <= rangeCheck) {
+										//Debug.Log("Node within range.");
+										thisCheckValue += section;
+										//Debug.Log(thisCheckValue);
+									}
 								}
 							}
 						}

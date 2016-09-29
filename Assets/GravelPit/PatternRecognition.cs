@@ -13,9 +13,12 @@ public class PatternRecognition : MonoBehaviour {
 	public int lineNumber;
 	public int check;
 	public int index;
+	public GravelShrine gravelShrine;
 
 	// Use this for initialization
 	void Start() {
+		gravelShrine = Object.FindObjectOfType<GravelShrine>();
+
 		linesOnDimension = 0.0f;
 		for (int i = 0; i < originalPattern.transform.childCount; i++) {
 			if (originalPattern.transform.GetChild (i).GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
@@ -38,6 +41,7 @@ public class PatternRecognition : MonoBehaviour {
 				patternMatches = true;
 				Debug.Log ("Current Plane: " + GetComponent<HyperColliderManager>().w);
 				Debug.Log ("Pattern matches.");
+				gravelShrine.processPits();
 				check = 1;
 			} 
 

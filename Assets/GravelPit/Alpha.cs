@@ -8,7 +8,6 @@ public class Alpha : MonoBehaviour {
 	public GameObject drawnPattern;
 	public GameObject drawnLine;
 	public GameObject drawnNode;
-	public PatternRecognition recognitionScript;
 	public GameObject tine1;
 	public Vector3 tine1Position;
 	public bool tine1Collision;
@@ -281,6 +280,7 @@ public class Alpha : MonoBehaviour {
 			}
 
 			CalculateAmountRaked();
+			gravelShrine.processPits();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Alpha2)) {
@@ -293,6 +293,7 @@ public class Alpha : MonoBehaviour {
 			}
 
 			CalculateAmountRaked();
+			gravelShrine.processPits();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Alpha3)) {
@@ -305,6 +306,7 @@ public class Alpha : MonoBehaviour {
 			}
 
 			CalculateAmountRaked();
+			gravelShrine.processPits();
 		}
 
 		frame++;

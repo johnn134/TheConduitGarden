@@ -40,7 +40,6 @@ public class FishShrine : MonoBehaviour {
 
 	void Start() {
 		kamiManager = KamiManager.instance;
-		player = HyperCreature.instance;
     }
 	
     public void processFish(List<GameObject> allFish)

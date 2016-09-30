@@ -43,7 +43,6 @@ public class GravelShrine : MonoBehaviour {
 
 	void Start() {
 		kamiManager = KamiManager.instance;
-		player = HyperCreature.instance;
     }
 
     public void processPits()

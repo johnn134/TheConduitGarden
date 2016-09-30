@@ -81,8 +81,6 @@ public class BonsaiShrine : MonoBehaviour {
 	void Start () {
         kamiManager = KamiManager.instance;
 
-        player = HyperCreature.instance;
-
         shears = GameObject.Find("Shears").transform;
     }
 	

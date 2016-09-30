@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013097679480}
   - 114: {fileID: 114000011182070664}
+  - 120: {fileID: 120000013414743238}
   m_Layer: 0
   m_Name: Pattern Line
   m_TagString: Untagged
@@ -185,11 +186,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5be48d2f08156a442a7439f91da90ef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  rake: {fileID: 1000012021926226, guid: 9702a6b45caf11e418e28571e8dc3caa, type: 2}
   patternStartNode: {fileID: 0}
   patternEndNode: {fileID: 0}
-  patternVectorFromStart: {x: 0, y: 0, z: 0}
-  patternVectorFromEnd: {x: 0, y: 0, z: 0}
+  patternVector: {x: 0, y: 0, z: 0}
   isVertical: 1
-  wasChecked: 0
-  patternLineNumber: 2
   patternDimension: 1
+--- !u!120 &120000013414743238
+LineRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014229976118}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    startWidth: 1
+    endWidth: 1
+    m_StartColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_EndColor:
+      serializedVersion: 2
+      rgba: 4294967295
+  m_UseWorldSpace: 1

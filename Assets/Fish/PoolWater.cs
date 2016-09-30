@@ -3,10 +3,10 @@ using System.Collections;
 
 public class PoolWater : MonoBehaviour {
 
-    public float gap;                               //how far from the edge of the pool the area where the fish can get wander points is
-    public float happySpeed = .5f;                  //the speed of the fish in this pool when happy
-    public float hungrySpeed = .1f;                 //the speed of the fish in this pool when hungry
-    public float huntingSpeed = 1f;                 //the speed of the fish in this pool when hunting
+    public float gap;				//how far from the edge of the pool the area where the fish can get wander points is
+    public float happySpeed = .5f;	//the speed of the fish in this pool when happy
+    public float hungrySpeed = .1f;	//the speed of the fish in this pool when hungry
+    public float huntingSpeed = 1f;	//the speed of the fish in this pool when hunting
 
     /*void Update()
     {

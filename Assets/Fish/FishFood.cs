@@ -3,13 +3,13 @@ using System.Collections;
 
 public class FishFood : MonoBehaviour {
 
+	public int lifeTime = 10;
+
     FishManager fishManager;
-    bool inWater = false;
-    public int lifeTime = 10;
 
     HyperObject myHyper;
 
-    Rigidbody _cachedRigidbody;
+	Rigidbody _cachedRigidbody;
 
 	void Start () {
         //locate the fish manager
@@ -25,16 +25,14 @@ public class FishFood : MonoBehaviour {
     //function called by water to let the fish know if it is in the water or not
     public void InWater(bool isIn)
     {
-        if (isIn)
+        if(isIn)
         {
             _cachedRigidbody.drag = 70;
             fishManager.alertFood(myHyper.w, true);
-            inWater = true;
         }
         else
         {
             _cachedRigidbody.drag = 0;
-            inWater = false;
         }
     }
 

@@ -4,21 +4,21 @@ using System.Collections.Generic;
 
 public class FishShrine : MonoBehaviour {
 
-	public GameObject[] redLights, orangeLights, blueLights, magentaLights;
+	public GameObject[] redLights, yellowLights, cyanLights, magentaLights;
 
-    public int[] onWs = new int[] {0, 0, 0, 0, 0, 0, 0};        //the number of fish required on each w point to activate the shrine
+    public int[] onWs = new int[] {0, 0, 0, 0, 0 };	//the number of fish required on each w point to activate the shrine
 
-	KamiManager kamiManager;                                    //reference to the kami manager
-	HyperCreature player;                                       //reference to the hyper creature
+	KamiManager kamiManager;						//reference to the kami manager
+	HyperCreature player;							//reference to the hyper creature
 
 	ParticleSystem particleObj_LA, particleObj_LB, particleObj_RA, particleObj_RB;
 
-    float maxPoints = 0.0f;                                     //the total points the shine needs to activate
-    float points = 0.0f;                                        //the current number of points the shrine has
+    float maxPoints = 0.0f;							//the total points the shine needs to activate
+    float points = 0.0f;							//the current number of points the shrine has
 
-	int stage;                                              //how many thirds of the way the shrine is to activation
+	int stage;										//how many thirds of the way the shrine is to activation
 
-    bool fullyActivated;                                     //is the shine activated
+    bool fullyActivated;							//is the shine activated
 
 	void Awake() {
 		fullyActivated = false;
@@ -36,7 +36,7 @@ public class FishShrine : MonoBehaviour {
 			maxPoints += node;
 
 		//Deactivate lights
-		updateLights(new int[] { 0, 0, 0, 0, 0, 0, 0 });
+		updateLights(new int[] { 0, 0, 0, 0, 0 });
 	}
 
 	void Start() {
@@ -46,7 +46,7 @@ public class FishShrine : MonoBehaviour {
 	
     public void processFish(List<GameObject> allFish)
     {
-		int[] pointMatrix = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		int[] pointMatrix = new int[] { 0, 0, 0, 0, 0 };
 		float oldPoints = points;
 		points = 0;
 
@@ -157,45 +157,45 @@ public class FishShrine : MonoBehaviour {
 				redLights[2].GetComponent<Renderer>().material.color = temp;
 			}
 		}
-		if(orangeLights.Length == 3) {
-			if(orangeLights[0] != null) {
-				temp = fish[1] >= 1 ? new Color(1.0f, 0.45f, 0.0f) : (Color.white * 0.1f);
-				orangeLights[0].GetComponent<Renderer>().material.color = temp;
+		if(yellowLights.Length == 3) {
+			if(yellowLights[0] != null) {
+				temp = fish[1] >= 1 ? Color.yellow : (Color.white * 0.1f);
+				yellowLights[0].GetComponent<Renderer>().material.color = temp;
 			}
-			if(orangeLights[1] != null) {
-				temp = fish[1] >= 2 ? new Color(1.0f, 0.45f, 0.0f) : (Color.white * 0.1f);
-				orangeLights[1].GetComponent<Renderer>().material.color = temp;
+			if(yellowLights[1] != null) {
+				temp = fish[1] >= 2 ? Color.yellow : (Color.white * 0.1f);
+				yellowLights[1].GetComponent<Renderer>().material.color = temp;
 			}
-			if(orangeLights[2] != null) {
-				temp = fish[1] >= 3 ? new Color(1.0f, 0.45f, 0.0f) : (Color.white * 0.1f);
-				orangeLights[2].GetComponent<Renderer>().material.color = temp;
+			if(yellowLights[2] != null) {
+				temp = fish[1] >= 3 ? Color.yellow : (Color.white * 0.1f);
+				yellowLights[2].GetComponent<Renderer>().material.color = temp;
 			}
 		}
-		if(blueLights.Length == 3) {
-			if(blueLights[0] != null) {
-				temp = fish[5] >= 1 ? Color.blue : (Color.white * 0.1f);
-				blueLights[0].GetComponent<Renderer>().material.color = temp;
+		if(cyanLights.Length == 3) {
+			if(cyanLights[0] != null) {
+				temp = fish[3] >= 1 ? Color.cyan : (Color.white * 0.1f);
+				cyanLights[0].GetComponent<Renderer>().material.color = temp;
 			}
-			if(blueLights[1] != null) {
-				temp = fish[5] >= 2 ? Color.blue : (Color.white * 0.1f);
-				blueLights[1].GetComponent<Renderer>().material.color = temp;
+			if(cyanLights[1] != null) {
+				temp = fish[3] >= 2 ? Color.cyan : (Color.white * 0.1f);
+				cyanLights[1].GetComponent<Renderer>().material.color = temp;
 			}
-			if(blueLights[2] != null) {
-				temp = fish[5] >= 3 ? Color.blue : (Color.white * 0.1f);
-				blueLights[2].GetComponent<Renderer>().material.color = temp;
+			if(cyanLights[2] != null) {
+				temp = fish[3] >= 3 ? Color.cyan : (Color.white * 0.1f);
+				cyanLights[2].GetComponent<Renderer>().material.color = temp;
 			}
 		}
 		if(magentaLights.Length == 3) {
 			if(magentaLights[0] != null) {
-				temp = fish[6] >= 1 ? Color.magenta : (Color.white * 0.1f);
+				temp = fish[4] >= 1 ? Color.magenta : (Color.white * 0.1f);
 				magentaLights[0].GetComponent<Renderer>().material.color = temp;
 			}
 			if(magentaLights[1] != null) {
-				temp = fish[6] >= 2 ? Color.magenta : (Color.white * 0.1f);
+				temp = fish[4] >= 2 ? Color.magenta : (Color.white * 0.1f);
 				magentaLights[1].GetComponent<Renderer>().material.color = temp;
 			}
 			if(magentaLights[2] != null) {
-				temp = fish[6] >= 3 ? Color.magenta : (Color.white * 0.1f);
+				temp = fish[4] >= 3 ? Color.magenta : (Color.white * 0.1f);
 				magentaLights[2].GetComponent<Renderer>().material.color = temp;
 			}
 		}
@@ -203,7 +203,7 @@ public class FishShrine : MonoBehaviour {
 
     void MakeKami()
     {
-        kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, 7), 0);
+		kamiManager.MakeKami(kamiManager.transform.position, transform.rotation, Random.Range(0, HyperObject.W_RANGE + 1), 0);
     }
 
     void ScareKami()

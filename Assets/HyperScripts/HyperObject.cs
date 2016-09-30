@@ -24,6 +24,8 @@ public class HyperObject : MonoBehaviour {
 
 	HyperCreature hypPlayer;						//Reference to the player
 
+	public const int W_RANGE = 4;
+
 	#region Callbacks
 
 	void Awake(){
@@ -131,7 +133,7 @@ public class HyperObject : MonoBehaviour {
 
     //move this object along the w axis by deltaW
 	public bool SlideW(int deltaW){
-        if ((deltaW > 0 && w != 6 && w + w_depth != 6) || (deltaW < 0 && w != 0 && w + w_depth != 0))
+		if ((deltaW > 0 && w != W_RANGE && w + w_depth != W_RANGE) || (deltaW < 0 && w != 0 && w + w_depth != 0))
         {
             bool childrenClear = true;
 
@@ -173,21 +175,15 @@ public class HyperObject : MonoBehaviour {
 				targetColor = Color.red;
 				break;
 			case 1:
-				targetColor = new Color(1, .45f, 0);
-				break;
-			case 2:
 				targetColor = Color.yellow;
 				break;
-			case 3:
+			case 2:
 				targetColor = Color.green;
 				break;
-			case 4:
+			case 3:
 				targetColor = Color.cyan;
 				break;
-			case 5:
-				targetColor = Color.blue;
-				break;
-			case 6:
+			case 4:
 				targetColor = Color.magenta;
 				break;
 		}
@@ -199,7 +195,8 @@ public class HyperObject : MonoBehaviour {
 
 		for(float i = 0.0f; i <= 1.0f; i += .1f){
 
-			_cachedRenderer.material.SetColor("_Color", Color.Lerp(_cachedRenderer.material.GetColor("_Color"), targetColor, .2f));
+			_cachedRenderer.material.SetColor("_Color", Color.Lerp(_cachedRenderer.material.GetColor("_Color"), 
+																	targetColor, .2f));
 
 			yield return null;
 		}
@@ -227,7 +224,8 @@ public class HyperObject : MonoBehaviour {
 	 */
 	float PeripheralAlpha(int newW)
 	{
-		if (Mathf.Abs(newW - w) <= hypPlayer.w_perif * 2 || Mathf.Abs(newW - (w + w_depth)) <= hypPlayer.w_perif * 2) {	//This object is in the player's peripheral range
+		if (Mathf.Abs(newW - w) <= hypPlayer.w_perif * 2
+			|| Mathf.Abs(newW - (w + w_depth)) <= hypPlayer.w_perif * 2) {	//This object is in the player's peripheral range
 			if (_cachedRenderer.material.color.a == .2f)
 				return -1.0f;
 
@@ -267,10 +265,14 @@ public class HyperObject : MonoBehaviour {
 	void setOpaqueShader() {
 		Color temp = _cachedRenderer.material.GetColor("_Color");
 		_cachedRenderer.material.shader = Shader.Find("FourthDimension/FourthDimensionOpaqueShader");
+
+		//Set texture data
 		_cachedRenderer.material.SetTexture("_MainTex", texture);
 		_cachedRenderer.material.SetTextureScale("_MainTex", 
 			new Vector2(tilingX == 0 ? 1.0f : tilingX, tilingY == 0 ? 1.0f : tilingY));
 		_cachedRenderer.material.SetTextureOffset("_MainTex", new Vector2(offsetX, offsetY));
+
+		//Set color
 		_cachedRenderer.material.SetColor("_Color", temp);
 	}
 
@@ -280,10 +282,14 @@ public class HyperObject : MonoBehaviour {
 	void setTransparentShader() {
 		Color temp = _cachedRenderer.material.GetColor("_Color");
 		_cachedRenderer.material.shader = Shader.Find("FourthDimension/FourthDimensionTransparentShader");
+
+		//Set texture data
 		_cachedRenderer.material.SetTexture("_MainTex", texture);
 		_cachedRenderer.material.SetTextureScale("_MainTex", 
 			new Vector2(tilingX == 0 ? 1.0f : tilingX, tilingY == 0 ? 1.0f : tilingY));
 		_cachedRenderer.material.SetTextureOffset("_MainTex", new Vector2(offsetX, offsetY));
+
+		//Set color
 		_cachedRenderer.material.SetColor("_Color", temp);
 	}
 

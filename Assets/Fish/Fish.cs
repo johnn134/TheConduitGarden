@@ -2,12 +2,12 @@
 using System.Collections;
 
 public class Fish : MonoBehaviour {
-	public enum Size{
+	public enum Size {
 		Small,
 		Medium,
 		Large
 	}
-	public enum State{
+	public enum State {
 		Happy,
 		Hungry,
 		Hunting,

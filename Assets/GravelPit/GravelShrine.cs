@@ -8,7 +8,6 @@ public class GravelShrine : MonoBehaviour {
 	public GameObject[] pits = new GameObject[] {null, null, null, null, null};
 
 	KamiManager kamiManager;                                    //reference to the kami manager
-	HyperCreature player;                                       //reference to the hyper creature
 
 	ParticleSystem particleObj_LA, particleObj_LB, particleObj_RA, particleObj_RB;
 
@@ -125,8 +124,6 @@ public class GravelShrine : MonoBehaviour {
 			particleObj_RB.loop = true;
 
 			//Increase peripheral vision
-            player.w_perif++;
-            player.WMoveAllHyperObjects();
 
 			fullyActivated = true;
         }
@@ -143,8 +140,6 @@ public class GravelShrine : MonoBehaviour {
 			particleObj_RB.loop = false;
 
 			//Decrease peripheral vision
-			player.w_perif--;
-			player.WMoveAllHyperObjects();
 
 			fullyActivated = false;
         }

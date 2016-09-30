@@ -13,8 +13,6 @@ public class BonsaiShrine : MonoBehaviour {
 
 	KamiManager kamiManager;
 
-	HyperCreature player;
-
 	ParticleSystem particleObj_LA, particleObj_LB, particleObj_RA, particleObj_RB;
 
 	int activationStage;
@@ -326,8 +324,6 @@ public class BonsaiShrine : MonoBehaviour {
 			particleObj_RB.loop = true;
 
 			//Increase Peripheral vision
-            player.w_perif++;
-			player.WMoveAllHyperObjects();
 
 			fullyActivated = true;
         }
@@ -344,8 +340,6 @@ public class BonsaiShrine : MonoBehaviour {
 			particleObj_RB.loop = false;
 
 			//Decrease Peripheral vision
-			player.w_perif--;
-			player.WMoveAllHyperObjects();
 
 			fullyActivated = false;
         }

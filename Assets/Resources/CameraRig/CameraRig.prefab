@@ -526,8 +526,7 @@ MonoBehaviour:
   blockMoveMethods: 0
   callWMoveOnAllHyperScripts: 0
   controlType: 0
-  point: {fileID: 0}
-  pointer: {fileID: 0}
+  interactionButton: 0
 --- !u!114 &114000011487607970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -582,7 +581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58507c59e4061cb4a893b833d6d8c25e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  w: 0
+  w: 2
   w_perif: 0
 --- !u!114 &114000013108376346
 MonoBehaviour:
@@ -677,8 +676,7 @@ MonoBehaviour:
   blockMoveMethods: 0
   callWMoveOnAllHyperScripts: 0
   controlType: 0
-  point: {fileID: 0}
-  pointer: {fileID: 0}
+  interactionButton: 0
 --- !u!114 &114000014029315924
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -690,6 +688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96b7c9a9c8e3b0743bb4a2b848807679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visionDuration: 60
 --- !u!114 &114000014180224874
 MonoBehaviour:
   m_ObjectHideFlags: 1

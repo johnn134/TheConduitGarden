@@ -275,7 +275,7 @@ public class Alpha : MonoBehaviour {
 			frame = 0;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Alpha1)) {
+		/*if (Input.GetKeyDown(KeyCode.Alpha1)) {
 			clearPitSection1();
 			raked = 0;
 			foreach (int coordinate in coordinates) {
@@ -312,7 +312,7 @@ public class Alpha : MonoBehaviour {
 
 			CalculateAmountRaked();
 			gravelShrine.processPits();
-		}
+		}*/
 
 		frame++;
 	}

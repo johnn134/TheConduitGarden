@@ -32,10 +32,8 @@ public class KamiManager : MonoBehaviour {
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
-    }
 
-    void Start () {
-	    allKami = new List<GameObject>();
+		allKami = new List<GameObject>();
     }
 
     /*

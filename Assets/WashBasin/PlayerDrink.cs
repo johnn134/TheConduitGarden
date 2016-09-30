@@ -58,8 +58,11 @@ public class PlayerDrink : MonoBehaviour {
 	 * Increase player peripheral vision
 	 */
 	void addDrinkEffect() {
-		player_periph = hyperC.w_perif;
-        hyperC.w_perif = 3;
+		if (!isEffected) {
+			player_periph = hyperC.w_perif;
+			hyperC.w_perif = 3;
+			hyperC.WMoveAllHyperObjects ();
+		}
 	}
 
 	/*
@@ -67,5 +70,6 @@ public class PlayerDrink : MonoBehaviour {
 	 */
 	void removeDrinkEffect() {
         hyperC.w_perif = player_periph;
+		hyperC.WMoveAllHyperObjects ();
 	}
 }

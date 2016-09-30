@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c52e291e377962e42adcdc96c9b221dd
-timeCreated: 1473831653
+guid: 13e67d017773a4848a57a0caa5752d2a
+timeCreated: 1475136763
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -8,40 +8,45 @@ ModelImporter:
     100000: Cube
     100002: Cube_001
     100004: Cube_002
-    100006: House
-    100008: Plane
-    100010: Porch
-    100012: Roof
-    100014: //RootNode
+    100006: Cube_003
+    100008: Cube_004
+    100010: Cube_005
+    100012: Cube_006
+    100014: Cube_007
+    100016: //RootNode
     400000: Cube
     400002: Cube_001
     400004: Cube_002
-    400006: House
-    400008: Plane
-    400010: Porch
-    400012: Roof
-    400014: //RootNode
+    400006: Cube_003
+    400008: Cube_004
+    400010: Cube_005
+    400012: Cube_006
+    400014: Cube_007
+    400016: //RootNode
     2300000: Cube
     2300002: Cube_001
     2300004: Cube_002
-    2300006: House
-    2300008: Plane
-    2300010: Porch
-    2300012: Roof
+    2300006: Cube_003
+    2300008: Cube_004
+    2300010: Cube_005
+    2300012: Cube_006
+    2300014: Cube_007
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
-    3300006: House
-    3300008: Plane
-    3300010: Porch
-    3300012: Roof
-    4300000: Cube_001
-    4300002: Roof
-    4300004: House
-    4300006: Cube_002
-    4300008: Porch
-    4300010: Cube
-    4300012: Plane
+    3300006: Cube_003
+    3300008: Cube_004
+    3300010: Cube_005
+    3300012: Cube_006
+    3300014: Cube_007
+    4300000: Cube_006
+    4300002: Cube_003
+    4300004: Cube_002
+    4300006: Cube_001
+    4300008: Cube
+    4300010: Cube_004
+    4300012: Cube_005
+    4300014: Cube_007
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -68,12 +73,12 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.5
+    globalScale: 0.1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0

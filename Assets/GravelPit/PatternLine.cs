@@ -12,7 +12,6 @@ public class PatternLine : MonoBehaviour {
 
 	void Awake() {
 		player = HyperCreature.instance;
-		player.w = 1;
 		patternStartNode = transform.GetChild (0).gameObject;
 		patternEndNode = transform.GetChild (1).gameObject;
 

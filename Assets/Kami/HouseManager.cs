@@ -13,7 +13,7 @@ public class HouseManager : MonoBehaviour {
 
 	void fillHouses(int numKami) {
 		for(int i = 0; i < numKami; i++) {
-			KamiManager.instance.MakeKami(houses[i].transform.position + new Vector3(0.0f, 0.1f, -0.05f), Quaternion.identity, Random.Range(0, 7), 0);
+			KamiManager.instance.MakeKami(houses[i].transform.position + new Vector3( -0.05f, 0.1f, 0.0f), Quaternion.identity, Random.Range(0, 7), 0);
 		}
 
 		KamiManager.instance.MakeKamiSad();

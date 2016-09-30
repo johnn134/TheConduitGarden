@@ -24,7 +24,10 @@ public class ReservoirPool : MonoBehaviour {
 
     void SpawnFish()
     {
-        fishManager.MakeFish(transform.position, transform.rotation, GetComponent<HyperColliderManager>().w, false);
+        fishManager.MakeFish(transform.position, 
+							 transform.rotation, 
+							 GetComponent<HyperColliderManager>().w, 
+							 false);
         Invoke("SpawnFish", spawnTime);
     }
 }

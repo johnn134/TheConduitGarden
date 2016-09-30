@@ -14,8 +14,7 @@ public class HyperCreature : MonoBehaviour {
     {
         fadeImage = GameObject.Find("Canvas/Image").GetComponent<UnityEngine.UI.Image>();
 
-        var fadeMat = fadeImage.material;
-        fadeMat.color = Color.black;
+        fadeImage.material.color = Color.black;
 
         //declare as singleton
         if (instance == null)
@@ -67,7 +66,7 @@ public class HyperCreature : MonoBehaviour {
 
 	//public function for other objects to call to tell the creature to move along the w axis
 	public void WMove(int deltaW){
-		if((deltaW > 0 && w != 6) || (deltaW < 0 && w != 0)){
+		if((deltaW > 0 && w != HyperObject.W_RANGE) || (deltaW < 0 && w != 0)){
 			w += deltaW;
 		}
 	}

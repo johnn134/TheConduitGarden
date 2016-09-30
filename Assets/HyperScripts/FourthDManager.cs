@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class FourthDManager : MonoBehaviour {
 
-    public static int MAX_W = 6;
+    public static int MAX_W = 4;
     public static int MIN_W = 0;
 
     List<GameObject> allHypColliders;

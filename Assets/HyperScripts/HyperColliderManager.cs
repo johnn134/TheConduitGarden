@@ -10,15 +10,12 @@ public class HyperColliderManager : MonoBehaviour {
     public bool movable = true;            			//is the object movable?
 
     public bool isParent = false;           		//is this object the parent?
-    //NOTE: Enable even if no children OR if has both HyperObject and HyperColliderManager DO NOT enable this as parent and enable on the other
-
-	HyperCreature hypPlayer;						//Reference to the player
+    //NOTE: Enable even if no children OR if has both HyperObject and HyperColliderManager 
+	//		DO NOT enable this as parent and enable on the other
 
     FourthDManager hyperManager;
 
 	void Awake(){
-        hypPlayer = HyperCreature.instance;
-
         hyperManager = FourthDManager.instance;
 	}
 
@@ -59,7 +56,8 @@ public class HyperColliderManager : MonoBehaviour {
     //move this object along the w axis by deltaW
     public bool SlideW(int deltaW)
     {
-        if ((deltaW > 0 && w != 6 && w + w_depth != 6) || (deltaW < 0 && w != 0 && w + w_depth != 0))
+		if ((deltaW > 0 && w != HyperObject.W_RANGE && w + w_depth != HyperObject.W_RANGE)
+			|| (deltaW < 0 && w != 0 && w + w_depth != 0))
         {
             bool childrenClear = true;
 
@@ -94,25 +92,14 @@ public class HyperColliderManager : MonoBehaviour {
         }
     }
 
-    //deturmine if this can be seen from the other w as a solid object, remove once 4D shader is implemented
+    //determine if this can be seen from the other w as a solid object, remove once 4D shader is implemented
     public bool isVisibleSolid(int otherW)
     {
-        if (w_depth > 0)
-        {
-            if (otherW <= w + w_depth && otherW >= w)
-                return true;
-            else
-                return false;
-        }
-        else if (w_depth < 0)
-        {
-            if (otherW >= w + w_depth && otherW <= w)
-                return true;
-            else
-                return false;
-        }
-        else
-            return (w == otherW);
+		bool positiveDepth = 	(w_depth > 0 && otherW <= w + w_depth && otherW >= w);
+		bool negativeDepth = 	(w_depth < 0 && otherW >= w + w_depth && otherW <= w);
+		bool noDepth =			(w_depth == 0 && w == otherW);
+
+		return positiveDepth || negativeDepth || noDepth;
     }
 
     bool CanCollide(GameObject other)
@@ -122,12 +109,14 @@ public class HyperColliderManager : MonoBehaviour {
             if (other.GetComponent<HyperColliderManager>().w_depth >= 0)
                 return (w + w_depth >= other.GetComponent<HyperColliderManager>().w);
             else
-                return (w + w_depth >= other.GetComponent<HyperColliderManager>().w + other.GetComponent<HyperColliderManager>().w_depth);
+                return (w + w_depth >= other.GetComponent<HyperColliderManager>().w
+										+ other.GetComponent<HyperColliderManager>().w_depth);
         }
         else if (w > other.GetComponent<HyperColliderManager>().w)
         {
             if (other.GetComponent<HyperColliderManager>().w_depth > 0)
-                return (w + w_depth <= other.GetComponent<HyperColliderManager>().w + other.GetComponent<HyperColliderManager>().w_depth);
+                return (w + w_depth <= other.GetComponent<HyperColliderManager>().w
+										+ other.GetComponent<HyperColliderManager>().w_depth);
             else
                 return (w + w_depth <= other.GetComponent<HyperColliderManager>().w);
         }
@@ -138,25 +127,12 @@ public class HyperColliderManager : MonoBehaviour {
     //setup collisions for this object
     public void SetCollisions()
     {
-        //HyperColliderManager[] hyperObjects; //all hyper objects in the world
-
-        //hyperObjects = GameObject.FindGameObjectsWithTag("HyperColliderManager");
-        //hyperObjects = Object.FindObjectsOfType<HyperColliderManager>();
-
         foreach (var hypObj in hyperManager.GetList())
         {
             if (hypObj)
-            {
-                if (!CanCollide(hypObj))
-                {
-                    Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.GetComponent<Collider>(), true);
-                }
-                else
-                {
-                    Physics.IgnoreCollision(GetComponent<Collider>(), hypObj.GetComponent<Collider>(), false);
-                }
-            }
-
+				Physics.IgnoreCollision(GetComponent<Collider>(), 
+										hypObj.GetComponent<Collider>(), 
+										!CanCollide(hypObj));
         }
     }
 }

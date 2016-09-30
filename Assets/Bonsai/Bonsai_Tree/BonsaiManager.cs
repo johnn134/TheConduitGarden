@@ -59,7 +59,7 @@ public class BonsaiManager : MonoBehaviour {
 		baseBranch.GetComponent<Branch>().setManager(this.gameObject);
 		baseBranch.GetComponent<Branch>().checkIfBranchSatisfiesContract();
 
-		baseBranch.GetComponent<HyperColliderManager>().setW(3);
+		baseBranch.GetComponent<HyperColliderManager>().setW(2);
 
 		baseBranch.GetComponent<Branch>().setupTreeForLevel(levelType);
 

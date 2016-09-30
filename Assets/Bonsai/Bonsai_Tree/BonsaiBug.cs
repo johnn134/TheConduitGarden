@@ -2,11 +2,7 @@
 using System.Collections;
 
 public class BonsaiBug : MonoBehaviour {
-
-	//GameObject manager;
-
-	int w;
-
+	
 	float yOrigin;
 	float cycleStart;
 	float deathStartTime;
@@ -59,12 +55,6 @@ public class BonsaiBug : MonoBehaviour {
 	}
 
 	/*
-	 * update the bug's position based on movement
-	 */
-	void updateMovement() {
-	}
-
-	/*
 	 * resets the yOrigin to this object's current position
 	 */
 	public void updateYOrigin() {
@@ -98,60 +88,4 @@ public class BonsaiBug : MonoBehaviour {
 		deathStartTime = Time.time;
 		isDying = true;
 	}
-
-	/*
-	 * Sets the w position of this leaf and adjusts the color accordingly
-	 */
-	public void setWPosition(int newW) {
-		w = newW;
-
-		assignColorToWPosition();
-	}
-
-	/*
-	 * Sets the visual color according to the w position
-	 */
-	void assignColorToWPosition() {
-		float cModifier = 1.0f;
-		float aModifier = 0.5f;
-
-		//Change Material value
-		switch (w) {
-			case 0:     //red
-				setVisualColor(new Color (1.0f * cModifier, 0.0f, 0.0f, aModifier));
-				break;
-			case 1:     //orange
-				setVisualColor(new Color (1.0f * cModifier, 0.5f * cModifier, 0.0f, aModifier));
-				break;
-			case 2:     //yellow
-				setVisualColor(new Color (1.0f * cModifier, 1.0f * cModifier, 0.0f, aModifier));
-				break;
-			case 3:     //green
-				setVisualColor(new Color (0.0f, 1.0f * cModifier, 0.0f, aModifier));
-				break;
-			case 4:     //blue
-				setVisualColor(new Color (0.0f, 1.0f * cModifier, 1.0f * cModifier, aModifier));
-				break;
-			case 5:     //indigo
-				setVisualColor(new Color (0.0f, 0.0f, 1.0f * cModifier, aModifier));
-				break;
-			case 6:     //violet
-				setVisualColor(new Color (1.0f * cModifier, 0.0f, 1.0f * cModifier, aModifier));
-				break;
-		}
-	}
-
-	/*
-	 * Changes the material color of the visual components of this leaf
-	 */
-	void setVisualColor(Color c) {
-		transform.GetChild(0).GetComponent<MeshRenderer>().material.color = c;
-	}
-
-	/*
-	 * Sets the bonsai manager this leaf answers to
-	 */
-	//public void setManager(GameObject newManager) {
-	//	manager = newManager;
-	//}
 }

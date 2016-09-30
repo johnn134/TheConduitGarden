@@ -154,7 +154,7 @@ GameObject:
   - 65: {fileID: 65000011378074988}
   - 23: {fileID: 23000013787830130}
   m_Layer: 0
-  m_Name: BlueLightLevelTwo
+  m_Name: CyanLightLevelTwo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -336,7 +336,7 @@ GameObject:
   - 65: {fileID: 65000011675070736}
   - 23: {fileID: 23000011131957492}
   m_Layer: 0
-  m_Name: BlueLightLevelThree
+  m_Name: CyanLightLevelThree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -590,7 +590,7 @@ GameObject:
   - 65: {fileID: 65000013426006278}
   - 23: {fileID: 23000013979340892}
   m_Layer: 0
-  m_Name: BlueLightLevelOne
+  m_Name: CyanLightLevelOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -626,7 +626,7 @@ GameObject:
   - 65: {fileID: 65000012981971344}
   - 23: {fileID: 23000012069156348}
   m_Layer: 0
-  m_Name: OrangeLightLevelTwo
+  m_Name: YellowLightLevelTwo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -716,7 +716,7 @@ GameObject:
   - 65: {fileID: 65000012193614234}
   - 23: {fileID: 23000013826745970}
   m_Layer: 0
-  m_Name: OrangeLightLevelOne
+  m_Name: YellowLightLevelOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -771,7 +771,7 @@ GameObject:
   - 65: {fileID: 65000014197987684}
   - 23: {fileID: 23000013638013744}
   m_Layer: 0
-  m_Name: OrangeLightLevelThree
+  m_Name: YellowLightLevelThree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4648,11 +4648,11 @@ MonoBehaviour:
   - {fileID: 1000011271293470}
   - {fileID: 1000013246993336}
   - {fileID: 1000012790830348}
-  orangeLights:
+  yellowLights:
   - {fileID: 1000013219471204}
   - {fileID: 1000012675629702}
   - {fileID: 1000013303282734}
-  blueLights:
+  cyanLights:
   - {fileID: 1000012595665430}
   - {fileID: 1000010680376930}
   - {fileID: 1000011354662322}
@@ -4660,7 +4660,7 @@ MonoBehaviour:
   - {fileID: 1000014128291968}
   - {fileID: 1000010351559540}
   - {fileID: 1000014198441218}
-  onWs: 03000000030000000000000000000000000000000300000003000000
+  onWs: 0300000003000000000000000300000003000000
 --- !u!114 &114000012854638394
 MonoBehaviour:
   m_ObjectHideFlags: 1

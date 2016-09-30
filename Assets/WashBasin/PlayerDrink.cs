@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerDrink : MonoBehaviour {
 
+	public float visionDuration = 5.0f;
+
     HyperCreature hyperC;
 
     int player_periph;
@@ -10,8 +12,6 @@ public class PlayerDrink : MonoBehaviour {
 	float drinkStartTime;
 
 	bool isEffected;
-
-	const float VISION_DURATION = 5.0f;
 
 	void Awake() {
 		isEffected = false;
@@ -26,8 +26,7 @@ public class PlayerDrink : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(isEffected) {
-			if(Time.time > drinkStartTime + VISION_DURATION) {
-                Debug.Log("Ending Drink");
+			if(Time.time > drinkStartTime + visionDuration) {	//End effect after duration
 				removeDrinkEffect();
 				isEffected = false;
 			}
@@ -35,29 +34,37 @@ public class PlayerDrink : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if(other.name == "WaterZone") {
+		if(other.name == "WaterZone") {	//inform ladle it is within range of the player's face
 			other.GetComponent<Ladle>().touchingPlayer(this.gameObject);
 		}
 	}
 
 	void OnTriggerExit(Collider other) {
-		if(other.name == "WaterZone") {
+		if(other.name == "WaterZone") {	//inform ladle it has left face range
 			other.GetComponent<Ladle>().leavingPlayer();
 		}
 	}
 
+	/*
+	 * Begin drink effect
+	 */
 	public void registerDrink() {
-        Debug.Log("Starting Drink");
 		addDrinkEffect();
 		drinkStartTime = Time.time;
 		isEffected = true;
 	}
 
+	/*
+	 * Increase player peripheral vision
+	 */
 	void addDrinkEffect() {
 		player_periph = hyperC.w_perif;
         hyperC.w_perif = 3;
 	}
 
+	/*
+	 * Revert player peripheral vision
+	 */
 	void removeDrinkEffect() {
         hyperC.w_perif = player_periph;
 	}

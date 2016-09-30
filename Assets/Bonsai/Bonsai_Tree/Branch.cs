@@ -23,7 +23,6 @@ public class Branch : MonoBehaviour {
 	int branchGrowthCycle = 3;      //Must be at least 1, number of growth cycles between growing new branches
 	int leafGrowthCycle = 3;        //Must be at least 1, number of growth cycles between growing new leaves
 	int depth = 0;              //The depth of this branch in the tree
-	int w = 0;              	//Position on the fourth dimension
 
 	int[] requiredZonePasses;
 
@@ -567,6 +566,8 @@ public class Branch : MonoBehaviour {
 	 * Removes the infestation from this branch and kills existing bugs
 	 */
 	void killInfestation() {
+		int temp = numBugs;
+
 		//Reset variables
 		isInfested = false;
 		infestationTime = -1;
@@ -575,7 +576,7 @@ public class Branch : MonoBehaviour {
 			manager.GetComponent<BonsaiManager>().removeInfestedBranch();
 
 		//Kill each bug
-		GameObject[] bugs = new GameObject[numBugs];
+		GameObject[] bugs = new GameObject[temp];
 		int counter = 0;
 
 		for(int i = 0; i < transform.childCount; i++) {
@@ -585,9 +586,10 @@ public class Branch : MonoBehaviour {
 			}
 		}
 
-		for(int i = 0; i < numBugs; i++) {
+		for(int i = 0; i < temp; i++) {
 			bugs[i].transform.parent = null;
 			bugs[i].GetComponent<BonsaiBug>().startDeath();
+			numBugs--;
 		}
 	}
 
@@ -595,6 +597,8 @@ public class Branch : MonoBehaviour {
 	 * Removes the infestation and bugs from this branch
 	 */
 	void removeInfestation() {
+		int temp = numBugs;
+
 		//Reset variables
 		isInfested = false;
 		infestationTime = -1;
@@ -603,7 +607,7 @@ public class Branch : MonoBehaviour {
 			manager.GetComponent<BonsaiManager>().removeInfestedBranch();
 
 		//Destroy each bug
-		GameObject[] bugs = new GameObject[numBugs];
+		GameObject[] bugs = new GameObject[temp];
 		int counter = 0;
 
 		for(int i = 0; i < transform.childCount; i++) {
@@ -613,7 +617,7 @@ public class Branch : MonoBehaviour {
 			}
 		}
 
-		for(int i = 0; i < numBugs; i++) {
+		for(int i = 0; i < temp; i++) {
 			Destroy(bugs[i]);
 		}
 	}
@@ -804,11 +808,12 @@ public class Branch : MonoBehaviour {
 		newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
 		newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
 
-		//newBud.transform.GetComponent<Bud>().setWPosition(Mathf.Clamp(w + Random.Range(-1, 2), 0, 6));   //the w value is clamped between 0 and 6 inclusive
-		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+		//Set bud w pos
+		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, HyperObject.W_RANGE));
 
 		this.registerBudAdded();
 
+		//Pass the bud the manager
 		newBud.transform.GetComponent<Bud>().setManager(manager);
 
 		if(isLeaf)
@@ -840,10 +845,11 @@ public class Branch : MonoBehaviour {
 		newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
 
 		//Set the branch's w position
-		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, HyperObject.W_RANGE));
 
 		this.registerBudAdded();
 
+		//Pass the bud the manager
 		newBud.transform.GetComponent<Bud>().setManager(manager);
 		if(isLeaf)
 			manager.GetComponent<BonsaiManager>().addLeaf();
@@ -863,7 +869,7 @@ public class Branch : MonoBehaviour {
 
 		//newBranch.transform.localPosition = newBranch.transform.localPosition + newBranch.transform.up * 0.025f;	//This is for offsetting it from the tipPoint
 
-		newBranch.GetComponent<HyperColliderManager>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, 6));
+		newBranch.GetComponent<HyperColliderManager>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, HyperObject.W_RANGE));
 
 		newBranch.transform.GetComponent<Branch>().setDepth(depth + 1);
 		newBranch.transform.GetComponent<Branch>().setManager(manager);
@@ -974,15 +980,6 @@ public class Branch : MonoBehaviour {
 	 */
 	public void setManager(GameObject newManager) {
 		manager = newManager;
-	}
-
-	/*
-	 * Sets the w position of this branch and adjusts the color accordingly
-	 */
-	public void setWPosition(int newW) {
-		w = newW;
-
-		assignColorToWPosition();
 	}
 
 	/*
@@ -1116,53 +1113,6 @@ public class Branch : MonoBehaviour {
 			}
 		}
 		return budChildren;
-	}
-
-	/*
-	 * Sets the visual color according to the w position
-	 */
-	void assignColorToWPosition() {
-		float cModifier = 1.0f;
-		float aModifier = 0.5f;
-
-		if(isDead) {
-			cModifier = DARKEN_VALUE;
-			aModifier = DARKEN_ALPHA;
-		}
-
-		//Change Material value
-		switch (w) {
-			case 0:     //red
-				setVisualColor(new Color (1.0f * cModifier, 0.0f, 0.0f, aModifier));
-				break;
-			case 1:     //orange
-				setVisualColor(new Color (1.0f * cModifier, 0.5f * cModifier, 0.0f, aModifier));
-				break;
-			case 2:     //yellow
-				setVisualColor(new Color (1.0f * cModifier, 1.0f * cModifier, 0.0f, aModifier));
-				break;
-			case 3:     //green
-				setVisualColor(new Color (0.0f, 1.0f * cModifier, 0.0f, aModifier));
-				break;
-			case 4:     //blue
-				setVisualColor(new Color (0.0f, 1.0f * cModifier, 1.0f * cModifier, aModifier));
-				break;
-			case 5:     //indigo
-				setVisualColor(new Color (0.0f, 0.0f, 1.0f * cModifier, aModifier));
-				break;
-			case 6:     //violet
-				setVisualColor(new Color (1.0f * cModifier, 0.0f, 1.0f * cModifier, aModifier));
-				break;
-		}
-	}
-
-	/*
-	 * Changes the material color of the visual components of this branch
-	 */
-	void setVisualColor(Color c) {
-		transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>().material.color = c;
-		transform.GetChild(0).GetChild(1).GetComponent<MeshRenderer>().material.color = c;
-		transform.GetChild(0).GetChild(2).GetComponent<MeshRenderer>().material.color = c;
 	}
 
 	#endregion

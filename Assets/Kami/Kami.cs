@@ -27,31 +27,29 @@ public class Kami : MonoBehaviour {
 
     //public List<GameObject> targets;            //list of possible targets the kami can land on
 
-    public HyperCreature player;                //the hyper creature in the scene
+	public HyperCreature player;                //the hyper creature in the scene
 
-    public bool helping;                        //is the kami currently helping *Not currently used*
+	public Vector3 standbyLoc;                  //the place where kami should wait *Not currently used*
 
-    bool isEnding = false;
+	public int id;                              //unique id number for this kami
 
-    HyperObject myHyper;                        //reference to the hyper code on this kami
+	public bool helping;                        //is the kami currently helping *Not currently used*
 
-    public int id;                              //unique id number for this kami
+	KamiManager kamiManager;                    //reference to the kami manager
 
-    float leavingY = -.01f;                       //the y that the kami should be at for the ending behavior
+	SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
 
-    Vector3 wanderLoc;                          //the current target location the kami is going to
+	Renderer _cachedRenderer;						//The renderer for this object
 
-    public Vector3 standbyLoc;                  //the place where kami should wait *Not currently used*
+	ParticleSystem _cachedParticleSystem;           //the particle system on this object
 
-    Renderer _cachedRenderer;						//The renderer for this object
+	Light _cachedLight;                             //the light on this object
 
-    ParticleSystem _cachedParticleSystem;           //the particle system on this object
+	Vector3 wanderLoc;                          //the current target location the kami is going to
 
-    Light _cachedLight;                             //the light on this object
+	float leavingY = -.01f;                       //the y that the kami should be at for the ending behavior
 
-    SteamVR_ControllerManager controllerManager;    //The steam controller manager that holds the controller indices
-
-    KamiManager kamiManager;                    //reference to the kami manager
+	bool isEnding = false;
 
     void Awake()
     {
@@ -67,7 +65,6 @@ public class Kami : MonoBehaviour {
     void Start()
     {
         player = HyperCreature.instance;
-        myHyper = GetComponent<HyperObject>();
         wanderLoc = new Vector3(Random.Range(-6, 7), 3, Random.Range(-6, 7));
         kamiManager = KamiManager.instance;
 
@@ -109,27 +106,29 @@ public class Kami : MonoBehaviour {
     //smoothly change the color of this object
     IEnumerator ColorTrans()
     {
-        Color targetColor;
+		Color targetColor = Color.white;
 
-        //deturmine the target color based on w point
-        if (player.w == 0)
-            targetColor = Color.red;
-        else if (player.w == 1)
-            targetColor = new Color(1, .45f, 0);
-        else if (player.w == 2)
-            targetColor = Color.yellow;
-        else if (player.w == 3)
-            targetColor = Color.green;
-        else if (player.w == 4)
-            targetColor = Color.cyan;
-        else if (player.w == 5)
-            targetColor = Color.blue;
-        else
-            targetColor = Color.magenta;
+        //Determine the target color based on w point
+		switch(player.w) {
+			case 0:
+				targetColor = Color.red;
+				break;
+			case 1:
+				targetColor = Color.yellow;
+				break;
+			case 2:
+				targetColor = Color.green;
+				break;
+			case 3:
+				targetColor = Color.cyan;
+				break;
+			case 4:
+				targetColor = Color.magenta;
+				break;
+		}
 
         for (float i = 0.0f; i <= 1.0f; i += .1f)
         {
-
             _cachedParticleSystem.startColor = Color.Lerp(_cachedParticleSystem.startColor, targetColor, .2f);
 
             _cachedLight.color = Color.Lerp(_cachedLight.color, targetColor, .2f);
@@ -142,7 +141,9 @@ public class Kami : MonoBehaviour {
         _cachedParticleSystem.startColor = _cachedRenderer.material.color;
     }
 
-    //the happy behavior of a kami, wander to the wander locations
+    /*
+     * The happy behavior of a kami, wander to the wander locations
+     */
     void BehaveHappy()
     {
         //move forwards while restricting speed
@@ -152,20 +153,23 @@ public class Kami : MonoBehaviour {
         if (transform.rotation != Quaternion.LookRotation(wanderLoc - transform.position))
         {
             transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.LookRotation(wanderLoc - transform.position),
-                Time.deltaTime * 2
-                );
+                					transform.rotation,
+                					Quaternion.LookRotation(wanderLoc - transform.position),
+                					Time.deltaTime * 2);
         }
 
-        //change locaiton randomly or if reached the target locaiton
+        //change location randomly or if reached the target locaiton
         if (transform.position.Equals(wanderLoc) || Random.Range(0, 20) == 1)
         {
-            wanderLoc = new Vector3(Random.Range(kamiManager.wanderArea1.x, kamiManager.wanderArea2.x), Random.Range(kamiManager.wanderArea1.y, kamiManager.wanderArea2.y), Random.Range(kamiManager.wanderArea1.z, kamiManager.wanderArea2.z));
+            wanderLoc = new Vector3(Random.Range(kamiManager.wanderArea1.x, kamiManager.wanderArea2.x), 
+									Random.Range(kamiManager.wanderArea1.y, kamiManager.wanderArea2.y), 
+									Random.Range(kamiManager.wanderArea1.z, kamiManager.wanderArea2.z));
         }
     }
 
-    //run away from the garden
+    /*
+     * Run away from the garden
+     */
     void Flee()
     {
         wanderLoc = new Vector3(wanderLoc.x, 20, wanderLoc.z);
@@ -177,10 +181,9 @@ public class Kami : MonoBehaviour {
         if (transform.rotation != Quaternion.LookRotation(wanderLoc - transform.position))
         {
             transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.LookRotation(wanderLoc - transform.position),
-                Time.deltaTime * 2
-                );
+                					transform.rotation,
+                					Quaternion.LookRotation(wanderLoc - transform.position),
+                					Time.deltaTime * 2);
         }
 
         if (Vector3.Distance(transform.position, wanderLoc) < .2)
@@ -192,18 +195,22 @@ public class Kami : MonoBehaviour {
 
     void LandOnTarget()
     {
-        wanderLoc = new Vector3(target.transform.position.x, target.transform.position.y + (target.transform.lossyScale.y / 2) + (transform.lossyScale.y / 2), target.transform.position.z);
+        wanderLoc = new Vector3(target.transform.position.x, 
+								target.transform.position.y + (target.transform.lossyScale.y / 2) + (transform.lossyScale.y / 2), 
+								target.transform.position.z);
 
         //move forwards while restricting speed
-        if(Vector3.Distance(transform.position, wanderLoc) < .05)
+		float distance = Vector3.Distance(transform.position, wanderLoc);
+
+		if(distance < 0.05f)
             transform.Translate(Vector3.forward * Time.deltaTime / 10);
-        else if (Vector3.Distance(transform.position, wanderLoc) < .2)
+		else if(distance < 0.2f)
             transform.Translate(Vector3.forward * Time.deltaTime / 6);
-        else if (Vector3.Distance(transform.position, wanderLoc) < .3)
+		else if(distance < 0.3f)
             transform.Translate(Vector3.forward * Time.deltaTime / 5);
-        else if (Vector3.Distance(transform.position, wanderLoc) < .4)
+		else if(distance < 0.4f)
             transform.Translate(Vector3.forward * Time.deltaTime / 4);
-        else if (Vector3.Distance(transform.position, wanderLoc) <.5)
+		else if(distance < 0.5f)
             transform.Translate(Vector3.forward * Time.deltaTime / 2);
         else
             transform.Translate(Vector3.forward * Time.deltaTime);
@@ -214,8 +221,7 @@ public class Kami : MonoBehaviour {
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
                 Quaternion.LookRotation(wanderLoc - transform.position),
-                Time.deltaTime * 2
-                );
+                Time.deltaTime * 2);
         }
             
 
@@ -227,23 +233,26 @@ public class Kami : MonoBehaviour {
     void BehaveEnding()
     {
         isEnding = true;
-        wanderLoc = new Vector3(player.transform.Find("Camera (eye)").position.x, leavingY, player.transform.Find("Camera (eye)").position.z);
+        wanderLoc = new Vector3(player.transform.Find("Camera (eye)").position.x, 
+								leavingY, 
+								player.transform.Find("Camera (eye)").position.z);
 
         if (Vector3.Distance(transform.position, wanderLoc) > 1f)
-        {
             transform.position = Vector3.MoveTowards(transform.position, wanderLoc, Time.deltaTime * 2);
-        }
         else
             transform.RotateAround(wanderLoc, Vector3.up, Time.deltaTime * 300);
 
+		//Move Kami Higher
         if (transform.position.y != wanderLoc.y)
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, wanderLoc.y, transform.position.z), Time.deltaTime / 2);
+            transform.position = Vector3.MoveTowards(transform.position, 
+									new Vector3(transform.position.x, wanderLoc.y, transform.position.z), 
+									Time.deltaTime / 2);
 
+		//Increment Kami Target Height
         leavingY += .005f;
 
+		//Delete when reaching max height
         if (transform.position.y > 20f)
-        {
             kamiManager.RequestToRemove(gameObject);
-        }
     }
 }

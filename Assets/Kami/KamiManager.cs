@@ -23,8 +23,6 @@ public class KamiManager : MonoBehaviour {
     public Vector3 wanderArea1;                 //point 1 of the area of possible wander locations
     public Vector3 wanderArea2;                 //point 2 of the area of possible wander locations
 
-    FishShrine fishShrine;
-
     public static KamiManager instance = null;
 
     void Awake()
@@ -38,10 +36,13 @@ public class KamiManager : MonoBehaviour {
 
     void Start () {
 	    allKami = new List<GameObject>();
-        fishShrine = Object.FindObjectOfType<FishShrine>();
     }
 
-    //a object has requested to make a fish (or food if isFood is true) at position with rotation, return true if successful
+    /*
+     * An object has requested to make a fish (or food if isFood is true)
+     * at position with rotation
+     * return true if successful
+     */
     public bool MakeKami(Vector3 nPosition, Quaternion nRotation, int nW, int newType)
     {
         GameObject nObj;
@@ -50,8 +51,6 @@ public class KamiManager : MonoBehaviour {
         if (numKami[newType] < maxKami)
         {
 			nObj = (GameObject)Instantiate(Resources.Load("Kami/Kami"), nPosition, nRotation);
-            //nObj.GetComponent<HyperObject>().setW(nW);
-            //nObj.GetComponent<HyperObject>().WMove();//change to Slide(0) once 4d shader is implemented
             nObj.GetComponent<Kami>().type = (Kami.Type)newType;
             allKami.Add(nObj);
             numKami[newType] += 1;
@@ -63,7 +62,10 @@ public class KamiManager : MonoBehaviour {
         return false;
     }
 
-    //a kami has requested to be removed from the world, return true if successful
+    /*
+     * A kami has requested to be removed from the world
+     * return true if successful
+     */
     public bool RequestToRemove(GameObject rObj)
     {
         if (allKami.Remove(rObj))

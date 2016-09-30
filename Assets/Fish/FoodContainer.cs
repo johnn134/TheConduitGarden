@@ -3,9 +3,12 @@ using System.Collections;
 
 public class FoodContainer : MonoBehaviour {
 
-    FishManager fishManager;
     public GameObject opening;
+
     public int pourRate = 10;
+
+	FishManager fishManager;
+
     int curRate = 0;
 
     void Start()
@@ -26,7 +29,10 @@ public class FoodContainer : MonoBehaviour {
                 if (curRate == pourRate)
                 {
                     curRate = 0;
-                    fishManager.MakeFish(opening.transform.position, opening.transform.rotation, GetComponent<HyperColliderManager>().w, true);
+                    fishManager.MakeFish(opening.transform.position, 
+										 opening.transform.rotation, 
+										 GetComponent<HyperColliderManager>().w, 
+										 true);
                 }
                 else
                     curRate++;

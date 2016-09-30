@@ -41,21 +41,15 @@ public class LanternHandler : MonoBehaviour {
 				temp = Color.red;
 				break;
 			case 1:
-				temp = new Color(1.0f, 0.45f, 0.0f);
-				break;
-			case 2:
 				temp = Color.yellow;
 				break;
-			case 3:
+			case 2:
 				temp = Color.green;
 				break;
-			case 4:
+			case 3:
 				temp = Color.cyan;
 				break;
-			case 5:
-				temp = Color.blue;
-				break;
-			case 6:
+			case 4:
 				temp = Color.magenta;
 				break;
 		}

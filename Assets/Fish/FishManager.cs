@@ -20,7 +20,7 @@ public class FishManager : MonoBehaviour {
     int numFish = 0;
 
     //number of food on each w point
-    int[] numFood = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+    int[] numFood = new int[] { 0, 0, 0, 0, 0 };
 
     //the fish shrine in the world
     FishShrine fishShrine;
@@ -44,7 +44,11 @@ public class FishManager : MonoBehaviour {
         fishShrine = Object.FindObjectOfType<FishShrine>();
     }
 
-    //a object has requested to make a fish (or food if isFood is true) at position with rotation, return true if successful
+    /*
+     * An object has requested to make a fish (or food if isFood is true)
+     * at position with rotation
+     * return true if successful
+     */
     public bool MakeFish(Vector3 nPosition, Quaternion nRotation, int nW, bool isFood)
     {
         GameObject nObj;
@@ -129,8 +133,11 @@ public class FishManager : MonoBehaviour {
         }
     }
 
-    //returns a target gameobject to the requesting fish, second argument is for if looking for food or not(looking for fish)
-    //if no valid target then tell the fish it has no targets so it wont request again
+    /* 
+     * Returns a target gameobject to the requesting fish, 
+     * second argument is for if looking for food or not(looking for fish)
+     * if no valid target then tell the fish it has no targets so it wont request again
+     */
     public GameObject RequestTarget(GameObject rfish, bool isFood)
     {
         //make sure fish isnt dead
@@ -163,7 +170,8 @@ public class FishManager : MonoBehaviour {
                     return closest;
                 else
                 {
-                    //no valid targets, return null and and tell the fish there are no targets so they stop requesting
+                    //No valid targets, return null and and tell the fish 
+					//there are no targets so they stop requesting
                     rfish.GetComponent<Fish>().food = false;
                     return null;
                 }
@@ -184,7 +192,9 @@ public class FishManager : MonoBehaviour {
                     Vector3 diff = suspect.transform.position - rfish.transform.position;
                     float curDistance = diff.sqrMagnitude;
                     //fish must be the closest fish on the same w and smaller or the same size as the requesting fish
-                    if (suspect.GetComponent<Fish>().size <= rfish.GetComponent<Fish>().size && suspect.GetComponent<HyperColliderManager>().w == rfish.GetComponent<HyperColliderManager>().w && !suspect.gameObject.Equals(rfish))
+                    if (suspect.GetComponent<Fish>().size <= rfish.GetComponent<Fish>().size
+						&& suspect.GetComponent<HyperColliderManager>().w == rfish.GetComponent<HyperColliderManager>().w
+						&& !suspect.gameObject.Equals(rfish))
                     {
                         //find the closest target for each size
                         if ((int)suspect.GetComponent<Fish>().size == 0)//small
@@ -245,10 +255,13 @@ public class FishManager : MonoBehaviour {
             else
             {
                 //make sure the target is still valid
-                if (target.GetComponent<HyperColliderManager>().w == rfish.GetComponent<HyperColliderManager>().w && target.GetComponent<Fish>().size <= rfish.GetComponent<Fish>().size)
+                if (target.GetComponent<HyperColliderManager>().w == rfish.GetComponent<HyperColliderManager>().w
+					&& target.GetComponent<Fish>().size <= rfish.GetComponent<Fish>().size)
                 {
                     //check to see if there is a tie in size, only if the target is also hunting this fish
-                    if (target.GetComponent<Fish>().size == rfish.GetComponent<Fish>().size && (int)target.GetComponent<Fish>().state == 2 && target.GetComponent<Fish>().target.Equals(rfish))
+                    if (target.GetComponent<Fish>().size == rfish.GetComponent<Fish>().size
+						&& (int)target.GetComponent<Fish>().state == 2
+						&& target.GetComponent<Fish>().target.Equals(rfish))
                     {
                         //eat the other fish if older than it
                         if (isOlder(rfish, target))
@@ -267,21 +280,30 @@ public class FishManager : MonoBehaviour {
             return false; //this fish is dead
     }
 
-    //returns true if the first fish game object is older than the second using their indecies in the allFish list
+    /*
+     * Returns true if the first fish game object is older
+     * than the second using their indecies in the allFish list
+     */
     bool isOlder(GameObject fish1, GameObject fish2)
     {
         return (allFish.IndexOf(fish1) < allFish.IndexOf(fish2));
     }
 
-    //alert all fish on a w point that there is a fish that it can eat
+    /*
+     * Alert all fish on a w point that there is a fish that it can eat
+     */
     void alertNewTargets(int alertW, int nSize)
     {
-        foreach (GameObject fish in allFish)
-            if (fish.GetComponent<HyperColliderManager>().w == alertW && (int)fish.GetComponent<Fish>().size >= nSize)
-                fish.GetComponent<Fish>().noTargets = false;
+		foreach(GameObject fish in allFish)
+			if(fish.GetComponent<HyperColliderManager>().w == alertW
+			             && (int)fish.GetComponent<Fish>().size >= nSize) {
+				fish.GetComponent<Fish>().noTargets = false;
+			}
     }
 
-    //alert all fish on a w point if there is or is not food it can eat
+    /*
+     * Alert all fish on a w point if there is or is not food it can eat
+     */
     public void alertFood(int alertW, bool isFood)
     {
         foreach (GameObject fish in allFish)
@@ -289,11 +311,14 @@ public class FishManager : MonoBehaviour {
                 fish.GetComponent<Fish>().food = isFood;
     }
 
-    //alert the manager and other affected fish that this fish is moving to newW
+    /* 
+     * Alert the manager and other affected fish that this fish is moving to newW
+     */
     public void alertMove(GameObject rfish, int newW)
     {
         foreach (GameObject fish in allFish)
-            if (fish.GetComponent<HyperColliderManager>().w == newW && (int)fish.GetComponent<Fish>().size >= (int)rfish.GetComponent<Fish>().size)
+            if (fish.GetComponent<HyperColliderManager>().w == newW
+				&& (int)fish.GetComponent<Fish>().size >= (int)rfish.GetComponent<Fish>().size)
                 fish.GetComponent<Fish>().noTargets = false;
 
         fishShrine.processFish(allFish);

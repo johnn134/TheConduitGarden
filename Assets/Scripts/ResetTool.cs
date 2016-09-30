@@ -7,11 +7,41 @@ public class ResetTool : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag.Equals("Tool"))
+		if (other.gameObject.tag.Equals("Tool") && !other.transform.parent)
         {
-            other.transform.position = new Vector3(target.transform.position.x, target.transform.position.y + 1, target.transform.position.z);
-            other.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            other.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+			StartCoroutine (MoveToolToTargetDelayed (other.gameObject));
         }
     }
+
+	void OnTriggerStay(Collider other)
+	{
+		if (other.gameObject.tag.Equals("Tool") && !other.transform.parent && other.GetComponent<Rigidbody>().velocity.magnitude < 1f)
+		{
+			MoveToolToTarget (other.gameObject);
+		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		if (other.gameObject.tag.Equals("Tool") && !other.transform.parent)
+		{
+			StartCoroutine (MoveToolToTargetDelayed (other.gameObject));
+		}
+	}
+
+	IEnumerator MoveToolToTargetDelayed(GameObject tool)
+	{
+		yield return new WaitForSeconds (3f);
+
+		tool.transform.position = new Vector3(target.transform.position.x, target.transform.position.y + .5f, target.transform.position.z);
+		tool.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		tool.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+	}
+
+	void MoveToolToTarget(GameObject tool)
+	{
+		tool.transform.position = new Vector3(target.transform.position.x, target.transform.position.y + .5f, target.transform.position.z);
+		tool.GetComponent<Rigidbody>().velocity = Vector3.zero;
+		tool.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+	}
 }

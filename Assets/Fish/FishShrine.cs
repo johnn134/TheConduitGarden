@@ -9,7 +9,6 @@ public class FishShrine : MonoBehaviour {
     public int[] onWs = new int[] {0, 0, 0, 0, 0 };	//the number of fish required on each w point to activate the shrine
 
 	KamiManager kamiManager;						//reference to the kami manager
-	HyperCreature player;							//reference to the hyper creature
 
 	ParticleSystem particleObj_LA, particleObj_LB, particleObj_RA, particleObj_RB;
 
@@ -41,7 +40,6 @@ public class FishShrine : MonoBehaviour {
 
 	void Start() {
 		kamiManager = KamiManager.instance;
-		player = HyperCreature.instance;
     }
 	
     public void processFish(List<GameObject> allFish)
@@ -115,8 +113,6 @@ public class FishShrine : MonoBehaviour {
 			particleObj_RB.loop = true;
 
 			//Increase peripheral vision
-			player.w_perif++;
-			player.WMoveAllHyperObjects();
 
 			fullyActivated = true;
         }
@@ -133,8 +129,6 @@ public class FishShrine : MonoBehaviour {
 			particleObj_RB.loop = false;
 
 			//Decrease peripheral vision
-			player.w_perif--;
-			player.WMoveAllHyperObjects();
 
 			fullyActivated = false;
         }

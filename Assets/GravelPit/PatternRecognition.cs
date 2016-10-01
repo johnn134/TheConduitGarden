@@ -2,35 +2,44 @@
 using System.Collections;
 
 public class PatternRecognition : MonoBehaviour {
+	private GameObject rake;
 	public GameObject drawnLine;
 	public GameObject originalPattern;
 	public GameObject drawnPattern;
-	public float similarity;
 	public bool patternMatches;
-	//public int[] bestLineMatches;
+	//private int[] bestLineMatches;
 	public float linesOnDimension;
 	public float rangeCheck;
 	public int lineNumber;
 	public int check;
-	//public int index;
+	//private int index;
+	//private int bestLine;
 	public GravelShrine gravelShrine;
+	private float similarity;
 
 	// Use this for initialization
 	void Start() {
+		rake = GameObject.Find("Rake");
 		gravelShrine = Object.FindObjectOfType<GravelShrine>();
 
 		linesOnDimension = 0.0f;
 		for (int i = 0; i < originalPattern.transform.childCount; i++) {
-			if (originalPattern.transform.GetChild (i).GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
+			if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
 				linesOnDimension += 1.0f;
 			}
 		}
 
 		check = 1;
 
+		rangeCheck = 0.5f;
+
 		patternMatches = false;
 
-		//bestLineMatches = new int[(int)linesOnDimension];
+		/*bestLineMatches = new int[(int)linesOnDimension];
+
+		for (int b = 0; b < (int)linesOnDimension; b++) {
+			bestLineMatches[b] = 0;
+		}*/
 
 		calculateOriginalPatternVectors();
 	}
@@ -42,14 +51,14 @@ public class PatternRecognition : MonoBehaviour {
 			if (checkDrawnPattern() >= 0.80f) {
 				patternMatches = true;
 				//Debug.Log ("Current Plane: " + GetComponent<HyperColliderManager>().w);
-				Debug.Log ("Pattern matches.");
+				Debug.Log("Pattern matches.");
 				gravelShrine.processPits();
 				check = 1;
-			} 
+			}
 
 			else {
 				//Debug.Log ("Current Plane: " + GetComponent<HyperColliderManager>().w);
-				Debug.Log ("Pattern does not match.");
+				Debug.Log("Pattern does not match.");
 				patternMatches = false;
 				check = 1;
 			}
@@ -68,147 +77,61 @@ public class PatternRecognition : MonoBehaviour {
 	public float checkDrawnPattern() {
 		//index = 0;
 		for (int i = 0; i < originalPattern.transform.childCount; i++) {
-			if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternDimension == GetComponent<HyperObject>().w) {
-				//Debug.Log("Pattern line on dimension " + GetComponent<HyperObject>().w);
-				float patternVectorX = originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternVector.x;
-				float patternVectorZ = originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternVector.z;
+			if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternDimension == rake.GetComponent<HyperColliderManager>().w) {
 				float highestCheckValue = 0.0f;
-				//int bestLine = 0;
 
 				for (int j = 0; j < drawnPattern.transform.childCount; j++) {
+
 					float thisCheckValue = 0.0f;
-					if (drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnDimension == GetComponent<HyperObject>().w) {
-						//Debug.Log("Drawn line on dimension " + GetComponent<HyperObject>().w);
-						/*bool lineHasBeenMatched = false;
 
-						foreach (int number in bestLineMatches) {
-							if (drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnLineNumber == number) {
-								lineHasBeenMatched = true;
-							}
+					/*bool lineHasBeenMatched = false;
+
+					foreach (int number in bestLineMatches) {
+						if (drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnLineNumber == number) {
+							lineHasBeenMatched = true;
 						}
+					}
 
-						if (lineHasBeenMatched == true) {
-							continue;
-						}*/
+					if (lineHasBeenMatched == true) {
+						//Debug.Log("Already matched this line. Continuing.");
+						continue;
+					}*/
 
+					//Debug.Log ("Line was not matched yet.");
+					if (drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnDimension == rake.GetComponent<HyperColliderManager>().w) {
+						float patternStartX = originalPattern.transform.GetChild(i).GetChild(0).transform.position.x;
+						float patternStartZ = originalPattern.transform.GetChild(i).GetChild(0).transform.position.z;
+						float patternVectorX = originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternVector.x;
+						float patternVectorZ = originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternVector.z;
+						float drawnStartX = drawnPattern.transform.GetChild(j).GetChild(0).transform.position.x;
+						float drawnStartZ = drawnPattern.transform.GetChild(j).GetChild(0).transform.position.z;
 						float drawnVectorX = drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnVector.x;
 						float drawnVectorZ = drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnVector.z;
-
-						float section = (0.5f/(float)drawnPattern.transform.GetChild(j).transform.childCount);
-						//Debug.Log ("Section: " + section);
+						//float section = (0.5f / (float)drawnPattern.transform.GetChild(j).transform.childCount);
 
 						if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().isVertical == true) {
-							int checkedVector = 0;
-							for (int k = 0; k < drawnPattern.transform.GetChild(j).transform.childCount; k++) {
-								float patternXPosition = originalPattern.transform.GetChild(i).transform.position.x;
-								float patternStartZ = originalPattern.transform.GetChild(i).GetChild(0).transform.position.z;
-								float patternEndZ = originalPattern.transform.GetChild(i).GetChild(1).transform.position.z;
-								float drawnXPosition = drawnPattern.transform.GetChild(j).GetChild(k).transform.position.x;
-								float drawnZPosition = drawnPattern.transform.GetChild(j).GetChild(k).transform.position.z;
-								if (drawnXPosition >= 0) {
-									if (Mathf.Abs(patternXPosition - drawnXPosition) <= rangeCheck) {
-										if (drawnZPosition >= (patternStartZ - rangeCheck) && drawnZPosition <= (patternEndZ + rangeCheck)) {
-											//Debug.Log("Drawn node's X within range.");
-											//Debug.Log("Node within range.");
-											thisCheckValue += section;
-											//Debug.Log(thisCheckValue);
-										}
-
-										if (checkedVector == 0) {
-											if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
-												//Debug.Log("Drawn vector within range.");
-												//Debug.Log("Line within range.");
-												thisCheckValue += 0.5f;
-												//Debug.Log(thisCheckValue);
-											}
-											checkedVector = 1;
-										}
-									}
-								}
-
-								else if (drawnXPosition < 0) {
-									if (Mathf.Abs(drawnXPosition - patternXPosition) <= rangeCheck) {
-										if (drawnZPosition >= (patternStartZ - rangeCheck) && drawnZPosition <= (patternEndZ + rangeCheck)) {
-											//Debug.Log("Drawn node's X within range.");
-											//Debug.Log("Node within range.");
-											thisCheckValue += section;
-											//Debug.Log(thisCheckValue);
-										}
-
-										if (checkedVector == 0) {
-											if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
-												//Debug.Log("Drawn vector within range.");
-												//Debug.Log("Line within range.");
-												thisCheckValue += 0.5f;
-												//Debug.Log(thisCheckValue);
-											}
-											checkedVector = 1;
-										}
-									}
+							if (drawnStartX >= (patternStartX - rangeCheck) && drawnStartX <= (patternStartX + rangeCheck) && drawnStartZ >= (patternStartZ - rangeCheck) && drawnStartZ <= (patternStartZ + rangeCheck)) {
+								if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
+									thisCheckValue += 1.0f;
+									//Debug.Log("Vector matched.");
 								}
 							}
-						} 
+						}
 
 						else if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().isVertical == false) {
-							int checkedVector = 0;
-							for (int k = 0; k < drawnPattern.transform.GetChild(j).transform.childCount; k++) {
-								float patternZPosition = originalPattern.transform.GetChild(i).transform.position.z;
-								float patternStartX = originalPattern.transform.GetChild(i).GetChild(0).transform.position.x;
-								float patternEndX = originalPattern.transform.GetChild(i).GetChild(1).transform.position.x;
-								float drawnZPosition = drawnPattern.transform.GetChild(j).GetChild(k).transform.position.z;
-								float drawnXPosition = drawnPattern.transform.GetChild(j).GetChild(k).transform.position.x;
-								if (drawnZPosition >= 0) {
-									if (Mathf.Abs(patternZPosition - drawnZPosition) <= rangeCheck) {
-										if (drawnXPosition >= (patternStartX + rangeCheck) && drawnXPosition <= (patternEndX - rangeCheck)) {
-											//Debug.Log("Drawn node's Z within range.");
-											//Debug.Log("Node within range.");
-											thisCheckValue += section;
-											//Debug.Log(thisCheckValue);
-										}
-
-										if (checkedVector == 0) {
-											if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
-												//Debug.Log("Drawn vector within range.");
-												//Debug.Log("Line within range.");
-												thisCheckValue += 0.5f;
-												//Debug.Log(thisCheckValue);
-											}
-											checkedVector = 1;
-										}
-									}
-								}
-
-								else if (drawnZPosition < 0) {
-									if (Mathf.Abs(drawnZPosition - patternZPosition) <= rangeCheck) {
-										if (drawnXPosition >= (patternStartX + rangeCheck) && drawnXPosition <= (patternEndX - rangeCheck)) {
-											//Debug.Log("Drawn node's Z within range.");
-											//Debug.Log("Node within range.");
-											thisCheckValue += section;
-											//Debug.Log(thisCheckValue);
-										}
-
-										if (checkedVector == 0) {
-											if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
-												//Debug.Log("Drawn vector within range.");
-												//Debug.Log("Line within range.");
-												thisCheckValue += 0.5f;
-												//Debug.Log(thisCheckValue);
-											}
-											checkedVector = 1;
-										}
-									}
+							if (drawnStartX >= (patternStartX - rangeCheck) && drawnStartX <= (patternStartX + rangeCheck) && drawnStartZ >= (patternStartZ - rangeCheck) && drawnStartZ <= (patternStartZ + rangeCheck)) {
+								if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
+									thisCheckValue += 1.0f;
+									//Debug.Log("Vector matched.");
 								}
 							}
 						}
+					}
 
-						//Debug.Log("This check value: " + thisCheckValue);
-
-						if (thisCheckValue > highestCheckValue) {
-							//Debug.Log (thisCheckValue + " is higher than " + highestCheckValue);
-							highestCheckValue = thisCheckValue;
-
-							//bestLine = drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnLineNumber;
-						}
+					//Debug.Log("This Check Value: " + thisCheckValue);
+					if (thisCheckValue > highestCheckValue) {
+						highestCheckValue = thisCheckValue;
+						//bestLine = drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnLineNumber;
 					}
 				}
 
@@ -217,21 +140,15 @@ public class PatternRecognition : MonoBehaviour {
 					index++;
 				}*/
 
-				//Debug.Log("Highest Check Value: " + highestCheckValue);
-
 				similarity += highestCheckValue;
-
-				//Debug.Log("Current similarity: " + similarity);
+				//Debug.Log("Current Similarity: " + similarity);
 			}
 		}
 
-		//Debug.Log("Lines on dimension: " + linesOnDimension);
-		//Debug.Log("Similarity: " + similarity);
-		//Debug.Log("Lines on Dimension: " + linesOnDimension);
-		float percent = similarity/linesOnDimension;
+		float percent = (similarity / linesOnDimension);
+		Debug.Log("Percent: " + percent);
 		similarity = 0.0f;
-		Debug.Log("Pattern drawn by player is " + (percent * 100.0f) + "% similar to pattern " + GetComponent<HyperObject>().w); 
-
 		return percent;
 	}
 }
+

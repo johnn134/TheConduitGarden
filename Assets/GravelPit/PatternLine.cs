@@ -16,24 +16,25 @@ public class PatternLine : MonoBehaviour {
 		patternStartNode = transform.GetChild (0).gameObject;
 		patternEndNode = transform.GetChild (1).gameObject;
 
+		rake = GameObject.Find("Rake");
 		GetComponent<LineRenderer>().SetPosition(0, transform.GetChild(0).transform.position);
 		GetComponent<LineRenderer>().SetPosition(1, transform.GetChild(1).transform.position);
 		GetComponent<LineRenderer>().SetWidth(0.01f, 0.01f);
 		switch(patternDimension) {
 			case 0:
-				lineColor = new Color(255, 0, 0);
+				lineColor = new Color(1.0f, 0.0f, 0.0f);
 				break;
 			case 1:
-				lineColor = new Color(251, 255, 0);
+				lineColor = new Color(1.0f, 1.0f, 0.0f);
 				break;
 			case 2:
-				lineColor = new Color(0, 255, 12);
+				lineColor = new Color(0.0f, 1.0f, 0.0f);
 				break;
 			case 3:
-				lineColor = new Color(0, 234, 255);
+				lineColor = new Color(0.0f, 1.0f, 1.0f);
 				break;
 			case 4:
-				lineColor = new Color(255, 0, 255);
+				lineColor = new Color(1.0f, 0.0f, 1.0f);
 				break;
 			default:
 				lineColor = Color.red;
@@ -44,11 +45,11 @@ public class PatternLine : MonoBehaviour {
 	}
 
 	void Update() {
-		if (rake.transform.parent && patternDimension == player.w) {
+		if (patternDimension == player.w) {
 			GetComponent<LineRenderer>().SetColors(lineColor, lineColor);
 		}
 
-		else if (patternDimension != player.w || rake.transform.parent == null) {
+		else if (patternDimension != player.w) {
 			GetComponent<LineRenderer>().SetColors(Color.clear, Color.clear);
 		}
 	}

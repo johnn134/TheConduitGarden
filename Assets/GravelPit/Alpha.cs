@@ -107,7 +107,7 @@ public class Alpha : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (player.w == myHyper.w) /*&& rake.transform.parent)*/ {
+		if (player.w == myHyper.w && rake.transform.parent) {
 			if (tine1Collision || tine2Collision || tine3Collision || tine4Collision) {
 				calculateTinePositions();
 

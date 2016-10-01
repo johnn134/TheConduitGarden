@@ -45,11 +45,11 @@ public class PatternLine : MonoBehaviour {
 	}
 
 	void Update() {
-		if (patternDimension == player.w) {
+		if (patternDimension == player.w && rake.transform.parent) {
 			GetComponent<LineRenderer>().SetColors(lineColor, lineColor);
 		}
 
-		else if (patternDimension != player.w) {
+		else if (patternDimension != player.w || rake.transform.parent == null) {
 			GetComponent<LineRenderer>().SetColors(Color.clear, Color.clear);
 		}
 	}

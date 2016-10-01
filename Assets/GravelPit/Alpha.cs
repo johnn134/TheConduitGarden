@@ -62,7 +62,7 @@ public class Alpha : MonoBehaviour {
 	void Start() {
 		player = HyperCreature.instance;
 		myHyper = GetComponent<HyperObject>();
-		rake = GameObject.FindGameObjectWithTag("Rake");
+		rake = GameObject.Find("Rake");
 		tine1 = GameObject.FindGameObjectWithTag("Tine 1");
 		tine2 = GameObject.FindGameObjectWithTag("Tine 2");
 		tine3 = GameObject.FindGameObjectWithTag("Tine 3");
@@ -112,19 +112,19 @@ public class Alpha : MonoBehaviour {
 				calculateTinePositions();
 
 				if (Vector3.Dot(Vector3.up, transform.up) > 0) {
-					if (tine1Collision == true && rake.transform.parent) {
+					if (tine1Collision == true) {
 						draw(tine1Position.x, tine1Position.z);
 					}
 
-					if (tine2Collision == true && rake.transform.parent) {
+					if (tine2Collision == true) {
 						draw(tine2Position.x, tine2Position.z);
 					}
 
-					if (tine3Collision == true && rake.transform.parent) {
+					if (tine3Collision == true) {
 						draw(tine3Position.x, tine3Position.z);
 					}
 
-					if (tine4Collision == true && rake.transform.parent) {
+					if (tine4Collision == true) {
 						draw(tine4Position.x, tine4Position.z);
 					}
 				}
@@ -138,25 +138,7 @@ public class Alpha : MonoBehaviour {
 		}
 
 		if (frame == 1) {
-			if (tine1Collision == true && rake.transform.parent) {
-				if (tine1Nodes == 0) {
-					GameObject line;
-					GameObject clone;
-					line = Instantiate (drawnLine, new Vector3 (tine1.GetComponent<Transform>().position.x, 0, tine1.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-					clone = Instantiate (drawnNode, new Vector3 (tine1.GetComponent<Transform>().position.x, 0, tine1.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-					currentTine1Line = line; 
-					line.GetComponent<DrawnLine>().tineNumber = 1;
-					line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
-					line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
-					line.GetComponent<DrawnLine>().drawnStartNode = clone;
-					line.transform.parent = drawnPattern.transform;
-					clone.transform.parent = line.transform;
-					tine1Nodes++;
-					//Debug.Log ("Total Tine 1 nodes: " + tine1Nodes);
-					lastTine1Node = clone;
-					lineNumber++;
-				}
-
+			if (tine1Collision == true) {
 				if (Time.time > nextActionTime1) {
 					nextActionTime1 = Time.time + drawPeriod;
 					if (tine1Nodes != 0) {
@@ -172,25 +154,7 @@ public class Alpha : MonoBehaviour {
 		}
 
 		if (frame == 2) {
-			if (tine2Collision == true && rake.transform.parent) {
-				if (tine2Nodes == 0) {
-					GameObject line;
-					GameObject clone;
-					line = Instantiate (drawnLine, new Vector3 (tine2.GetComponent<Transform>().position.x, 0, tine2.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-					clone = Instantiate (drawnNode, new Vector3 (tine2.GetComponent<Transform>().position.x, 0, tine2.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-					currentTine2Line = line; 
-					line.GetComponent<DrawnLine>().tineNumber = 2;
-					line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
-					line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
-					line.GetComponent<DrawnLine>().drawnStartNode = clone;
-					line.transform.parent = drawnPattern.transform;
-					clone.transform.parent = line.transform;
-					tine2Nodes++;
-					//Debug.Log ("Total Tine 2 nodes: " + tine2Nodes);
-					lastTine2Node = clone;
-					lineNumber++;
-				}
-
+			if (tine2Collision == true) {
 				if (Time.time > nextActionTime2) {
 					nextActionTime2 = Time.time + drawPeriod;
 					if (tine2Nodes != 0) {
@@ -206,25 +170,7 @@ public class Alpha : MonoBehaviour {
 		}
 
 		if (frame == 3) {
-			if (tine3Collision == true && rake.transform.parent) {
-				if (tine3Nodes == 0) {
-					GameObject line;
-					GameObject clone;
-					line = Instantiate (drawnLine, new Vector3 (tine3.GetComponent<Transform>().position.x, 0, tine3.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-					clone = Instantiate (drawnNode, new Vector3 (tine3.GetComponent<Transform>().position.x, 0, tine3.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-					currentTine3Line = line; 
-					line.GetComponent<DrawnLine>().tineNumber = 3;
-					line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
-					line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
-					line.GetComponent<DrawnLine>().drawnStartNode = clone;
-					line.transform.parent = drawnPattern.transform;
-					clone.transform.parent = line.transform;
-					tine3Nodes++;
-					//Debug.Log ("Total Tine 3 nodes: " + tine3Nodes);
-					lastTine3Node = clone;
-					lineNumber++;
-				}
-
+			if (tine3Collision == true) {
 				if (Time.time > nextActionTime3) {
 					nextActionTime3 = Time.time + drawPeriod;
 					if (tine3Nodes != 0) {
@@ -240,25 +186,7 @@ public class Alpha : MonoBehaviour {
 		}
 
 		if (frame == 4) {
-			if (tine4Collision == true && rake.transform.parent) {
-				if (tine4Nodes == 0) {
-					GameObject line;
-					GameObject clone;
-					line = Instantiate (drawnLine, new Vector3 (tine4.GetComponent<Transform>().position.x, 0, tine4.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-					clone = Instantiate (drawnNode, new Vector3 (tine4.GetComponent<Transform>().position.x, 0, tine4.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-					currentTine4Line = line; 
-					line.GetComponent<DrawnLine>().tineNumber = 4;
-					line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
-					line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
-					line.GetComponent<DrawnLine>().drawnStartNode = clone;
-					line.transform.parent = drawnPattern.transform;
-					clone.transform.parent = line.transform;
-					tine4Nodes++;
-					//Debug.Log ("Total Tine 4 nodes: " + tine4Nodes);
-					lastTine4Node = clone;
-					lineNumber++;
-				}
-
+			if (tine4Collision == true) {
 				if (Time.time > nextActionTime4) {
 					nextActionTime4 = Time.time + drawPeriod;
 					if (tine4Nodes != 0) {
@@ -341,81 +269,89 @@ public class Alpha : MonoBehaviour {
 		if (col.gameObject.name == "Tine 1") {
 			tine1Collision = true;
 
-			GameObject line;
-			GameObject clone;
-			line = Instantiate (drawnLine, new Vector3 (tine1.GetComponent<Transform>().position.x, 0, tine1.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			clone = Instantiate (drawnNode, new Vector3 (tine1.GetComponent<Transform>().position.x, 0, tine1.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			currentTine1Line = line; 
-			line.GetComponent<DrawnLine>().tineNumber = 1;
-			line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
-			line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
-			line.GetComponent<DrawnLine>().drawnStartNode = clone;
-			line.transform.parent = drawnPattern.transform;
-			clone.transform.parent = line.transform;
-			tine1Nodes++;
-			//Debug.Log ("Total Tine 1 nodes: " + tine1Nodes);
-			lastTine1Node = clone;
-			lineNumber++;
+			if (tine1Collision == true) {
+				GameObject line;
+				GameObject clone;
+				line = Instantiate(drawnLine, new Vector3(tine1.GetComponent<Transform>().position.x, 0, tine1.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				clone = Instantiate(drawnNode, new Vector3(tine1.GetComponent<Transform>().position.x, 0, tine1.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				currentTine1Line = line;
+				line.GetComponent<DrawnLine>().tineNumber = 1;
+				line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
+				line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
+				line.GetComponent<DrawnLine>().drawnStartNode = clone;
+				line.transform.parent = drawnPattern.transform;
+				clone.transform.parent = line.transform;
+				tine1Nodes++;
+				//Debug.Log ("Total Tine 1 nodes: " + tine1Nodes);
+				lastTine1Node = clone;
+				lineNumber++;
+			}
 		}
 
 		if (col.gameObject.name == "Tine 2") {
 			tine2Collision = true;
 
-			GameObject line;
-			GameObject clone;
-			line = Instantiate (drawnLine, new Vector3 (tine2.GetComponent<Transform>().position.x, 0, tine2.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			clone = Instantiate (drawnNode, new Vector3 (tine2.GetComponent<Transform>().position.x, 0, tine2.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			currentTine2Line = line; 
-			line.GetComponent<DrawnLine>().tineNumber = 2;
-			line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
-			line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
-			line.GetComponent<DrawnLine>().drawnStartNode = clone;
-			line.transform.parent = drawnPattern.transform;
-			clone.transform.parent = line.transform;
-			tine2Nodes++;
-			//Debug.Log ("Total Tine 2 nodes: " + tine2Nodes);
-			lastTine2Node = clone;
-			lineNumber++;
+			if (tine2Collision == true) {
+				GameObject line;
+				GameObject clone;
+				line = Instantiate(drawnLine, new Vector3(tine2.GetComponent<Transform>().position.x, 0, tine2.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				clone = Instantiate(drawnNode, new Vector3(tine2.GetComponent<Transform>().position.x, 0, tine2.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				currentTine2Line = line;
+				line.GetComponent<DrawnLine>().tineNumber = 2;
+				line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
+				line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
+				line.GetComponent<DrawnLine>().drawnStartNode = clone;
+				line.transform.parent = drawnPattern.transform;
+				clone.transform.parent = line.transform;
+				tine2Nodes++;
+				//Debug.Log ("Total Tine 2 nodes: " + tine2Nodes);
+				lastTine2Node = clone;
+				lineNumber++;
+			}
 		}
 
 		if (col.gameObject.name == "Tine 3") {
 			tine3Collision = true;
 
-			GameObject line;
-			GameObject clone;
-			line = Instantiate (drawnLine, new Vector3 (tine3.GetComponent<Transform>().position.x, 0, tine3.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			clone = Instantiate (drawnNode, new Vector3 (tine3.GetComponent<Transform>().position.x, 0, tine3.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			currentTine3Line = line; 
-			line.GetComponent<DrawnLine>().tineNumber = 3;
-			line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
-			line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
-			line.GetComponent<DrawnLine>().drawnStartNode = clone;
-			line.transform.parent = drawnPattern.transform;
-			clone.transform.parent = line.transform;
-			tine3Nodes++;
-			//Debug.Log ("Total Tine 3 nodes: " + tine3Nodes);
-			lastTine3Node = clone;
-			lineNumber++;
+			if (tine3Collision == true) {
+				GameObject line;
+				GameObject clone;
+				line = Instantiate(drawnLine, new Vector3(tine3.GetComponent<Transform>().position.x, 0, tine3.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				clone = Instantiate(drawnNode, new Vector3(tine3.GetComponent<Transform>().position.x, 0, tine3.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				currentTine3Line = line;
+				line.GetComponent<DrawnLine>().tineNumber = 3;
+				line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
+				line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
+				line.GetComponent<DrawnLine>().drawnStartNode = clone;
+				line.transform.parent = drawnPattern.transform;
+				clone.transform.parent = line.transform;
+				tine3Nodes++;
+				//Debug.Log ("Total Tine 3 nodes: " + tine3Nodes);
+				lastTine3Node = clone;
+				lineNumber++;
+			}
 		}
 
 		if (col.gameObject.name == "Tine 4") {
 			tine4Collision = true;
 
-			GameObject line;
-			GameObject clone;
-			line = Instantiate (drawnLine, new Vector3 (tine4.GetComponent<Transform>().position.x, 0, tine4.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			clone = Instantiate (drawnNode, new Vector3 (tine4.GetComponent<Transform>().position.x, 0, tine4.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			currentTine4Line = line; 
-			line.GetComponent<DrawnLine>().tineNumber = 4;
-			line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
-			line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
-			line.GetComponent<DrawnLine>().drawnStartNode = clone;
-			line.transform.parent = drawnPattern.transform;
-			clone.transform.parent = line.transform;
-			tine4Nodes++;
-			//Debug.Log ("Total Tine 4 nodes: " + tine4Nodes);
-			lastTine1Node = clone;
-			lineNumber++;
+			if (tine4Collision == true) {
+				GameObject line;
+				GameObject clone;
+				line = Instantiate(drawnLine, new Vector3(tine4.GetComponent<Transform>().position.x, 0, tine4.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				clone = Instantiate(drawnNode, new Vector3(tine4.GetComponent<Transform>().position.x, 0, tine4.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				currentTine4Line = line;
+				line.GetComponent<DrawnLine>().tineNumber = 4;
+				line.GetComponent<DrawnLine>().drawnLineNumber = lineNumber;
+				line.GetComponent<DrawnLine>().drawnDimension = rake.GetComponent<HyperColliderManager>().w;
+				line.GetComponent<DrawnLine>().drawnStartNode = clone;
+				line.transform.parent = drawnPattern.transform;
+				clone.transform.parent = line.transform;
+				tine4Nodes++;
+				//Debug.Log ("Total Tine 4 nodes: " + tine4Nodes);
+				lastTine1Node = clone;
+				lineNumber++;
+			}
 		}
 	}
 
@@ -423,69 +359,77 @@ public class Alpha : MonoBehaviour {
 		if (col.transform.name == "Tine 1") {
 			tine1Collision = false;
 
-			GameObject clone;
-			clone = Instantiate (drawnNode, new Vector3 (tine1.GetComponent<Transform>().position.x, 0, tine1.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			clone.transform.parent = currentTine1Line.transform;
-			tine1Nodes++;
-			//Debug.Log ("Total Tine 1 nodes: " + tine1Nodes);
-			lastTine1Node = clone;
+			if (tine1Collision == false) {
+				GameObject clone;
+				clone = Instantiate(drawnNode, new Vector3(tine1.GetComponent<Transform>().position.x, 0, tine1.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				clone.transform.parent = currentTine1Line.transform;
+				tine1Nodes++;
+				//Debug.Log ("Total Tine 1 nodes: " + tine1Nodes);
+				lastTine1Node = clone;
 
-			currentTine1Line.GetComponent<DrawnLine>().drawnEndNode = lastTine1Node;
-			currentTine1Line.GetComponent<DrawnLine>().drawnVector = (currentTine1Line.GetComponent<DrawnLine>().drawnEndNode.transform.position - currentTine1Line.GetComponent<DrawnLine>().drawnStartNode.transform.position);
-			//Debug.Log ("Current Tine 1 Line Vector: " + currentTine1Line.GetComponent<DrawnLine>().drawnVector);
-			tine1Nodes = 0;
-			tine1Lines += 1.0f;
+				currentTine1Line.GetComponent<DrawnLine>().drawnEndNode = lastTine1Node;
+				currentTine1Line.GetComponent<DrawnLine>().drawnVector = (currentTine1Line.GetComponent<DrawnLine>().drawnEndNode.transform.position - currentTine1Line.GetComponent<DrawnLine>().drawnStartNode.transform.position);
+				//Debug.Log ("Current Tine 1 Line Vector: " + currentTine1Line.GetComponent<DrawnLine>().drawnVector);
+				tine1Nodes = 0;
+				tine1Lines += 1.0f;
+			}
 		}
 
 		if (col.transform.name == "Tine 2") {
 			tine2Collision = false;
 
-			GameObject clone;
-			clone = Instantiate (drawnNode, new Vector3 (tine2.GetComponent<Transform>().position.x, 0, tine2.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			clone.transform.parent = currentTine2Line.transform;
-			tine2Nodes++;
-			//Debug.Log ("Total Tine 2 nodes: " + tine2Nodes);
-			lastTine2Node = clone;
+			if (tine2Collision == false) {
+				GameObject clone;
+				clone = Instantiate(drawnNode, new Vector3(tine2.GetComponent<Transform>().position.x, 0, tine2.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				clone.transform.parent = currentTine2Line.transform;
+				tine2Nodes++;
+				//Debug.Log ("Total Tine 2 nodes: " + tine2Nodes);
+				lastTine2Node = clone;
 
-			currentTine2Line.GetComponent<DrawnLine>().drawnEndNode = lastTine2Node;
-			currentTine2Line.GetComponent<DrawnLine>().drawnVector = (currentTine2Line.GetComponent<DrawnLine>().drawnEndNode.transform.position - currentTine2Line.GetComponent<DrawnLine>().drawnStartNode.transform.position);
-			//Debug.Log ("Current Tine 2 Line Vector: " + currentTine2Line.GetComponent<DrawnLine>().drawnVector);
-			tine2Nodes = 0;
-			tine2Lines += 1.0f;
+				currentTine2Line.GetComponent<DrawnLine>().drawnEndNode = lastTine2Node;
+				currentTine2Line.GetComponent<DrawnLine>().drawnVector = (currentTine2Line.GetComponent<DrawnLine>().drawnEndNode.transform.position - currentTine2Line.GetComponent<DrawnLine>().drawnStartNode.transform.position);
+				//Debug.Log ("Current Tine 2 Line Vector: " + currentTine2Line.GetComponent<DrawnLine>().drawnVector);
+				tine2Nodes = 0;
+				tine2Lines += 1.0f;
+			}
 		}
 
 		if (col.transform.name == "Tine 3") {
 			tine3Collision = false;
 
-			GameObject clone;
-			clone = Instantiate (drawnNode, new Vector3 (tine3.GetComponent<Transform>().position.x, 0, tine3.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			clone.transform.parent = currentTine3Line.transform;
-			tine3Nodes++;
-			//Debug.Log ("Total Tine 3 nodes: " + tine3Nodes);
-			lastTine3Node = clone;
+			if (tine3Collision == false) {
+				GameObject clone;
+				clone = Instantiate(drawnNode, new Vector3(tine3.GetComponent<Transform>().position.x, 0, tine3.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				clone.transform.parent = currentTine3Line.transform;
+				tine3Nodes++;
+				//Debug.Log ("Total Tine 3 nodes: " + tine3Nodes);
+				lastTine3Node = clone;
 
-			currentTine3Line.GetComponent<DrawnLine>().drawnEndNode = lastTine3Node;
-			currentTine3Line.GetComponent<DrawnLine>().drawnVector = (currentTine3Line.GetComponent<DrawnLine>().drawnEndNode.transform.position - currentTine3Line.GetComponent<DrawnLine>().drawnStartNode.transform.position);
-			//Debug.Log ("Current Tine 3 Line Vector: " + currentTine3Line.GetComponent<DrawnLine>().drawnVector);
-			tine3Nodes = 0;
-			tine3Lines += 1.0f;
+				currentTine3Line.GetComponent<DrawnLine>().drawnEndNode = lastTine3Node;
+				currentTine3Line.GetComponent<DrawnLine>().drawnVector = (currentTine3Line.GetComponent<DrawnLine>().drawnEndNode.transform.position - currentTine3Line.GetComponent<DrawnLine>().drawnStartNode.transform.position);
+				//Debug.Log ("Current Tine 3 Line Vector: " + currentTine3Line.GetComponent<DrawnLine>().drawnVector);
+				tine3Nodes = 0;
+				tine3Lines += 1.0f;
+			}
 		}
 
 		if (col.transform.name == "Tine 4") {
 			tine4Collision = false;
 
-			GameObject clone;
-			clone = Instantiate (drawnNode, new Vector3 (tine4.GetComponent<Transform>().position.x, 0, tine4.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
-			clone.transform.parent = currentTine4Line.transform;
-			tine4Nodes++;
-			//Debug.Log ("Total Tine 4 nodes: " + tine4Nodes);
-			lastTine4Node = clone;
+			if (tine4Collision == false) {
+				GameObject clone;
+				clone = Instantiate(drawnNode, new Vector3(tine4.GetComponent<Transform>().position.x, 0, tine4.GetComponent<Transform>().position.z), Quaternion.identity) as GameObject;
+				clone.transform.parent = currentTine4Line.transform;
+				tine4Nodes++;
+				//Debug.Log ("Total Tine 4 nodes: " + tine4Nodes);
+				lastTine4Node = clone;
 
-			currentTine4Line.GetComponent<DrawnLine>().drawnEndNode = lastTine4Node;
-			currentTine4Line.GetComponent<DrawnLine>().drawnVector = (currentTine4Line.GetComponent<DrawnLine>().drawnEndNode.transform.position - currentTine4Line.GetComponent<DrawnLine>().drawnStartNode.transform.position);
-			//Debug.Log ("Current Tine 4 Line Vector: " + currentTine4Line.GetComponent<DrawnLine>().drawnVector);
-			tine4Nodes = 0;
-			tine4Lines += 1.0f;
+				currentTine4Line.GetComponent<DrawnLine>().drawnEndNode = lastTine4Node;
+				currentTine4Line.GetComponent<DrawnLine>().drawnVector = (currentTine4Line.GetComponent<DrawnLine>().drawnEndNode.transform.position - currentTine4Line.GetComponent<DrawnLine>().drawnStartNode.transform.position);
+				//Debug.Log ("Current Tine 4 Line Vector: " + currentTine4Line.GetComponent<DrawnLine>().drawnVector);
+				tine4Nodes = 0;
+				tine4Lines += 1.0f;
+			}
 		}
 
 		

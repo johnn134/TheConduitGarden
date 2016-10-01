@@ -9,6 +9,7 @@ public class PatternLine : MonoBehaviour {
 	public Vector3 patternVector;
 	public bool isVertical;
 	public int patternDimension;
+	private Color lineColor;
 
 	void Awake() {
 		player = HyperCreature.instance;
@@ -18,7 +19,6 @@ public class PatternLine : MonoBehaviour {
 		GetComponent<LineRenderer>().SetPosition(0, transform.GetChild(0).transform.position);
 		GetComponent<LineRenderer>().SetPosition(1, transform.GetChild(1).transform.position);
 		GetComponent<LineRenderer>().SetWidth(0.01f, 0.01f);
-		Color lineColor = Color.red;
 		switch(patternDimension) {
 			case 0:
 				lineColor = new Color(255, 0, 0);
@@ -40,16 +40,16 @@ public class PatternLine : MonoBehaviour {
 				break;
 		}
 		GetComponent<LineRenderer>().SetColors(lineColor, lineColor);
-		GetComponent<LineRenderer>().enabled = false;
+		GetComponent<LineRenderer>().SetColors(Color.clear, Color.clear);
 	}
 
 	void Update() {
-		if (rake.transform.parent && patternDimension == player.w && GetComponent<LineRenderer>().enabled == false) {
-			GetComponent<LineRenderer>().enabled = true;
+		if (rake.transform.parent && patternDimension == player.w) {
+			GetComponent<LineRenderer>().SetColors(lineColor, lineColor);
 		}
 
 		else if (patternDimension != player.w || rake.transform.parent == null) {
-			GetComponent<LineRenderer>().enabled = false;
+			GetComponent<LineRenderer>().SetColors(Color.clear, Color.clear);
 		}
 	}
 

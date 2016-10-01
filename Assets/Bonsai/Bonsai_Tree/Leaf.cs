@@ -42,9 +42,6 @@ public class Leaf : MonoBehaviour {
 			if(isDead) {
 				manager.GetComponent<BonsaiManager>().removeDeadLeaf();
 			}
-
-			if(zoneExtension)
-				manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension();
 		}
 	}
 
@@ -82,6 +79,21 @@ public class Leaf : MonoBehaviour {
 		}
 	}
 
+	public void initiateExtension() {
+		StartCoroutine(extendLeaf());
+	}
+
+	public IEnumerator extendLeaf() {
+		Vector3 initialScale = transform.localScale;
+
+		for(float t = 0; t < 1; t += Time.deltaTime) {
+			transform.localScale = new Vector3(Mathf.Lerp(0.0f, initialScale.x, t), 
+				Mathf.Lerp(0.0f, initialScale.y, t), 
+				Mathf.Lerp(0.0f, initialScale.z, t));
+			yield return null;
+		}
+	}
+
 	/*
 	 * Checks if the leaf will remain alive
 	 * Leaf will live if one of these is satisfied:
@@ -102,7 +114,10 @@ public class Leaf : MonoBehaviour {
 	public void makeLeafDead() {
 		//Darken the leaf to show it is dead
 		transform.GetChild(0).GetComponent<HyperObject>().dullCoef = 4;
-		transform.GetChild(0).GetComponent<HyperObject>().WMove();
+		transform.GetChild(0).GetComponent<HyperObject>().w_depth = HyperObject.W_RANGE;
+		transform.GetComponent<HyperColliderManager>().w_depth = HyperObject.W_RANGE;
+		transform.GetComponent<HyperColliderManager>().setW(0);
+		transform.GetComponent<HyperColliderManager>().SetCollisions();
 
 		isDead = true;
 		manager.GetComponent<BonsaiManager>().addDeadLeaf();
@@ -140,42 +155,6 @@ public class Leaf : MonoBehaviour {
 				counter++;
 		}
 		return counter;
-	}
-
-	/*
-	 * Wrapper for checking if the leaf extends past a zone marker
-	 * required of the contract
-	 */
-	public void checkIfLeafSatisfiesContract() {
-		if(manager.GetComponent<BonsaiManager>() != null) {
-			switch(manager.GetComponent<BonsaiManager>().levelType) {
-				case BonsaiManager.CONTRACTLEVEL.NONE:
-
-					break;
-				case BonsaiManager.CONTRACTLEVEL.TOKYO:
-					checkBoundsForTokyo();
-					break;
-				default:
-
-					break;
-			}
-		}
-	}
-
-	/*
-	 * Determines if the branch extends past the bounding zone for the Tokyo contract
-	 */
-	void checkBoundsForTokyo() {
-		/*
-		GameObject shrine = FindObjectOfType<BonsaiShrine>().gameObject;
-		bool a = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(1).position, manager);
-		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.position, manager);
-		if(!a || !b) {
-			zoneExtension = true;
-			if(manager.GetComponent<BonsaiManager>() != null)
-				manager.GetComponent<BonsaiManager>().registerZoneExtension();
-		}
-		*/
 	}
 
 	/*

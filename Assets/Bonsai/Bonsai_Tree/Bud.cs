@@ -56,37 +56,51 @@ public class Bud : MonoBehaviour {
 			newLeaf.transform.Rotate(-90, 0, 0);
 
 			//Initialize Variables
-			//newLeaf.GetComponent<Leaf>().setDepth(depth);		//no depth reading in leaf code
 			newLeaf.GetComponent<Leaf>().setManager(manager);
-			newLeaf.GetComponent<Leaf>().checkIfLeafSatisfiesContract();
 
 			//Set w position
 			newLeaf.GetComponent<HyperColliderManager>().setW(transform.GetChild(0).GetComponent<HyperObject>().w);
 
 			//Register Leaf Added
 			transform.parent.GetComponent<Branch>().registerLeafAdded();
+
+			//Start extension
+			newLeaf.GetComponent<Leaf>().initiateExtension();
 		}
 		else {
 			GameObject newBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), Vector3.zero, Quaternion.identity, transform.parent) as GameObject;
 			newBranch.transform.localPosition = transform.localPosition;
 			newBranch.transform.localRotation = transform.localRotation;
-			//newBranch.transform.Rotate(-90, 0, 0);
 
 			//Initialize Variables
-			newBranch.GetComponent<Branch>().setDepth(depth);
-			newBranch.GetComponent<Branch>().setManager(manager);
-			newBranch.GetComponent<Branch>().checkIfBranchSatisfiesContract();
-
-			//Set w position
-			newBranch.GetComponent<HyperColliderManager>().setW(transform.GetChild(0).GetComponent<HyperObject>().w);
+			newBranch.GetComponent<Branch>().initializeBranch(true, depth, manager, 
+				transform.GetChild(0).GetComponent<HyperObject>().w);
 
 			//Register Branch Added
 			transform.parent.GetComponent<Branch>().registerBranchAdded();
+
+			//Start extension
+			newBranch.GetComponent<Branch>().initiateExtension();
 		}
 
 		didGrow = true;
 
 		Destroy(this.gameObject);
+	}
+
+	public void initiateExtension() {
+		StartCoroutine(extendBud());
+	}
+
+	public IEnumerator extendBud() {
+		Vector3 initialScale = transform.localScale;
+
+		for(float t = 0; t < 1; t += Time.deltaTime) {
+			transform.localScale = new Vector3(Mathf.Lerp(0.0f, initialScale.x, t), 
+				Mathf.Lerp(0.0f, initialScale.y, t), 
+				Mathf.Lerp(0.0f, initialScale.z, t));
+			yield return null;
+		}
 	}
 
 	/*

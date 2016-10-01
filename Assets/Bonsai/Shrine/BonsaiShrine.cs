@@ -26,6 +26,7 @@ public class BonsaiShrine : MonoBehaviour {
 
 	const int MIN_LEAVES = 4;
 	const int MIN_BRANCHES = 5;
+	const int MIN_REQUIRED_DEPTH_TOKYO = 3;
 
 	const float CHECK_DELAY = 1.0f;
 	const float INACTIVE_COLOR_VALUE = 0.1f;
@@ -72,9 +73,6 @@ public class BonsaiShrine : MonoBehaviour {
 
 		//Initialize lights to off
 		setActivationStage(0, 0);
-
-		//Create Requirement lines on trees
-		initializeRequirementLines();
 	}
 
 	// Use this for initialization
@@ -92,11 +90,6 @@ public class BonsaiShrine : MonoBehaviour {
 			else
 				activateBoundLines();
 		}
-
-        if (shears.parent && !linesActivated)
-            activateBoundLines();
-        else if (!shears.parent && linesActivated)
-            deactivateBoundLines();
 	}
 
 	void FixedUpdate() {
@@ -120,8 +113,20 @@ public class BonsaiShrine : MonoBehaviour {
 		newLine.GetComponent<LineRenderer>().SetPositions(pos);
 	}
 
+	void addRequiredLine(GameObject obj, Vector3[] pos) {
+		GameObject newLine = new GameObject("RequirementLine");
+		newLine.transform.position = obj.transform.position;
+		newLine.transform.parent = obj.transform;
+		newLine.AddComponent<LineRenderer>().SetVertexCount(pos.Length);
+		newLine.GetComponent<LineRenderer>().material = Resources.Load("BonsaiShrine/RequiredMat") as Material;
+		newLine.GetComponent<LineRenderer>().SetWidth(LINE_WIDTH, LINE_WIDTH);
+		newLine.GetComponent<LineRenderer>().SetPositions(pos);
+	}
+
 	/*
 	 * Set up the visual outline of the required zones
+	 * 
+	 * *** Currently not used ***
 	 */
 	void initializeRequirementLines() {
 		foreach(GameObject tree in trees) {
@@ -138,38 +143,7 @@ public class BonsaiShrine : MonoBehaviour {
 			}
 
 			addRequiredLine(requiredLines, circlePos);
-
-			//Zone B
-			for(int i = 0; i < 17; i++) {
-				float z = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
-				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
-
-				circlePos[i] = new Vector3(offset.x + TOKYO_ZONE_B_OFFSET_X, y + offset.y + TOKYO_ZONE_B_OFFSET_Y, z + offset.z + TOKYO_ZONE_B_OFFSET_Z);
-			}
-
-			addRequiredLine(requiredLines, circlePos);
-
-			//Zone C
-			for(int i = 0; i < 17; i++) {
-				float z = Mathf.Cos(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
-				float y = Mathf.Sin(Mathf.Deg2Rad * ((float)i * (360f / 16f))) * TOKYO_REQ_RADIUS;
-
-				circlePos[i] = new Vector3(offset.x + TOKYO_ZONE_C_OFFSET_X, y + offset.y + TOKYO_ZONE_C_OFFSET_Y, z + offset.z + TOKYO_ZONE_C_OFFSET_Z);
-			}
-
-			addRequiredLine(requiredLines, circlePos);
-
 		}
-	}
-
-	void addRequiredLine(GameObject obj, Vector3[] pos) {
-		GameObject newLine = new GameObject("RequirementLine");
-		newLine.transform.position = obj.transform.position;
-		newLine.transform.parent = obj.transform;
-		newLine.AddComponent<LineRenderer>().SetVertexCount(pos.Length);
-		newLine.GetComponent<LineRenderer>().material = Resources.Load("BonsaiShrine/RequiredMat") as Material;
-		newLine.GetComponent<LineRenderer>().SetWidth(LINE_WIDTH, LINE_WIDTH);
-		newLine.GetComponent<LineRenderer>().SetPositions(pos);
 	}
 
 	/*
@@ -382,81 +356,9 @@ public class BonsaiShrine : MonoBehaviour {
 	/*
 	 * Determines if the trees in the Tokyo contract level meet the requirements of the contract
 	 * Requirements:
-	 * - branches or leaves do NOT extend past the Top, Bottom, Lower or Upper bounds
-	 * - there is at least 1 branch through each of the 5 required zones
+	 * - must have a branch at the minimum required depth
 	 */
 	bool checkTokyoContractProgress(GameObject tree) {
-		bool satisfied = true;
-
-		int[] reqZonePasses = tree.GetComponent<BonsaiManager>().getReqZonePasses();
-		if(tree.GetComponent<BonsaiManager>().getZoneExtensions() > 0 ||
-			reqZonePasses[0] <= 0 ||
-			reqZonePasses[1] <= 0 ||
-			reqZonePasses[2] <= 0) {
-			satisfied = false;
-		}
-		
-		return satisfied;
-	}
-
-	/*
-	 * returns true if the point is within the contract's allowed growing zone
-	 */
-	public bool isPointInsideBoundingZone(Vector3 point, GameObject tree) {
-		bool inZone = true;
-
-		return inZone;
-	}
-
-	/*
-	 * returns true if the line between the given points
-	 * intersects with required Zone A
-	 */
-	public bool passesThroughReqZoneA(Vector3 start, Vector3 end, GameObject tree) {
-		float slopeXZ = (end.z - start.z) / (end.x - start.x);
-		float slopeYZ = (end.z - start.z) / (end.y - start.y);
-
-		float x = start.x + ((tree.transform.position.z + TOKYO_ZONE_A_OFFSET_Z - start.z) / slopeXZ);
-		float y = start.y + ((tree.transform.position.z + TOKYO_ZONE_A_OFFSET_Z - start.z) / slopeYZ);
-		float distance = Mathf.Sqrt(Mathf.Pow(x - (tree.transform.position.x + TOKYO_ZONE_A_OFFSET_X), 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_ZONE_A_OFFSET_Y), 2));
-
-		return distance < TOKYO_REQ_RADIUS && isPointBetween(tree.transform.position.z + TOKYO_ZONE_A_OFFSET_Z, start.z, end.z);
-	}
-
-	/*
-	 * returns true if the line between the given points
-	 * intersects with required Zone B
-	 */
-	public bool passesThroughReqZoneB(Vector3 start, Vector3 end, GameObject tree) {
-		float slopeZX = (end.x - start.x) / (end.z - start.z);
-		float slopeYX = (end.x - start.x) / (end.y - start.y);
-
-		float z = start.z + ((tree.transform.position.x + TOKYO_ZONE_B_OFFSET_X - start.x) / slopeZX);
-		float y = start.y + ((tree.transform.position.x + TOKYO_ZONE_B_OFFSET_X - start.x) / slopeYX);
-		float distance = Mathf.Sqrt(Mathf.Pow(z - (tree.transform.position.z + TOKYO_ZONE_B_OFFSET_Z), 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_ZONE_B_OFFSET_Y), 2));
-
-		return distance < TOKYO_REQ_RADIUS && isPointBetween(tree.transform.position.x + TOKYO_ZONE_B_OFFSET_X, start.x, end.x);
-	}
-
-	/*
-	 * returns true if the line between the given points
-	 * intersects with required Zone C
-	 */
-	public bool passesThroughReqZoneC(Vector3 start, Vector3 end, GameObject tree) {
-		float slopeZX = (end.x - start.x) / (end.z - start.z);
-		float slopeYX = (end.x - start.x) / (end.y - start.y);
-
-		float z = start.z + ((tree.transform.position.x + TOKYO_ZONE_C_OFFSET_X - start.x) / slopeZX);
-		float y = start.y + ((tree.transform.position.x + TOKYO_ZONE_C_OFFSET_X - start.x) / slopeYX);
-		float distance = Mathf.Sqrt(Mathf.Pow(z - (tree.transform.position.z + TOKYO_ZONE_C_OFFSET_Z), 2) + Mathf.Pow(y - (tree.transform.position.y + TOKYO_ZONE_C_OFFSET_Y), 2));
-
-		return distance < TOKYO_REQ_RADIUS && isPointBetween(tree.transform.position.x + TOKYO_ZONE_C_OFFSET_X, start.x, end.x);
-	}
-
-	/*
-	 * Returns true if the given value is between the start and end points
-	 */
-	bool isPointBetween(float val, float start, float end) {
-		return (val < start && val > end) || (val > start && val < end);
+		return tree.GetComponent<BonsaiManager>().getLargestDepth() >= MIN_REQUIRED_DEPTH_TOKYO;
 	}
 }

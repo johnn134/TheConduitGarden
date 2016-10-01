@@ -360,8 +360,13 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
+  tilingX: 0
+  tilingY: 0
+  offsetX: 0
+  offsetY: 0
   isParent: 0
-  vanishWhenTransparent: 0
+  staticRenderMode: 0
 --- !u!114 &114000012224394708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -376,8 +381,13 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
+  tilingX: 0
+  tilingY: 0
+  offsetX: 0
+  offsetY: 0
   isParent: 0
-  vanishWhenTransparent: 0
+  staticRenderMode: 0
 --- !u!114 &114000012371103230
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -403,8 +413,13 @@ MonoBehaviour:
   w: 0
   w_depth: 0
   dullCoef: 1
+  texture: {fileID: 0}
+  tilingX: 0
+  tilingY: 0
+  offsetX: 0
+  offsetY: 0
   isParent: 0
-  vanishWhenTransparent: 0
+  staticRenderMode: 0
 --- !u!114 &114000013276892692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -420,4 +435,3 @@ MonoBehaviour:
   w_depth: 0
   movable: 0
   isParent: 0
-  IVDManager: {fileID: 0}

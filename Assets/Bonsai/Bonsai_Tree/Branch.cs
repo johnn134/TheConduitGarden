@@ -9,7 +9,9 @@ public class Branch : MonoBehaviour {
 	GameObject[] buds;
 	GameObject[] branches;
 
-	int age;            	//How many growth cycles has this branch lived through
+	Vector3 initialCylinderScale;
+
+	public int age;            	//How many growth cycles has this branch lived through
 	int numLeaves;      	//Number of leaves on this branch
 	int numBuds;
 	int numBranches;    	//Number of branches on this branch
@@ -27,12 +29,16 @@ public class Branch : MonoBehaviour {
 	int[] requiredZonePasses;
 
 	float leafRange;    	//Stores the radius of the rounded branch tip
+	float initialCylinderPosition, initialTipPosition;
 
 	bool isBranchGrowing;     	//Tells whether the branch should be growing
 	bool isWaitingForResponse;
 	bool isTip;         	//True if this branch has no child branches
+	bool hasBecomeTip;
 	bool isDead;    		//Is this branch diseased
 	bool isInfested;    	//Does ths branch have bugs on it
+	bool isExtending;
+	bool hasToGrowBuds;
 	bool leavesAreDead;		//Are all leaves on this branch dead
 	bool zoneExtension;		//Does the branch pass outside the bound zone
 
@@ -44,7 +50,7 @@ public class Branch : MonoBehaviour {
 	const int LEAF_MAX = 5;                	//Maximum number of leaf buds that can ever grow
 	const int BUG_MIN = 3;					//Minimum number of bugs that can infest the branch
 	const int BUG_MAX = 5;					//Maximum number of bugs that can infest the branch
-	const int MIN_LEAF_DEPTH = 3;			//Must be at least 0, depth of branches before leaves can grow
+	const int MIN_LEAF_DEPTH = 2;			//Must be at least 0, depth of branches before leaves can grow
 	const int MAX_PLACEMENT_ATTEMPTS = 20;  //Maximum attempts for a bud to place itself before giving up
 	const int TIME_TILL_INFESTATION = 1;	//Must be at least 0, number of growth cycles after leaves have died till infestation
 	const int TIME_TILL_DEATH = 2;			//Must be at least 0, number of growth cycles after infestation until death
@@ -75,12 +81,19 @@ public class Branch : MonoBehaviour {
 		isBranchGrowing = false;
 		isWaitingForResponse = false;
 		isTip = true;
+		hasBecomeTip = false;
+		isExtending = false;
+		hasToGrowBuds = false;
 
 		requiredZonePasses = new int[3];
 
 		for(int i = 0; i < 3; i++) {
 			requiredZonePasses[i] = 0;
 		}
+
+		initialCylinderPosition = transform.GetChild(0).GetChild(0).localPosition.y;
+		initialCylinderScale = transform.GetChild(0).GetChild(0).localScale;
+		initialTipPosition = transform.GetChild(0).GetChild(2).localPosition.y;
 
 		//Infestation and Death variables
 		leavesDeathTime = -1;
@@ -111,16 +124,13 @@ public class Branch : MonoBehaviour {
 		if(manager != null) {
 			manager.GetComponent<BonsaiManager>().removeBranch();
 
+			manager.GetComponent<BonsaiManager>().registerBranchRemovalAtDepth(depth);
+
 			if(isInfested)
 				manager.GetComponent<BonsaiManager>().removeInfestedBranch();
 			
 			if(isDead)
 				manager.GetComponent<BonsaiManager>().removeDeadBranch();
-
-			if(zoneExtension)
-				manager.GetComponent<BonsaiManager>().registerRemovalOfZoneExtension();
-
-			manager.GetComponent<BonsaiManager>().registerRemovalOfReqZonePasses(requiredZonePasses);
 		}
 	}
 
@@ -147,7 +157,8 @@ public class Branch : MonoBehaviour {
 					break;
 				case 5:
 					isBranchGrowing = false;
-					age += 1;
+					if(!hasToGrowBuds)
+						age += 1;
 
 					//Tell parent that growth is over
 					if(depth > 0) {
@@ -286,11 +297,16 @@ public class Branch : MonoBehaviour {
 	 */
 	bool growBuds() {
 		if(!isDead) {
-			if(manager.GetComponent<BonsaiManager>().getNumBranches() < manager.GetComponent<BonsaiManager>().maxBranches) {
-				growBranchBuds();
+			if(isExtending) {
+				hasToGrowBuds = true;
 			}
-			if(manager.GetComponent<BonsaiManager>().getNumLeaves() < manager.GetComponent<BonsaiManager>().maxLeaves) {
-				growLeafBuds();
+			else {
+				if(manager.GetComponent<BonsaiManager>().getNumBranches() < manager.GetComponent<BonsaiManager>().maxBranches) {
+					growBranchBuds();
+				}
+				if(manager.GetComponent<BonsaiManager>().getNumLeaves() < manager.GetComponent<BonsaiManager>().maxLeaves) {
+					growLeafBuds();
+				}
 			}
 		}
 
@@ -408,7 +424,12 @@ public class Branch : MonoBehaviour {
 	 * Grows new branch buds on the surface of the tip of the branch
 	 */
 	void growBranchBuds() {
-		if(numBranches < BRANCH_MAX && age % branchGrowthCycle == 1) {
+		if(numBranches < BRANCH_MAX && ((depth >= MIN_LEAF_DEPTH && age % branchGrowthCycle == 1)
+										|| (depth < MIN_LEAF_DEPTH && age % branchGrowthCycle == 0)
+										|| (hasBecomeTip == true && depth < MIN_LEAF_DEPTH))) {
+			if(hasBecomeTip)
+				hasBecomeTip = false;
+
 			//Note that Range is exculsive for the max so the branchMax must be increased by 1
 			int numBuds = numBranches > 0 ? Random.Range(0, BRANCH_MAX + 1 - numBranches) : Random.Range(BRANCH_MIN, BRANCH_MAX + 1);
 
@@ -458,6 +479,34 @@ public class Branch : MonoBehaviour {
 				addBud(transform.GetChild(1).localPosition, newRot, false);
 			}
 		}
+	}
+
+	public void initiateExtension() {
+		StartCoroutine(extendBranch());
+	}
+
+	public IEnumerator extendBranch() {
+		Transform cylinder = transform.GetChild(0).GetChild(0);
+		Transform tip = transform.GetChild(0).GetChild(2);
+
+		isExtending = true;
+
+		for(float t = 0; t < 1; t += Time.deltaTime) {
+			cylinder.localPosition = new Vector3(0.0f, Mathf.Lerp(0.0f, initialCylinderPosition, t), 0.0f);
+			cylinder.localScale = new Vector3(initialCylinderScale.x, 
+				Mathf.Lerp(0.0f, initialCylinderScale.y, t), initialCylinderScale.z);
+			tip.localPosition = new Vector3(0.0f, Mathf.Lerp(0.0f, initialTipPosition, t), 0.0f);
+			yield return null;
+		}
+			
+		isExtending = false;
+
+		//Now grow buds after waiting for extension
+		if(hasToGrowBuds) {
+			growBuds();
+			age += 1;
+		}
+			
 	}
 
 	#endregion
@@ -655,9 +704,15 @@ public class Branch : MonoBehaviour {
 		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().dullCoef = 4;
 		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().dullCoef = 4;
 		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().dullCoef = 4;
-		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().WMove();
-		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().WMove();
-		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().WMove();
+		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().w_depth = HyperObject.W_RANGE;
+		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().w_depth = HyperObject.W_RANGE;
+		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().w_depth = HyperObject.W_RANGE;
+		transform.GetChild(0).GetChild(0).GetComponent<HyperObject>().setW(0);
+		transform.GetChild(0).GetChild(1).GetComponent<HyperObject>().setW(0);
+		transform.GetChild(0).GetChild(2).GetComponent<HyperObject>().setW(0);
+		transform.GetComponent<HyperColliderManager>().w = 0;
+		transform.GetComponent<HyperColliderManager>().w_depth = HyperObject.W_RANGE;
+		transform.GetComponent<HyperColliderManager>().SetCollisions();
 	}
 
 	#endregion
@@ -675,7 +730,7 @@ public class Branch : MonoBehaviour {
 
 					break;
 				case BonsaiManager.CONTRACTLEVEL.TOKYO:
-					checkBoundsForTokyo();
+					reportDepthToManager();
 					break;
 				default:
 
@@ -687,42 +742,8 @@ public class Branch : MonoBehaviour {
 	/*
 	 * Determines if the branch extends past the bounding zone for the Tokyo contract
 	 */
-	void checkBoundsForTokyo() {
-		GameObject shrine = FindObjectOfType<BonsaiShrine>().gameObject;
-
-		/*
-		//Check for the bounding zone
-		bool a = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(1).position, manager);
-		bool b = shrine.GetComponent<BonsaiShrine>().isPointInsideBoundingZone(transform.GetChild(2).position, manager);
-		if(!a || !b) {
-			zoneExtension = true;
-
-			if(manager.GetComponent<BonsaiManager>() != null)
-				manager.GetComponent<BonsaiManager>().registerZoneExtension();
-		}
-		*/
-
-		//Check for Zone A Requirement
-		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqZoneA(transform.GetChild(1).position, 
-				transform.GetChild(2).position, manager)) {
-			requiredZonePasses[0] = 1;
-		}
-
-		//Check for Zone B Requirement
-		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqZoneB(transform.GetChild(1).position, 
-			transform.GetChild(2).position, manager)) {
-			requiredZonePasses[1] = 1;
-		}
-
-		//Check for Zone C Requirement
-		if(shrine.GetComponent<BonsaiShrine>().passesThroughReqZoneC(transform.GetChild(1).position, 
-			transform.GetChild(2).position, manager)) {
-			requiredZonePasses[2] = 1;
-		}
-
-		//Send passes
-		if(manager.GetComponent<BonsaiManager>() != null)
-			manager.GetComponent<BonsaiManager>().registerReqZonePasses(requiredZonePasses);
+	void reportDepthToManager() {
+		manager.GetComponent<BonsaiManager>().registerBranchDepth(depth);
 	}
 
 	/*
@@ -746,47 +767,29 @@ public class Branch : MonoBehaviour {
 	void setupTokyoTree() {
 		age += 2;
 
-		/*	Old setup
-		GameObject b1 = addBranch(Vector3.zero);
-
-		addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f)).GetComponent<Branch>().addBranch(Vector3.up);
-		addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f)).GetComponent<Branch>().addBranch(Vector3.up);
-		addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE)).GetComponent<Branch>().addBranch(Vector3.up);
-		addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE)).GetComponent<Branch>().addBranch(Vector3.up);
-
-		GameObject b2 = b1.GetComponent<Branch>().addBranch(Vector3.zero);
-
-		b1.GetComponent<Branch>().addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
-		b1.GetComponent<Branch>().addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
-		b1.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE));
-		b1.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE));
-
-		GameObject b3 = b2.GetComponent<Branch>().addBranch(Vector3.zero);
-
-		//b2.GetComponent<Branch>().addBranch(new Vector3(TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
-		//b2.GetComponent<Branch>().addBranch(new Vector3(-TOKYO_BRANCH_ANGLE, 0.0f, 0.0f));
-		//b2.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, TOKYO_BRANCH_ANGLE));
-		//b2.GetComponent<Branch>().addBranch(new Vector3(0.0f, 0.0f, -TOKYO_BRANCH_ANGLE));
-
-		GameObject b4 = b3.GetComponent<Branch>().addBranch(Vector3.zero);
-
-		b4.GetComponent<Branch>().addBranch(Vector3.zero);
-		*/
-
 		GameObject b1 = addBranch(new Vector3(30.0f, 0.0f, 0.0f));
 
-		b1.GetComponent<Branch>().addBranch(new Vector3(60.0f, 105.0f, 60.0f))
-			.GetComponent<Branch>().addBranch(new Vector3(0.0f, -90.0f, 60.0f));
+		GameObject b3 = b1.GetComponent<Branch>().addBranch(new Vector3(60.0f, 105.0f, 60.0f));
+		GameObject b4 = b3.GetComponent<Branch>().addBranch(new Vector3(0.0f, -90.0f, 60.0f));
 
-		GameObject b2 = b1.GetComponent<Branch>().addBranch(new Vector3(322.9f, 3.8f, 37.9f))
-							.GetComponent<Branch>().addBranch(new Vector3(300.9f, 337.8f, 4.7f));
+		GameObject b5 = b1.GetComponent<Branch>().addBranch(new Vector3(322.9f, 3.8f, 37.9f));
+		GameObject b2 = b5.GetComponent<Branch>().addBranch(new Vector3(300.9f, 337.8f, 4.7f));
 
-		b2.GetComponent<Branch>().addBranch(new Vector3(65.6f, 357.4f, 10.1f));
+		GameObject b6 = b2.GetComponent<Branch>().addBranch(new Vector3(65.6f, 357.4f, 10.1f));
 
-		b2.GetComponent<Branch>().addBranch(new Vector3(316.4f, 355.3f, 335.5f))
-			.GetComponent<Branch>().addBranch(new Vector3(320.1f, 17.0f, 351.4f))
-			.GetComponent<Branch>().addBranch(new Vector3(12.6f, 21.2f, 294.5f));
+		GameObject b7 = b2.GetComponent<Branch>().addBranch(new Vector3(316.4f, 355.3f, 335.5f));
+		GameObject b8 = b7.GetComponent<Branch>().addBranch(new Vector3(320.1f, 17.0f, 351.4f));
+		GameObject b9 = b8.GetComponent<Branch>().addBranch(new Vector3(12.6f, 21.2f, 294.5f));
 
+		b1.GetComponent<Branch>().setAge(0);
+		b2.GetComponent<Branch>().setAge(0);
+		b3.GetComponent<Branch>().setAge(0);
+		b4.GetComponent<Branch>().setAge(0);
+		b5.GetComponent<Branch>().setAge(0);
+		b6.GetComponent<Branch>().setAge(0);
+		b7.GetComponent<Branch>().setAge(0);
+		b8.GetComponent<Branch>().setAge(0);
+		b9.GetComponent<Branch>().setAge(0);
 	}
 
 	#endregion
@@ -805,8 +808,8 @@ public class Branch : MonoBehaviour {
 		newBud.transform.localRotation = rot;
 
 		//Initialize new bud variables
-		newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
-		newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
+		newBud.GetComponent<Bud>().setisLeaf(isLeaf);
+		newBud.GetComponent<Bud>().setDepth(depth + 1);
 
 		//Set bud w pos
 		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, HyperObject.W_RANGE));
@@ -814,12 +817,15 @@ public class Branch : MonoBehaviour {
 		this.registerBudAdded();
 
 		//Pass the bud the manager
-		newBud.transform.GetComponent<Bud>().setManager(manager);
+		newBud.GetComponent<Bud>().setManager(manager);
 
 		if(isLeaf)
 			manager.GetComponent<BonsaiManager>().addLeaf();
-		else
+		else 
 			manager.GetComponent<BonsaiManager>().addBranch();
+
+		//Extend Bud
+		newBud.GetComponent<Bud>().initiateExtension();
 
 		return newBud;
 	}
@@ -841,8 +847,8 @@ public class Branch : MonoBehaviour {
 		}
 
 		//Initialize new branch variables
-		newBud.transform.GetComponent<Bud>().setisLeaf(isLeaf);
-		newBud.transform.GetComponent<Bud>().setDepth(depth + 1);
+		newBud.GetComponent<Bud>().setisLeaf(isLeaf);
+		newBud.GetComponent<Bud>().setDepth(depth + 1);
 
 		//Set the branch's w position
 		newBud.transform.GetChild(0).GetComponent<HyperObject>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, HyperObject.W_RANGE));
@@ -850,11 +856,14 @@ public class Branch : MonoBehaviour {
 		this.registerBudAdded();
 
 		//Pass the bud the manager
-		newBud.transform.GetComponent<Bud>().setManager(manager);
+		newBud.GetComponent<Bud>().setManager(manager);
 		if(isLeaf)
 			manager.GetComponent<BonsaiManager>().addLeaf();
 		else
 			manager.GetComponent<BonsaiManager>().addBranch();
+
+		//Extend Bud
+		newBud.GetComponent<Bud>().initiateExtension();
 
 		return newBud;
 	}
@@ -868,12 +877,9 @@ public class Branch : MonoBehaviour {
 		newBranch.transform.localRotation = Quaternion.Euler(rot);
 
 		//newBranch.transform.localPosition = newBranch.transform.localPosition + newBranch.transform.up * 0.025f;	//This is for offsetting it from the tipPoint
+		int _w = Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, HyperObject.W_RANGE);
 
-		newBranch.GetComponent<HyperColliderManager>().setW(Mathf.Clamp(GetComponent<HyperColliderManager>().w + Random.Range(-1, 2), 0, HyperObject.W_RANGE));
-
-		newBranch.transform.GetComponent<Branch>().setDepth(depth + 1);
-		newBranch.transform.GetComponent<Branch>().setManager(manager);
-		newBranch.transform.GetComponent<Branch>().checkIfBranchSatisfiesContract();
+		newBranch.GetComponent<Branch>().initializeBranch(true, depth + 1, manager, _w);
 
 		manager.GetComponent<BonsaiManager>().addBranch();
 		this.registerBranchAdded();
@@ -902,6 +908,14 @@ public class Branch : MonoBehaviour {
 	#endregion
 
 	#region Utility Functions
+
+	public void initializeBranch(bool _canSnip, int _depth, GameObject _manager, int _w) {
+		setcanSnip(_canSnip);
+		setDepth(_depth);
+		setManager(_manager);
+		GetComponent<HyperColliderManager>().setW(_w);
+		checkIfBranchSatisfiesContract();
+	}
 
 	/*
 	 * Increment the number of leaves on this branch
@@ -934,6 +948,7 @@ public class Branch : MonoBehaviour {
 
 		if(numBranches == 0) {
 			isTip = true;
+			hasBecomeTip = true;
 		}
 	}
 
@@ -971,8 +986,7 @@ public class Branch : MonoBehaviour {
 	 */
 	public void setDepth(int newDepth) {
 		depth = newDepth;
-		leafGrowthCycle = 2 + Mathf.Max(0, 6 - depth);
-		branchGrowthCycle = 3 + Mathf.Max(0, 8 - depth);
+		branchGrowthCycle = 3 + Mathf.Max(0, 3 - depth);
 	}
 
 	/*
@@ -980,6 +994,10 @@ public class Branch : MonoBehaviour {
 	 */
 	public void setManager(GameObject newManager) {
 		manager = newManager;
+	}
+
+	public void setAge(int _age) {
+		age = _age;
 	}
 
 	/*

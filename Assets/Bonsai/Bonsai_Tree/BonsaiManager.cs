@@ -18,10 +18,8 @@ public class BonsaiManager : MonoBehaviour {
 	int numDeadLeaves;
 	int numDeadBranches;
 	int numInfestedBranches;
-
-	int zoneExtensions;			//The number of tree components extending past the contract bounding zone
-
-	int[] requiredZonePasses;
+	int[] numBranchesAtDepth;
+	int largestDepth;
 
 	static int ID = 0;
 
@@ -37,13 +35,11 @@ public class BonsaiManager : MonoBehaviour {
 		numDeadLeaves = 0;
 		numDeadBranches = 0;
 		numInfestedBranches = 0;
+		largestDepth = 0;
 
-		zoneExtensions = 0;
-
-		requiredZonePasses = new int[3];
-
-		for(int i = 0; i < 3; i++) {
-			requiredZonePasses[i] = 0;
+		numBranchesAtDepth = new int[maxBranches];
+		for(int i = 0; i < maxBranches; i++) {
+			numBranchesAtDepth[i] = 0;
 		}
 
 		//Name the tree
@@ -54,12 +50,8 @@ public class BonsaiManager : MonoBehaviour {
 		baseBranch = Instantiate(Resources.Load("Bonsai/BranchPrefab"), transform) as GameObject;
 		baseBranch.transform.localPosition = Vector3.zero;
 		baseBranch.transform.localScale = new Vector3(treeSize, treeSize, treeSize);
-		baseBranch.GetComponent<Branch>().setcanSnip(false);
-		baseBranch.GetComponent<Branch>().setDepth(0);
-		baseBranch.GetComponent<Branch>().setManager(this.gameObject);
-		baseBranch.GetComponent<Branch>().checkIfBranchSatisfiesContract();
 
-		baseBranch.GetComponent<HyperColliderManager>().setW(2);
+		baseBranch.GetComponent<Branch>().initializeBranch(false, 0, this.gameObject, 2);
 
 		baseBranch.GetComponent<Branch>().setupTreeForLevel(levelType);
 
@@ -79,42 +71,6 @@ public class BonsaiManager : MonoBehaviour {
 	 */
 	void processGrowthCycle() {
 		baseBranch.GetComponent<Branch>().processGrowthCycle();
-	}
-
-	/*
-	 * Increments the counter for the number of tree components
-	 * extending past the bounding zone
-	 */
-	public void registerZoneExtension() {
-		zoneExtensions += 1;
-	}
-
-	/*
-	 * Decrements the counter for the number of tree components
-	 * extending past the bounding zone
-	 */
-	public void registerRemovalOfZoneExtension() {
-		zoneExtensions -= 1;
-	}
-
-	/*
-	 * Increments the counter for the number of tree components
-	 * passing through required zones
-	 */
-	public void registerReqZonePasses(int[] zones) {
-		for(int i = 0; i < 3; i++) {
-			requiredZonePasses[i] += zones[i];
-		}
-	}
-
-	/*
-	 * Decrements the counter for the number of tree components
-	 * passing through required zones
-	 */
-	public void registerRemovalOfReqZonePasses(int[] zones) {
-		for(int i = 0; i < 3; i++) {
-			requiredZonePasses[i] -= zones[i];
-		}
 	}
 
 	public void addLeaf() {
@@ -185,11 +141,31 @@ public class BonsaiManager : MonoBehaviour {
 		return numDeadBranches;
 	}
 
-	public int getZoneExtensions() {
-		return zoneExtensions;
+	public int getLargestDepth() {
+		return largestDepth;
 	}
 
-	public int[] getReqZonePasses() {
-		return requiredZonePasses;
+	public void registerBranchDepth(int depth) {
+		numBranchesAtDepth[depth] += 1;
+
+		if(depth > largestDepth)
+			largestDepth = depth;
+	}
+
+	public void registerBranchRemovalAtDepth(int depth) {
+		numBranchesAtDepth[depth] -= 1;
+
+		if(depth == largestDepth && numBranchesAtDepth[depth] == 0) {
+			findNewLargestDepth();
+		}
+	}
+
+	void findNewLargestDepth() {
+		for(int i = largestDepth; i >= 0; i--) {
+			if(numBranchesAtDepth[i] > 0) {
+				largestDepth = i;
+				break;
+			}
+		}
 	}
 }

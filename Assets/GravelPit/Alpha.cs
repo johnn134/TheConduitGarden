@@ -36,7 +36,7 @@ public class Alpha : MonoBehaviour {
 	public int raked;
 	public bool isRakedEnough;
 	public int originalThird;
-	public bool checkPattern;
+	//public bool checkPattern;
 	public int tine1Nodes;
 	public int tine2Nodes;
 	public int tine3Nodes;
@@ -99,7 +99,7 @@ public class Alpha : MonoBehaviour {
 		lastTine4Node = null;
 		lineNumber = 1;
 
-		drawPeriod = 3.0f;
+		drawPeriod = 900.0f;
 		frame = 1;
 
 		texture.Apply();
@@ -112,19 +112,19 @@ public class Alpha : MonoBehaviour {
 				calculateTinePositions();
 
 				if (Vector3.Dot(Vector3.up, transform.up) > 0) {
-					if (tine1Collision == true) {
+					if (tine1Collision == true && rake.transform.parent) {
 						draw(tine1Position.x, tine1Position.z);
 					}
 
-					if (tine2Collision == true) {
+					if (tine2Collision == true && rake.transform.parent) {
 						draw(tine2Position.x, tine2Position.z);
 					}
 
-					if (tine3Collision == true) {
+					if (tine3Collision == true && rake.transform.parent) {
 						draw(tine3Position.x, tine3Position.z);
 					}
 
-					if (tine4Collision == true) {
+					if (tine4Collision == true && rake.transform.parent) {
 						draw(tine4Position.x, tine4Position.z);
 					}
 				}
@@ -138,7 +138,7 @@ public class Alpha : MonoBehaviour {
 		}
 
 		if (frame == 1) {
-			if (tine1Collision == true) {
+			if (tine1Collision == true && rake.transform.parent) {
 				if (tine1Nodes == 0) {
 					GameObject line;
 					GameObject clone;
@@ -172,7 +172,7 @@ public class Alpha : MonoBehaviour {
 		}
 
 		if (frame == 2) {
-			if (tine2Collision == true) {
+			if (tine2Collision == true && rake.transform.parent) {
 				if (tine2Nodes == 0) {
 					GameObject line;
 					GameObject clone;
@@ -206,7 +206,7 @@ public class Alpha : MonoBehaviour {
 		}
 
 		if (frame == 3) {
-			if (tine3Collision == true) {
+			if (tine3Collision == true && rake.transform.parent) {
 				if (tine3Nodes == 0) {
 					GameObject line;
 					GameObject clone;
@@ -240,7 +240,7 @@ public class Alpha : MonoBehaviour {
 		}
 
 		if (frame == 4) {
-			if (tine4Collision == true) {
+			if (tine4Collision == true && rake.transform.parent) {
 				if (tine4Nodes == 0) {
 					GameObject line;
 					GameObject clone;
@@ -488,13 +488,11 @@ public class Alpha : MonoBehaviour {
 			tine4Lines += 1.0f;
 		}
 
-		if (((tine1Lines + tine2Lines + tine3Lines + tine4Lines)/GetComponent<PatternRecognition>().linesOnDimension) >= 0.80f) {
-			if (GetComponent<PatternRecognition>().patternMatches == false) {
-				//Debug.Log ("Pattern matches = false");
-				checkPattern = true;
-				GetComponent<PatternRecognition>().check = 0;
-			}	
-		}
+		
+		if (GetComponent<PatternRecognition>().patternMatches == false) {
+			//Debug.Log ("Pattern matches = false");
+			GetComponent<PatternRecognition>().check = 0;
+		}	
 	}
 
 	void calculateTinePositions() {

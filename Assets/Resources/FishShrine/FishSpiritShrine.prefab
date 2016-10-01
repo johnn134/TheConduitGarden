@@ -441,6 +441,7 @@ GameObject:
   - 4: {fileID: 4000013204304436}
   - 114: {fileID: 114000012609543766}
   - 114: {fileID: 114000011745826902}
+  - 65: {fileID: 65000012349808056}
   m_Layer: 0
   m_Name: FishSpiritShrine
   m_TagString: Untagged
@@ -1679,10 +1680,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012060249198}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.31, y: 0.325, z: 2.683}
+  m_LocalRotation: {x: 0, y: -0.13052624, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 3.25, y: 0.5, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -15, z: 0}
   m_Children:
   - {fileID: 4000010593154282}
   - {fileID: 4000011324126876}
@@ -3941,6 +3942,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65000012349808056
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012060249198}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8, y: 1, z: 1.5}
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!65 &65000012882912168
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -4299,7 +4312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   w: 0
   w_depth: 7
-  dullCoef: 1.5
+  dullCoef: 3
   texture: {fileID: 0}
   tilingX: 0
   tilingY: 0
@@ -4467,7 +4480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   w: 0
   w_depth: 7
-  dullCoef: 1.5
+  dullCoef: 3
   texture: {fileID: 0}
   tilingX: 0
   tilingY: 0
@@ -4758,7 +4771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   w: 0
   w_depth: 7
-  dullCoef: 1.5
+  dullCoef: 3
   texture: {fileID: 0}
   tilingX: 0
   tilingY: 0

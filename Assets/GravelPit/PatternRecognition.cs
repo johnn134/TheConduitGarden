@@ -31,7 +31,7 @@ public class PatternRecognition : MonoBehaviour {
 
 		check = 1;
 
-		rangeCheck = 0.5f;
+		rangeCheck = 0.1f;
 
 		patternMatches = false;
 
@@ -46,9 +46,9 @@ public class PatternRecognition : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (check == 0 && patternMatches == false) {
+		if (check == 0 && patternMatches == false && HyperCreature.instance.w == GetComponent<HyperObject>().w) {
 			//Debug.Log ("Check pattern = true");
-			if (checkDrawnPattern() >= 0.80f) {
+			if (checkDrawnPattern() >= 1f) {
 				patternMatches = true;
 				//Debug.Log ("Current Plane: " + GetComponent<HyperColliderManager>().w);
 				Debug.Log("Pattern matches.");
@@ -101,6 +101,8 @@ public class PatternRecognition : MonoBehaviour {
 					if (drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnDimension == rake.GetComponent<HyperColliderManager>().w) {
 						float patternStartX = originalPattern.transform.GetChild(i).GetChild(0).transform.position.x;
 						float patternStartZ = originalPattern.transform.GetChild(i).GetChild(0).transform.position.z;
+						float patternEndX = originalPattern.transform.GetChild(i).GetChild(1).transform.position.x;
+						float patternEndZ = originalPattern.transform.GetChild(i).GetChild(1).transform.position.z;
 						float patternVectorX = originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternVector.x;
 						float patternVectorZ = originalPattern.transform.GetChild(i).GetComponent<PatternLine>().patternVector.z;
 						float drawnStartX = drawnPattern.transform.GetChild(j).GetChild(0).transform.position.x;
@@ -109,23 +111,19 @@ public class PatternRecognition : MonoBehaviour {
 						float drawnVectorZ = drawnPattern.transform.GetChild(j).GetComponent<DrawnLine>().drawnVector.z;
 						//float section = (0.5f / (float)drawnPattern.transform.GetChild(j).transform.childCount);
 
-						if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().isVertical == true) {
 							if (drawnStartX >= (patternStartX - rangeCheck) && drawnStartX <= (patternStartX + rangeCheck) && drawnStartZ >= (patternStartZ - rangeCheck) && drawnStartZ <= (patternStartZ + rangeCheck)) {
+								if (Mathf.Abs (Mathf.Abs (patternVectorX) - Mathf.Abs (drawnVectorX)) <= rangeCheck && Mathf.Abs (Mathf.Abs (patternVectorZ) - Mathf.Abs (drawnVectorZ)) <= rangeCheck) {
+									thisCheckValue += 1.0f;
+									//Debug.Log("Vector matched.");
+								}
+							}
+							
+							else if (drawnStartX >= (patternEndX - rangeCheck) && drawnStartX <= (patternEndX + rangeCheck) && drawnStartZ >= (patternEndZ - rangeCheck) && drawnStartZ <= (patternEndZ + rangeCheck)) {
 								if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
 									thisCheckValue += 1.0f;
 									//Debug.Log("Vector matched.");
 								}
 							}
-						}
-
-						else if (originalPattern.transform.GetChild(i).GetComponent<PatternLine>().isVertical == false) {
-							if (drawnStartX >= (patternStartX - rangeCheck) && drawnStartX <= (patternStartX + rangeCheck) && drawnStartZ >= (patternStartZ - rangeCheck) && drawnStartZ <= (patternStartZ + rangeCheck)) {
-								if (Mathf.Abs(Mathf.Abs(patternVectorX) - Mathf.Abs(drawnVectorX)) <= rangeCheck && Mathf.Abs(Mathf.Abs(patternVectorZ) - Mathf.Abs(drawnVectorZ)) <= rangeCheck) {
-									thisCheckValue += 1.0f;
-									//Debug.Log("Vector matched.");
-								}
-							}
-						}
 					}
 
 					//Debug.Log("This Check Value: " + thisCheckValue);

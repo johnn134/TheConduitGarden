@@ -90,12 +90,16 @@ public class BonsaiShrine : MonoBehaviour {
 			else
 				activateBoundLines();
 		}
+
+		if (Input.GetKeyDown (KeyCode.A)) {
+			setActivationStage (4, 4);
+		}
 	}
 
 	void FixedUpdate() {
 		//run tree check
 		if(Time.time > checkTime) {
-			checkTrees();
+			//checkTrees();
 			checkTime = Time.time + CHECK_DELAY;
 		}
 	}

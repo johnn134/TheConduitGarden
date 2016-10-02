@@ -45,6 +45,21 @@ public class GravelShrine : MonoBehaviour {
 		kamiManager = KamiManager.instance;
     }
 
+	void Update(){
+		if (Input.GetKeyDown (KeyCode.A)) {
+
+			updateLights(new int[] { 3,3,3,3,3 });
+			particleObj_LA.loop = true;
+			particleObj_LB.loop = true;
+			particleObj_RA.loop = true;
+			particleObj_RB.loop = true;
+			particleObj_LA.Play();
+			particleObj_LB.Play();
+			particleObj_RA.Play();
+			particleObj_RB.Play();
+		}
+	}
+
     public void processPits()
     {
 		int[] pointMatrix = new int[] { 0, 0, 0, 0, 0 };

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerDrink : MonoBehaviour {
 
@@ -69,7 +70,9 @@ public class PlayerDrink : MonoBehaviour {
 	 * Revert player peripheral vision
 	 */
 	void removeDrinkEffect() {
-        hyperC.w_perif = player_periph;
-		hyperC.WMoveAllHyperObjects ();
+		if(SceneManager.GetActiveScene().name != "Home") {
+			hyperC.w_perif = player_periph;
+			hyperC.WMoveAllHyperObjects();
+		}
 	}
 }

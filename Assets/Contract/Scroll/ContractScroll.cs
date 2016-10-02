@@ -20,7 +20,7 @@ public class ContractScroll : MonoBehaviour {
 
 	float scrollingStartTime;
 
-	const float OPENED_Y_POS = -0.8f;
+	const float OPENED_Y_POS = -0.925f;
 	const float CLOSED_Y_POS = 0.9f;
 	const float SCROLL_OPEN_SPEED = 2f;
 	const float SCROLL_CLOSE_SPEED = 5.0f;

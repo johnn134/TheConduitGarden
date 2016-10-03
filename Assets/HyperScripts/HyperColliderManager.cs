@@ -25,8 +25,8 @@ public class HyperColliderManager : MonoBehaviour {
         if (isParent)
             setW(w);
 
-		hyperManager.AddToList(gameObject);
         SetCollisions();
+        hyperManager.AddToList(gameObject);
     }
 
     void OnDestroy()

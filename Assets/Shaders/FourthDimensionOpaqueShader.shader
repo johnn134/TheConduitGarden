@@ -67,7 +67,7 @@
 					float attenuation = 1.0 / (1.0 + unity_4LightAtten0[index] * squaredDistance);
 					float3 diffuseReflection = attenuation
 					 * unity_LightColor[index].rgb * _Color.rgb
-					 * max(0.0, dot(output.normalDir, lightDirection));
+					 * max(0.0, dot(o.normalDir, lightDirection));
 
 					 o.vertexLighting = o.vertexLighting + diffuseReflection;
 				}

@@ -26,6 +26,30 @@ public class HyperCreature : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            WMove(-1);
+            WMoveAllHyperObjects();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            WMove(1);
+            WMoveAllHyperObjects();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            w_perif++;
+            WMoveAllHyperObjects();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            w_perif--;
+            WMoveAllHyperObjects();
+        }
+    }
+
     public bool FadeOutTransitionStep(float speed)
     {
         if(fadeImage.material.color.a < 1f)
